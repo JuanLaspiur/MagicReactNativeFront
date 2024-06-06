@@ -44,7 +44,7 @@ const Login = () => {
               style={styles.icono_google}
             />
             <Text style={{ fontWeight: 600, color: "gray" }}>
-              Inicia Sessión con Google
+              Inicia Sesión con Google
             </Text>
           </TouchableOpacity>
         </View>
@@ -70,21 +70,37 @@ const Login = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.container_crear_recuperar}>
-          <Text style={{ color: "gray", fontSize: 12, marginBottom: 7 }}>
-            ¿Olvidaste tu contraseña?{"    "}
-            <Text
-              style={{ color: "#007AFF", fontWeight: "700", marginLeft: 5 }}
-            >
-              Presiona aquí
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ color: "gray", fontSize: 11, marginBottom: 7 }}>
+              ¿Olvidaste tu contraseña?{"    "}
             </Text>
-          </Text>
-          <Text style={{ color: "gray", fontSize: 13 }}>
-            ¿No tienes cuenta aún?{"    "}
-            <Text style={{ color: "#007AFF", fontWeight: 700 }}>
-              Crea una cuenta
+            <TouchableOpacity>
+              <Text
+                style={{
+                  color: "#007AFF",
+                  fontWeight: "700",
+                  marginLeft: 5,
+                  fontSize: 11,
+                  paddingTop: 1,
+                }}
+              >
+                Presiona aquí
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ color: "gray", fontSize: 13 }}>
+              ¿No tienes cuenta aún?{"    "}
             </Text>
+            <TouchableOpacity>
+              <Text style={{ color: "#007AFF", fontWeight: 700, fontSize: 13 }}>
+                Crea una cuenta
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={{ color: "gray", marginTop: 65, fontSize: 12 }}>
+            Magic day versión 1.2.0
           </Text>
-          <Text style={{ color: "gray", marginTop:80, fontSize:12  }}>Magic day versión 1.2.0</Text>
         </View>
       </View>
     </View>
@@ -179,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "80%",
     height: 100,
-    top: 520,
+    top: 540,
   },
 });
 export default Login;
