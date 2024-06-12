@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { Image ,StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 const Register = () => {
@@ -8,6 +8,11 @@ const Register = () => {
 
   return (
     <View style={styles.container}>
+            <Image
+        source={require("../../assets/Login/Ellipse 1.png")}
+        style={styles.eclipse1}
+      />
+      
       <Text style={styles.label}>Datos de Cuenta</Text>
       <TextInput style={styles.input} placeholder="Correo Electrónico" />
       <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
@@ -47,6 +52,11 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 24,
     marginBottom: 20,
+  },
+  eclipse1: {
+    position: "absolute",
+    top: -90,
+    right: -50,
   },
   input: {
     borderBottomWidth: 1,
