@@ -1,0 +1,8 @@
+btnLoginGoogleGris=#7E7E7E
+eclipseNoLogo=#AED0F6
+-btnInicioSecionLoginAzul= #0078FD
+-logoRosaExtremo=#FF1B28
+logoRosaIntermedio=#B76193
+logoMoradoIntermedio=#7980C3
+logoCelesteIntermedio=#568DD8
+-logoCelesteExtremo=#009FF3
