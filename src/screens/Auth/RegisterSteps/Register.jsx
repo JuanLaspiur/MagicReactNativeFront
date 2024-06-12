@@ -9,7 +9,7 @@ const Register = () => {
   return (
     <View style={styles.container}>
             <Image
-        source={require("../../assets/Login/Ellipse 1.png")}
+        source={require("../../../assets/Login/Ellipse 1.png")}
         style={styles.eclipse1}
       />
       
