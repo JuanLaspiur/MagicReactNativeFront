@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   containerInputs: {
     width: '100%',
     height: 100,
-    marginTop: 120,
+    marginTop: 200,
     display:'flex',
     alignItems:'center'
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   button: {
-    backgroundColor: '#66A3E8',
+    backgroundColor: '#A1A1A1',
     padding: 8,
     borderRadius: 5,
     marginTop: 10,
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   avatar: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     borderRadius: 50,
     alignSelf: 'center',
     marginTop: 10,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   closeModalButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#66A3E8',
+    backgroundColor: '#A1A1A1',
     borderRadius: 5,
   },
   closeModalButtonText: {
