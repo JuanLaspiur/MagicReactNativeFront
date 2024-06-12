@@ -9,9 +9,9 @@ const Register = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Datos de Cuenta</Text>
-      <TextInput style={styles.input} placeholder="Email" />
-      <TextInput style={styles.input} placeholder="Password" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Repeat Password" secureTextEntry />
+      <TextInput style={styles.input} placeholder="Correo Electrónico" />
+      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
+      <TextInput style={styles.input} placeholder="Repetir contraseña" secureTextEntry />
       <View style={styles.checkRealContainer}>
         <CheckBox
           title="Al registrarme en la presente aplicación, acepto el aviso legal, los términos y condiciones y la política de privacidad."
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     padding: 20,
+   
   },
   label: {
     fontSize: 24,
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   button: {
+    position:'absolute',
+    bottom:40,
     backgroundColor: '#66A3E8',
     padding: 12,
     borderRadius: 5,
