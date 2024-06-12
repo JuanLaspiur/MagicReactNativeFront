@@ -11,11 +11,23 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
+import TermsAndConditionsModal from "../../../components/Register/TermsAndConditionsModal";
 
 function RegisterCuatro() {
   const [city, setCity] = useState("");
   const [isSpanish, setIsSpanish] = useState(false);
-  const [madridZone, setMadridZone]=useState('');
+  const [madridZone, setMadridZone] = useState("");
+  const [showTermsModal, setShowTermsModal] = useState(false); // Estado para controlar la visibilidad del modal
+
+  const handleFinishRegistration = () => {
+    // Aquí podrías realizar acciones adicionales antes de mostrar el modal
+    setShowTermsModal(true); // Mostrar el modal al finalizar el registro
+  };
+
+  const handleCloseModal = () => {
+    setShowTermsModal(false); // Cerrar el modal
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -57,27 +69,38 @@ function RegisterCuatro() {
         <TextInput style={styles.input} placeholder="Deportes favoritos" />
         <TextInput style={styles.input} placeholder="Hobbies" />
         <Text style={styles.h6bis}>Información geográfica</Text>
-          <CheckBox
+        <CheckBox
           title="He nacido en España (No obligatorio)."
           checked={isSpanish}
           onPress={() => setIsSpanish(!isSpanish)}
           containerStyle={styles.checkboxContainer}
           textStyle={styles.checkboxText}
-          style={{color:'gray'}}
+          style={{ color: "gray" }}
         />
-        {isSpanish &&( <>
-         <Text style={styles.h6}>Comunidad Autónoma Natal</Text> 
-        <Picker
-          selectedValue={city}
-          style={[styles.pickerSelect]}
-          onValueChange={(itemValue, itemIndex) => {
-              setCity(itemValue);
-          }}
-        >
-          <Picker.Item style={styles.pickerItem} label="Comunidad Autónoma Natal" value="" />
-          <Picker.Item style={styles.pickerItem} label="Madrid" value="Madrid" />
-        </Picker></>)}
-        <Text style={styles.h6}>Ciudad Actual</Text> 
+        {isSpanish && (
+          <>
+            <Text style={styles.h6}>Comunidad Autónoma Natal</Text>
+            <Picker
+              selectedValue={city}
+              style={[styles.pickerSelect]}
+              onValueChange={(itemValue, itemIndex) => {
+                setCity(itemValue);
+              }}
+            >
+              <Picker.Item
+                style={styles.pickerItem}
+                label="Comunidad Autónoma Natal"
+                value=""
+              />
+              <Picker.Item
+                style={styles.pickerItem}
+                label="Madrid"
+                value="Madrid"
+              />
+            </Picker>
+          </>
+        )}
+        <Text style={styles.h6}>Ciudad Actual</Text>
         <Picker
           selectedValue={city}
           style={styles.pickerSelect}
@@ -87,27 +110,40 @@ function RegisterCuatro() {
             }
           }}
         >
-          <Picker.Item style={styles.pickerItem} label="Ciudad Actual" value="" />
+          <Picker.Item
+            style={styles.pickerItem}
+            label="Ciudad Actual"
+            value=""
+          />
           <Picker.Item style={styles.pickerItem} label="Madrid" value="Madrid" />
         </Picker>
-        <Text style={styles.h6}>Zona de Madrid</Text> 
+        <Text style={styles.h6}>Zona de Madrid</Text>
         <Picker
           selectedValue={madridZone}
           style={styles.pickerSelect}
           onValueChange={(itemValue, itemIndex) => setMadridZone(itemValue)}
         >
-          <Picker.Item style={styles.pickerItem} label="Zona de Madrid" value="" />
+          <Picker.Item
+            style={styles.pickerItem}
+            label="Zona de Madrid"
+            value=""
+          />
           <Picker.Item style={styles.pickerItem} label="Norte" value="Norte" />
           <Picker.Item style={styles.pickerItem} label="Sur" value="Sur" />
-          <Picker.Item style={styles.pickerItem}  label='Centro' value="Centro"/>
-          <Picker.Item style={styles.pickerItem} label='Este' value="Este"/>
-          <Picker.Item style={styles.pickerItem} label='Oeste' value="Oeste"/>
+          <Picker.Item
+            style={styles.pickerItem}
+            label="Centro"
+            value="Centro"
+          />
+          <Picker.Item style={styles.pickerItem} label="Este" value="Este" />
+          <Picker.Item style={styles.pickerItem} label="Oeste" value="Oeste" />
         </Picker>
-        <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => alert('Siguiente')}>
-        <Text style={styles.buttonText}>¡Finalizar registro!</Text>
-      </TouchableOpacity></View>
 
+        {/* Modal de términos y condiciones */}
+        <TermsAndConditionsModal
+          isVisible={showTermsModal}
+          onClose={handleCloseModal} // Pasar la función para cerrar el modal
+        />
       </ScrollView>
     </View>
   );
