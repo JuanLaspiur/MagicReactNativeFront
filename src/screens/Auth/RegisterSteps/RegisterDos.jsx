@@ -3,12 +3,13 @@ import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity } from 'reac
 import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';  // Necesario para la selección de imágenes
-
+import DateTimePicker from '@react-native-community/datetimepicker'; // Importa DateTimePicker
 
 function RegisterDos() {
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [gender, setGender] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -59,6 +60,22 @@ function RegisterDos() {
           <Picker.Item label="Femenino" value="femenino" />
         </Picker>
 
+        {/* Componente DateTimePicker para seleccionar fecha de nacimiento */}
+        <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
+          <Text>{dateOfBirth.toLocaleDateString()}</Text>
+        </TouchableOpacity>
+        {showDatePicker && (
+          <DateTimePicker
+            value={dateOfBirth}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDate) => {
+              const currentDate = selectedDate || dateOfBirth;
+              setShowDatePicker(false);
+              setDateOfBirth(currentDate);
+            }}
+          />
+        )}
       </View>
     </View>
   );
