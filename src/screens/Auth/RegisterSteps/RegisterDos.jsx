@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';  // Necesario para la selección de imágenes
 
+
 function RegisterDos() {
   const [profileImage, setProfileImage] = useState(null);
+  const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [gender, setGender] = useState('');
 
   const selectImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,20 +36,30 @@ function RegisterDos() {
         </Text>
       </View>
       <View style={styles.selectPerfilImageContainer}>
-      <TouchableOpacity style={styles.selectPerfilImage} onPress={selectImage}>
-        {profileImage ? (
-          <Image source={{ uri: profileImage }} style={styles.profileImage} />
-        ) : (
-          <Text style={styles.addPhotoText}>Añadir Foto</Text>
-        )}
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.selectPerfilImage} onPress={selectImage}>
+          {profileImage ? (
+            <Image source={{ uri: profileImage }} style={styles.profileImage} />
+          ) : (
+            <Text style={styles.addPhotoText}>Añadir Foto</Text>
+          )}
+        </TouchableOpacity>
       </View>
-      <View style={styles.datosDeUsuario} >
-        <Text style={styles.h4}>
-        Datos del Usuario
-        </Text>
-      </View>
+      <View style={styles.userInfo}>
+        <Text style={styles.h4}>Datos del Usuario</Text>
+        <TextInput style={styles.input} placeholder="Nombre" />
+        <TextInput style={styles.input} placeholder="Apellido" />
 
+        <Picker
+          selectedValue={gender}
+          style={styles.inputTextColor}
+          onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
+        >
+          <Picker.Item label="Selecciona Género" value="" />
+          <Picker.Item label="Masculino" value="masculino" />
+          <Picker.Item label="Femenino" value="femenino" />
+        </Picker>
+
+      </View>
     </View>
   );
 }
@@ -100,11 +114,22 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 12,
   },
-  datosDeUsuario: {
-    paddingTop:14,
-    paddingHorizontal:17,
+  userInfo: {
+    paddingTop: 20,
+    paddingHorizontal: 17,
   },
   h4: {
+    color: 'gray',
+    marginBottom: 12,
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#8F8F8F', // Gris claro
+    padding: 7,
+    marginBottom: 10,
+    width: '100%',
+  },
+  inputTextColor: {
     color:'gray'
   }
 });
