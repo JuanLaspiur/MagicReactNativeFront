@@ -31,6 +31,7 @@ function RegisterDos() {
           Bienvenido a Magic Day, una aplicacion donde podras encontrar todos los planes que necesites
         </Text>
       </View>
+      <View style={styles.selectPerfilImageContainer}>
       <TouchableOpacity style={styles.selectPerfilImage} onPress={selectImage}>
         {profileImage ? (
           <Image source={{ uri: profileImage }} style={styles.profileImage} />
@@ -38,6 +39,13 @@ function RegisterDos() {
           <Text style={styles.addPhotoText}>Añadir Foto</Text>
         )}
       </TouchableOpacity>
+      </View>
+      <View style={styles.datosDeUsuario} >
+        <Text style={styles.h4}>
+        Datos del Usuario
+        </Text>
+      </View>
+
     </View>
   );
 }
@@ -47,7 +55,6 @@ export default RegisterDos;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     width: '100%',
     padding: 20,
   },
@@ -72,6 +79,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
   },
+  selectPerfilImageContainer: {
+    alignItems: 'center',
+  },
   selectPerfilImage: {
     marginTop: 20,
     width: 100,
@@ -90,4 +100,11 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontSize: 12,
   },
+  datosDeUsuario: {
+    paddingTop:14,
+    paddingHorizontal:17,
+  },
+  h4: {
+    color:'gray'
+  }
 });
