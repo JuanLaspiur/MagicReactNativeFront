@@ -57,20 +57,7 @@ function RegisterCuatro() {
         <TextInput style={styles.input} placeholder="Deportes favoritos" />
         <TextInput style={styles.input} placeholder="Hobbies" />
         <Text style={styles.h6bis}>Información geográfica</Text>
-        <Text style={styles.h6}>Ciudad Actual</Text> 
-        <Picker
-          selectedValue={city}
-          style={styles.pickerCity}
-          onValueChange={(itemValue, itemIndex) => {
-            if (itemValue !== "") {
-              setCity(itemValue);
-            }
-          }}
-        >
-          <Picker.Item label="Ciudad Actual" value="" />
-          <Picker.Item label="Madrid" value="Madrid" />
-        </Picker>
-        <CheckBox
+          <CheckBox
           title="He nacido en España (No obligatorio)."
           checked={isSpanish}
           onPress={() => setIsSpanish(!isSpanish)}
@@ -82,26 +69,44 @@ function RegisterCuatro() {
          <Text style={styles.h6}>Comunidad Autónoma Natal</Text> 
         <Picker
           selectedValue={city}
-          style={styles.pickerCity}
+          style={[styles.pickerSelect]}
           onValueChange={(itemValue, itemIndex) => {
               setCity(itemValue);
           }}
         >
-          <Picker.Item label="Comunidad Autónoma Natal" value="" />
-          <Picker.Item label="Madrid" value="Madrid" />
+          <Picker.Item style={styles.pickerItem} label="Comunidad Autónoma Natal" value="" />
+          <Picker.Item style={styles.pickerItem} label="Madrid" value="Madrid" />
         </Picker></>)}
+        <Text style={styles.h6}>Ciudad Actual</Text> 
+        <Picker
+          selectedValue={city}
+          style={styles.pickerSelect}
+          onValueChange={(itemValue, itemIndex) => {
+            if (itemValue !== "") {
+              setCity(itemValue);
+            }
+          }}
+        >
+          <Picker.Item style={styles.pickerItem} label="Ciudad Actual" value="" />
+          <Picker.Item style={styles.pickerItem} label="Madrid" value="Madrid" />
+        </Picker>
+        <Text style={styles.h6}>Zona de Madrid</Text> 
         <Picker
           selectedValue={madridZone}
-          style={styles.pickerCity}
+          style={styles.pickerSelect}
           onValueChange={(itemValue, itemIndex) => setMadridZone(itemValue)}
         >
-          <Picker.Item label="Zona de Madrid" value="" />
-          <Picker.Item label="Norte" value="Norte" />
-          <Picker.Item label="Sur" value="Sur" />
-          <Picker.Item label='Centro' value="Centro"/>
-          <Picker.Item label='Este' value="Este"/>
-          <Picker.Item label='Oeste' value="Oeste"/>
+          <Picker.Item style={styles.pickerItem} label="Zona de Madrid" value="" />
+          <Picker.Item style={styles.pickerItem} label="Norte" value="Norte" />
+          <Picker.Item style={styles.pickerItem} label="Sur" value="Sur" />
+          <Picker.Item style={styles.pickerItem}  label='Centro' value="Centro"/>
+          <Picker.Item style={styles.pickerItem} label='Este' value="Este"/>
+          <Picker.Item style={styles.pickerItem} label='Oeste' value="Oeste"/>
         </Picker>
+        <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={() => alert('Siguiente')}>
+        <Text style={styles.buttonText}>¡Finalizar registro!</Text>
+      </TouchableOpacity></View>
 
       </ScrollView>
     </View>
@@ -178,9 +183,12 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     fontSize: 12,
   },
-  pickerCity: {
+  pickerSelect: {
     color: "gray",
-    marginTop: 10,
+    marginTop: 10,   
+  },
+  pickerItem: {
+    fontSize:13
   },
   checkboxContainer: {
     backgroundColor: "transparent",
@@ -197,5 +205,24 @@ const styles = StyleSheet.create({
     color:'gray',
     marginTop:20,
     marginBottom:-15
+  },
+  buttonContainer: {
+    width:'100%',
+    display:'flex',
+    alignItems:'center',
+    paddingVertical:10
+  },
+  button: {
+    backgroundColor: '#66A3E8',
+    padding: 12,
+    borderRadius: 5,
+    marginTop: 50,
+    width: '80%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   }
 });
