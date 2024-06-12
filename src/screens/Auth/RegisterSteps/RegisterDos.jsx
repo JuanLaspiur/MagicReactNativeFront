@@ -49,20 +49,9 @@ function RegisterDos() {
         <Text style={styles.h4}>Datos del Usuario</Text>
         <TextInput style={styles.input} placeholder="Nombre" />
         <TextInput style={styles.input} placeholder="Apellido" />
-
-        <Picker
-          selectedValue={gender}
-          style={styles.inputTextColor}
-          onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
-        >
-          <Picker.Item label="Selecciona Género" value="" />
-          <Picker.Item label="Masculino" value="masculino" />
-          <Picker.Item label="Femenino" value="femenino" />
-        </Picker>
-
-        {/* Componente DateTimePicker para seleccionar fecha de nacimiento */}
+       {/* Componente DateTimePicker para seleccionar fecha de nacimiento */}
         <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
-          <Text>{dateOfBirth.toLocaleDateString()}</Text>
+          <Text style={styles.selectBornDate}>{dateOfBirth.toLocaleDateString()}</Text>
         </TouchableOpacity>
         {showDatePicker && (
           <DateTimePicker
@@ -76,7 +65,22 @@ function RegisterDos() {
             }}
           />
         )}
+                <Picker
+          selectedValue={gender}
+          style={styles.inputTextColor}
+          onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
+        >
+          <Picker.Item label="Selecciona Género" value="" />
+          <Picker.Item label="Hombre" value="Hombre" />
+          <Picker.Item label="Mujer" value="Mujer" />
+          <Picker.Item label='No binario' value="No binario"/>
+          <Picker.Item label='Prefiero no decirlo' value="Prefiero no decirlo"/>
+        </Picker>
       </View>
+      <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={() => alert('Siguiente')}>
+        <Text style={styles.buttonText}>Siguiente</Text>
+      </TouchableOpacity></View>
     </View>
   );
 }
@@ -148,5 +152,27 @@ const styles = StyleSheet.create({
   },
   inputTextColor: {
     color:'gray'
+  },
+  selectBornDate: {
+    color: 'gray',
+    marginTop:7
+  },
+  buttonContainer: {
+    width:'100%',
+    display:'flex',
+    alignItems:'center'
+  },
+  button: {
+    backgroundColor: '#66A3E8',
+    padding: 12,
+    borderRadius: 5,
+    marginTop: 50,
+    width: '80%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
   }
 });
