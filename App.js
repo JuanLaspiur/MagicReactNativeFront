@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import RegisterDos from './src/screens/Auth/RegisterSteps/RegisterDos';
+import RegisterTres from './src/screens/Auth/RegisterSteps/RegisterTres';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <RegisterDos />
+      <RegisterTres/>
       <StatusBar style="auto" />
     </View>
   );
