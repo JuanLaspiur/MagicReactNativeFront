@@ -138,6 +138,14 @@ function RegisterCuatro() {
           <Picker.Item style={styles.pickerItem} label="Este" value="Este" />
           <Picker.Item style={styles.pickerItem} label="Oeste" value="Oeste" />
         </Picker>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleFinishRegistration} // Llamar a la función al hacer clic
+          >
+            <Text style={styles.buttonText}>¡Finalizar registro!</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* Modal de términos y condiciones */}
         <TermsAndConditionsModal

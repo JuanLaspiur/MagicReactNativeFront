@@ -37,44 +37,7 @@ function TermsAndConditionsModal({ isVisible, onClose }) {
     </Modal>
   );
 }
-
-function RegisterCuatro() {
-  const [city, setCity] = useState("");
-  const [isSpanish, setIsSpanish] = useState(false);
-  const [madridZone, setMadridZone] = useState("");
-  const [showTermsModal, setShowTermsModal] = useState(false); // Estado para controlar la visibilidad del modal
-
-  const handleFinishRegistration = () => {
-    // Aquí puedes colocar lógica adicional antes de mostrar el modal
-    setShowTermsModal(true);
-  };
-
-  return (
-    <View style={styles.container}>
-      {/* Contenido actual del registro */}
-      {/* ... */}
-
-      {/* Modal de Términos y Condiciones */}
-      <TermsAndConditionsModal
-        isVisible={showTermsModal}
-        onClose={(isVisible) => setShowTermsModal(isVisible)}
-      />
-
-      {/* Botón para finalizar el registro */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleFinishRegistration}
-        >
-          <Text style={styles.buttonText}>¡Finalizar registro!</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
-export default RegisterCuatro;
-
+export default TermsAndConditionsModal;
 const styles = StyleSheet.create({
   // Estilos del modal
   modalContainer: {
