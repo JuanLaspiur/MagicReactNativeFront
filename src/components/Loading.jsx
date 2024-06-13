@@ -60,7 +60,7 @@ function Loading() {
         style={styles.logoApp}
       />
       <Text style={styles.loadingText}>
-        Cargando
+       Magic Cargando
         <Animatable.Text
           animation="fadeIn"
           iterationCount="infinite"
