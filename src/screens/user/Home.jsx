@@ -3,6 +3,8 @@ import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView 
 import AppHeader from '../../components/User/AppHeader';
 import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxOptions from '../../components/User/Home/BoxOptions';
+import CardsPremiumCarrucel from '../../components/User/Home/CardsPremiumCarrucel'
+
 const Home = () => {
   return (
     <View style={styles.container}>
@@ -15,7 +17,7 @@ const Home = () => {
         />
              <IconPerfil/>
              <BoxOptions/>
-      
+             <CardsPremiumCarrucel/>
         <Text style={styles.title}>Inicio</Text>
         <View style={styles.content}>
           <Text style={styles.text}>
