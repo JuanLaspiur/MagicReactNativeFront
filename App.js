@@ -7,7 +7,9 @@ import { NavigationContainer } from '@react-navigation/native';
 // Components
 import Login from './src/screens/Auth/Login.jsx';
 import Register from './src/screens/Auth/RegisterSteps/Register.jsx';
-
+import RegisterDos from './src/screens/Auth/RegisterSteps/RegisterDos.jsx';
+import RegisterTres from './src/screens/Auth/RegisterSteps/RegisterTres.jsx';
+import RegisterCuatro from './src/screens/Auth/RegisterSteps/RegisterCuatro.jsx';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -17,6 +19,9 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login" >
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+          <Stack.Screen name="RegisterDos" component={RegisterDos} options={{ headerShown: false }} />
+          <Stack.Screen name="RegisterTres" component={RegisterTres} options={{ headerShown: false }} />
+          <Stack.Screen name="RegisterCuatro" component={RegisterCuatro} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />

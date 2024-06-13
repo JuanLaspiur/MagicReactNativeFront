@@ -12,12 +12,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
 import TermsAndConditionsModal from "../../../components/Register/TermsAndConditionsModal";
+import { useNavigation } from '@react-navigation/native';
 
 function RegisterCuatro() {
   const [city, setCity] = useState("");
   const [isSpanish, setIsSpanish] = useState(false);
   const [madridZone, setMadridZone] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false); 
+  const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
     setShowTermsModal(true);
@@ -46,7 +48,7 @@ function RegisterCuatro() {
       />
       <TouchableOpacity
         style={styles.closeButton}
-        onPress={() => alert("Salir")}
+      onPress={() => navigation.navigate('RegisterTres')}
       >
         <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>

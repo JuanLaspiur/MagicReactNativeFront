@@ -4,8 +4,9 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker';  // Necesario para la selección de imágenes
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importa DateTimePicker
-
+import { useNavigation } from '@react-navigation/native';
 function RegisterDos() {
+  const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [gender, setGender] = useState('');
@@ -26,7 +27,7 @@ function RegisterDos() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.closeButton} onPress={() => alert('Salir')}>
+      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Register')}>
       <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>
       <Image
@@ -81,7 +82,7 @@ function RegisterDos() {
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => alert('Siguiente')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegisterTres')}>
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity></View>
     </View>

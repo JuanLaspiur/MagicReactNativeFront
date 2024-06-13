@@ -3,7 +3,7 @@ import { Image, StyleSheet, View, Text, TouchableOpacity, Modal, FlatList } from
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
 import CabeceraAnimals from "../../../components/Register/CabeceraAnimals";
-
+import { useNavigation } from '@react-navigation/native';
 const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-01.png"),
   require("../../../assets/Animals/ICONOS A COLOR-02.png"),
@@ -58,6 +58,8 @@ function RegisterTres() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnimal, setSelectedAnimal] = useState(animalImages[0]);
 
+  const navigation = useNavigation();
+
   const handleAnimalSelect = (image) => {
     setSelectedAnimal(image);
     setModalVisible(false);
@@ -66,7 +68,7 @@ function RegisterTres() {
   return (
     <View style={styles.container}>
       <CabeceraAnimals />
-      <TouchableOpacity style={styles.closeButton} onPress={() => alert('Salir')}>
+      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('RegisterDos')}>
         <Ionicons name="arrow-back" size={20} color="white" />
       </TouchableOpacity>
       <View style={styles.containerInputs}>
@@ -110,7 +112,7 @@ function RegisterTres() {
 
 
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.buttonSiguiente} onPress={() => alert('Siguiente')}>
+      <TouchableOpacity style={styles.buttonSiguiente} onPress={() => navigation.navigate('RegisterCuatro')}>
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
       </View>

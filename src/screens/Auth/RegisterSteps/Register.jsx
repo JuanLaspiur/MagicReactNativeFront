@@ -39,7 +39,7 @@ const Register = () => {
           textStyle={styles.checkboxText}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => alert('Siguiente')}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegisterDos')}>
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
     </View>
