@@ -15,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const handleLogin = () => {
-    console.log("hello");
+    navigation.navigate('Home')
   };
 
   return (
@@ -67,7 +67,7 @@ const Login = () => {
             />
           </View>
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Iniciar sesión</Text>
+            <Text style={styles.loginButtonText}  >Iniciar sesión</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.container_crear_recuperar}>
