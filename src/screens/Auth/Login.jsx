@@ -8,21 +8,14 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native'; // Importar useNavigation
+import { useNavigation } from '@react-navigation/native';
 const { height } = Dimensions.get("window");
-
 const Login = () => {
-  const navigation = useNavigation(); // Obtener la función de navegación
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigation = useNavigation();
   const handleLogin = () => {
     console.log("hello");
-  };
-
-  const handleNavigateToRegister = () => {
-    navigation.navigate('Register'); // Navegar al componente Register
   };
 
   return (
@@ -100,8 +93,8 @@ const Login = () => {
             <Text style={{ color: "gray", fontSize: 13 }}>
               ¿No tienes cuenta aún?{"    "}
             </Text>
-            <TouchableOpacity onPress={handleNavigateToRegister}>
-              <Text style={{ color: "#007AFF", fontWeight: 700, fontSize: 13 }}>
+            <TouchableOpacity>
+              <Text style={{ color: "#007AFF", fontWeight: 700, fontSize: 13 }} onPress={() => navigation.navigate('Register')}>
                 Crea una cuenta
               </Text>
             </TouchableOpacity>
@@ -114,13 +107,11 @@ const Login = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     height: height,
     alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#fff",
   },
   eclipse1: {
@@ -140,7 +131,7 @@ const styles = StyleSheet.create({
   },
   logo_logo: {
     position: "absolute",
-    width: 210, // Ajusta según tus necesidades
+    width: 210, // por que cuando trato de hacer el width se corta la imagen en vez de achicarse?
   },
   container_inicia_session_gooogle: {
     display: "flex",
@@ -169,20 +160,29 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
   },
+  // inputs
   inputContainer: {
     display: "flex",
     marginTop: 5,
     alignItems: "center",
     width: "100%",
     height: 140,
-  },
+  },/*
+  input: {
+    borderWidth: 1,
+    borderColor: "#8F8F8F", // Gris claro con transparencia
+    borderRadius: 5,
+    padding: 7,
+    marginBottom: 10,
+    width: "100%",
+  }, */
   input: {
     borderBottomWidth: 1,
     borderBottomColor: '#8F8F8F', // Gris claro
     padding: 7,
     marginBottom: 10,
     width: '100%',
-  },
+  },  
   loginButton: {
     backgroundColor: "#007AFF", // Azul
     padding: 10,
@@ -205,5 +205,4 @@ const styles = StyleSheet.create({
     top: 540,
   },
 });
-
 export default Login;
