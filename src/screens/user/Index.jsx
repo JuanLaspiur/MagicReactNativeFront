@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons"; // Importa los iconos que necesites
+import { useNavigation } from "@react-navigation/native";
 
 import Home from "./Home";
 import Friends from "./Friends";
@@ -11,6 +12,12 @@ import MessagesBox from "./MessagesBox";
 const Tab = createBottomTabNavigator();
 
 const Index = () => {
+  const navigation = useNavigation();
+
+  const handleExitApp = () => {
+ alert('saliendo')
+  };
+
   return (
     <View style={styles.container}>
       <Tab.Navigator>
@@ -25,7 +32,7 @@ const Index = () => {
           }}
         />
         <Tab.Screen
-          name="Friends"
+          name="Amigos"
           component={Friends}
           options={{
             tabBarIcon: ({ color, size }) => (
@@ -35,7 +42,25 @@ const Index = () => {
           }}
         />
         <Tab.Screen
-          name="Profile"
+          name="Exit"
+          component={() => null} // Componente vacío porque no necesitas renderizar nada
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="exit-outline" size={size} color={color} />
+            ),
+            tabBarButton: ({ onPress }) => (
+              <TouchableOpacity
+                style={styles.exitButton}
+                onPress={handleExitApp} // Función para salir de la app
+              >
+                <Ionicons name="exit-outline" size={24} color="black" />
+              </TouchableOpacity>
+            ),
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Perfil"
           component={Profile}
           options={{
             tabBarIcon: ({ color, size }) => (
@@ -45,7 +70,7 @@ const Index = () => {
           }}
         />
         <Tab.Screen
-          name="MessagesBox"
+          name="Mensajes"
           component={MessagesBox}
           options={{
             tabBarIcon: ({ color, size }) => (
@@ -63,6 +88,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  exitButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "lightgrey",
+    paddingLeft:3
   },
 });
 
