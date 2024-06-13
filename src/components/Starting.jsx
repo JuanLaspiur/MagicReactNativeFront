@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
-function Loading() {
+function Starting() {
   return (
     <View style={styles.container}>
       <Image
@@ -16,17 +16,17 @@ function Loading() {
         style={styles.eclipse2}
       />
       <Image
-        source={require("../assets/Animals/ICONOS A COLOR-05.png")}
+        source={require("../assets/Animals/ICONOS A COLOR-11.png")}
         resizeMode="contain"
         style={styles.animal1}
       />
       <Image
-        source={require("../assets/Animals/ICONOS A COLOR-28.png")}
+        source={require("../assets/Animals/ICONOS A COLOR-07.png")}
         resizeMode="contain"
         style={styles.animal2}
       />
       <Image
-        source={require("../assets/Animals/ICONOS A COLOR-38.png")}
+        source={require("../assets/Animals/ICONOS A COLOR-02.png")}
         resizeMode="contain"
         style={styles.animal3}
       />
@@ -65,7 +65,7 @@ function Loading() {
         style={styles.logoApp}
       />
       <Text style={styles.loadingText}>
-       Magic Cargando
+       Ingresando a Magic
         <Animatable.Text
           animation="fadeIn"
           iterationCount="infinite"
@@ -97,85 +97,85 @@ function Loading() {
         </Animatable.Text>
       </Text>
     </View>
-  );
+  )
 }
 
-export default Loading;
+export default Starting
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eclipse1: {
-    position: "absolute",
-    top: -99,
-    right: -30,
-  },
-  eclipse2: {
-    position: "absolute",
-    top: -60,
-    left: 150,
-  },
-  animal1: {
-    position: "absolute",
-    top: 100,
-    left: -20,
-    width: 200,
-    height: 200,
-  },
-  animal2: {
-    position: "absolute",
-    top: 100,
-    right: -10,
-    width: 100,
-    height: 100,
-  },
-  animal3: {
-    position: "absolute",
-    bottom: 40,
-    left: 0,
-    width: 70,
-    height: 70,
-  },
-  eclipse6:{
-    position: "absolute",
-    bottom: -40,
-    left: -30,
-    width: 100,
-    height: 100,
-    transform: [{ rotate: '275deg' }],
-    opacity: 0.4,
-  },
-  expandingCircle: {
-    position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: '#5386C1',
-    zIndex: -1,
-  },
-  expandingCircleLight: {
-    position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: '#A7C7E7',
-    zIndex: -2,
-  },
-  logoApp: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
-  },
-  loadingText: {
-    fontSize: 18,
-    color: 'white',
-  },
-  dots: {
-    fontSize: 18,
-    color: 'white',
-  },
-});
+    container: {
+      flex: 1,
+      width: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    eclipse1: {
+      position: "absolute",
+      top: -99,
+      right: -30,
+    },
+    eclipse2: {
+      position: "absolute",
+      top: -60,
+      left: 150,
+    },
+    animal1: {
+      position: "absolute",
+      top: 100,
+      left: -20,
+      width: 200,
+      height: 200,
+    },
+    animal2: {
+      position: "absolute",
+      top: 100,
+      right: -10,
+      width: 100,
+      height: 100,
+    },
+    animal3: {
+      position: "absolute",
+      bottom: 40,
+      left: 0,
+      width: 70,
+      height: 70,
+    },
+    eclipse6:{
+      position: "absolute",
+      bottom: -40,
+      left: -30,
+      width: 100,
+      height: 100,
+      transform: [{ rotate: '275deg' }],
+      opacity: 0.4,
+    },
+    expandingCircle: {
+      position: 'absolute',
+      width: 200,
+      height: 200,
+      borderRadius: 100,
+      backgroundColor: '#5386C1',
+      zIndex: -1,
+    },
+    expandingCircleLight: {
+      position: 'absolute',
+      width: 200,
+      height: 200,
+      borderRadius: 100,
+      backgroundColor: '#A7C7E7',
+      zIndex: -2,
+    },
+    logoApp: {
+      width: 100,
+      height: 100,
+      marginBottom: 20,
+    },
+    loadingText: {
+      fontSize: 18,
+      color: 'white',
+    },
+    dots: {
+      fontSize: 18,
+      color: 'white',
+    },
+  });
