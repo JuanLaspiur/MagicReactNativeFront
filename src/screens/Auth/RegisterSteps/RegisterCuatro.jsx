@@ -17,15 +17,14 @@ function RegisterCuatro() {
   const [city, setCity] = useState("");
   const [isSpanish, setIsSpanish] = useState(false);
   const [madridZone, setMadridZone] = useState("");
-  const [showTermsModal, setShowTermsModal] = useState(false); // Estado para controlar la visibilidad del modal
+  const [showTermsModal, setShowTermsModal] = useState(false); 
 
   const handleFinishRegistration = () => {
-    // Aquí podrías realizar acciones adicionales antes de mostrar el modal
-    setShowTermsModal(true); // Mostrar el modal al finalizar el registro
+    setShowTermsModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowTermsModal(false); // Cerrar el modal
+    setShowTermsModal(false); 
   };
 
   return (
