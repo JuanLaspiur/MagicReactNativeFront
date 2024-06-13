@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import AppHeader from '../../components/User/AppHeader';
+
 function Friends() {
   return (
     <View style={styles.container}>
+            <AppHeader title="Amigos" />
       <Text style={styles.title}>Friends</Text>
     </View>
   )
@@ -10,8 +13,6 @@ function Friends() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
       backgroundColor: '#fff',
     },
     title: {

@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import AppHeader from '../../components/User/AppHeader';
 
 const Profile = () => {
   return (
     <View style={styles.container}>
+            <AppHeader title="Perfil" />
       <Text style={styles.title}>Profile Screen</Text>
     </View>
   );
@@ -12,8 +14,6 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   title: {
