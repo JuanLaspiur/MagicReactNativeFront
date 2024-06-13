@@ -15,7 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const handleLogin = () => {
-    navigation.navigate('Home')
+    navigation.navigate('Index')
   };
 
   return (
