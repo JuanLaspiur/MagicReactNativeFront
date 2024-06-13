@@ -1,18 +1,19 @@
 import React from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
-
+import IconPerfil from '../../components/User/Home/IconPerfil';
 const Home = () => {
   return (
     <View style={styles.container}>
       <AppHeader title="Inicio" />
-
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse}
         />
+             <IconPerfil/>
+      
         <Text style={styles.title}>Inicio</Text>
         <View style={styles.content}>
           <Text style={styles.text}>
@@ -32,7 +33,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    alignItems: 'center',
     paddingVertical: 20,
   },
   title: {
