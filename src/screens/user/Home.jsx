@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
 import IconPerfil from '../../components/User/Home/IconPerfil';
+import BoxOptions from '../../components/User/Home/BoxOptions';
 const Home = () => {
   return (
     <View style={styles.container}>
@@ -13,6 +14,7 @@ const Home = () => {
           style={styles.eclipse}
         />
              <IconPerfil/>
+             <BoxOptions/>
       
         <Text style={styles.title}>Inicio</Text>
         <View style={styles.content}>
