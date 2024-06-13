@@ -30,6 +30,11 @@ function Loading() {
         resizeMode="contain"
         style={styles.eclipse5}
       />
+            <Image
+        source={require("../assets/Login/Ellipse 2.png")}
+        resizeMode="contain"
+        style={styles.eclipse6}
+      />
       <Animatable.View
         animation={{
           0: { scale: 1, opacity: 0.8 },
@@ -130,10 +135,19 @@ const styles = StyleSheet.create({
   },
   eclipse5: {
     position: "absolute",
-    bottom: 100,
-    right: 0,
+    bottom: 40,
+    left: 0,
+    width: 70,
+    height: 70,
+  },
+  eclipse6:{
+    position: "absolute",
+    bottom: -40,
+    left: -30,
     width: 100,
     height: 100,
+    transform: [{ rotate: '275deg' }],
+    opacity: 0.4,
   },
   expandingCircle: {
     position: 'absolute',
