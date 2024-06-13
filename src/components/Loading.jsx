@@ -15,25 +15,41 @@ function Loading() {
         resizeMode="contain"
         style={styles.eclipse2}
       />
-            <Image
+      <Image
         source={require("../assets/Animals/ICONOS A COLOR-05.png")}
         resizeMode="contain"
         style={styles.eclipse3}
       />
-              <Image
+      <Image
         source={require("../assets/Animals/ICONOS A COLOR-28.png")}
         resizeMode="contain"
         style={styles.eclipse4}
       />
-                   <Image
+      <Image
         source={require("../assets/Animals/ICONOS A COLOR-38.png")}
         resizeMode="contain"
         style={styles.eclipse5}
       />
       <Animatable.View
-        animation="pulse"
+        animation={{
+          0: { scale: 1, opacity: 0.8 },
+          0.5: { scale: 1.5, opacity: 0.4 },
+          1: { scale: 2, opacity: 0.2 },
+        }}
         easing="ease-in-out"
         iterationCount="infinite"
+        duration={3000}
+        style={styles.expandingCircleLight}
+      />
+      <Animatable.View
+        animation={{
+          0: { scale: 1, opacity: 0.8 },
+          0.5: { scale: 1.5, opacity: 0.4 },
+          1: { scale: 2, opacity: 0.2 },
+        }}
+        easing="ease-in-out"
+        iterationCount="infinite"
+        duration={2000}
         style={styles.expandingCircle}
       />
       <Animatable.Image
@@ -69,7 +85,7 @@ function Loading() {
           iterationCount="infinite"
           direction="alternate"
           duration={800}
-          delay={400}
+          delay={800}
           style={styles.dots}
         >
           .
@@ -93,28 +109,31 @@ const styles = StyleSheet.create({
     top: -99,
     right: -30,
   },
+  eclipse2: {
+    position: "absolute",
+    top: -60,
+    left: 150,
+  },
   eclipse3: {
     position: "absolute",
     top: 100,
     left: -20,
     width: 200,
     height: 200,
-  }, eclipse4: {
+  },
+  eclipse4: {
     position: "absolute",
     top: 100,
     right: -10,
     width: 100,
     height: 100,
-  }, eclipse5: {
+  },
+  eclipse5: {
     position: "absolute",
     bottom: 100,
     right: 0,
     width: 100,
     height: 100,
-  }, eclipse2: {
-    position: "absolute",
-    top: -60,
-    left: 150,
   },
   expandingCircle: {
     position: 'absolute',
@@ -124,18 +143,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#5386C1',
     zIndex: -1,
   },
+  expandingCircleLight: {
+    position: 'absolute',
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    backgroundColor: '#A7C7E7',
+    zIndex: -2,
+  },
   logoApp: {
     width: 100,
     height: 100,
     marginBottom: 20,
   },
   loadingText: {
-    marginTop:130,
     fontSize: 18,
-    color: 'gray',
+    color: 'white',
   },
   dots: {
     fontSize: 18,
-    color: 'gray',
+    color: 'white',
   },
 });
