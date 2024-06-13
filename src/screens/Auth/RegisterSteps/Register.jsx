@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { Image ,StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Register = () => {
+  const navigation = useNavigation();
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
 
   return (
     <View style={styles.container}>
-            <Image
+      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Login')}>
+        <Ionicons name="arrow-back" size={20} color="gray" />
+      </TouchableOpacity>
+      <Image
         source={require("../../../assets/Login/Ellipse 1.png")}
         style={styles.eclipse1}
       />
@@ -47,7 +53,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     padding: 20,
-   
   },
   label: {
     fontSize: 24,
@@ -92,6 +97,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
   },
+  closeButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    width: 30,
+    height: 30,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1, // Para que esté por encima de otros elementos
+  }
 });
 
 export default Register;
