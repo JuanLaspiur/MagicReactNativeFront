@@ -1,18 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import FollowersBox from '../Profile/FollowersBox';
 
 const IconPerfil = () => {
   const navigation = useNavigation();
 
+  // Replace 'path/to/your/image.png' with the actual path to your image
+  const imageUri = require('../../../assets/Animals/ICONOS A COLOR-05.png'); // Assuming the image is in the 'assets' folder
+
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.navigate('Perfil')}
     >
-      <Ionicons name="person-circle-outline" size={80} color="gray" />
+      <Image source={imageUri} style={styles.image} />
       <Text style={styles.text}>Perfil</Text>
+      <FollowersBox/>
     </TouchableOpacity>
   );
 };
@@ -21,7 +25,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal:18
+    justifyContent:'flex-end',
+    paddingLeft:20,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 40, // Make the image round
   },
   text: {
     marginLeft: 8,
@@ -31,3 +41,4 @@ const styles = StyleSheet.create({
 });
 
 export default IconPerfil;
+

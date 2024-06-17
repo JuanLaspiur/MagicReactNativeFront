@@ -6,6 +6,7 @@ import BoxIconsMyProfile from '../../components/User/Profile/BoxIconsMyProfile';
 import CardTextMyAnimal from '../../components/User/Profile/CardTextMyAnimal';
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 import InterestsTable from '../../components/User/Profile/InterestsTable';
+import FollowersBox from '../../components/User/Profile/FollowersBox';
 import MyQuedadas from '../../components/User/Profile/MyQuedadas';
 const Profile = () => {
   return (
@@ -24,8 +25,8 @@ const Profile = () => {
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse2}
-        />
-             <CardTextMyAnimal/>
+        />   
+        <CardTextMyAnimal/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
