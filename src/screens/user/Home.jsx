@@ -4,6 +4,8 @@ import AppHeader from '../../components/User/AppHeader';
 import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxOptions from '../../components/User/Home/BoxOptions';
 import CardsPremiumCarrucel from '../../components/User/Home/CardsPremiumCarrucel'
+import CardText from '../../components/User/Home/CardText';
+import CardsSimpleCarrucel from '../../components/User/Home/CardsSimpleCarrucel';
 
 const Home = () => {
   return (
@@ -18,13 +20,8 @@ const Home = () => {
              <IconPerfil/>
              <BoxOptions/>
              <CardsPremiumCarrucel/>
-        <Text style={styles.title}>Inicio</Text>
-        <View style={styles.content}>
-          <Text style={styles.text}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pulvinar tincidunt enim, et maximus odio tristique nec. In hac habitasse platea dictumst. Vestibulum porta euismod ex ut pellentesque. Curabitur non felis in dui varius tincidunt. Fusce id velit quis neque bibendum laoreet sit amet eget sem.
-          </Text>
-          {/* Aquí puedes agregar más contenido que deseas que sea scrollable */}
-        </View>
+             <CardText/>
+             <CardsSimpleCarrucel/>
       </ScrollView>
     </View>
   );

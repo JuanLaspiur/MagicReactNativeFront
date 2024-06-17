@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     width:'110%',
   },
+  wrapper: {
+    height:370
+  },
   h1: {
     fontSize:20, 
     color:'gray',
