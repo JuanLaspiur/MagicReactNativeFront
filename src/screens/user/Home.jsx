@@ -20,7 +20,17 @@ const Home = () => {
              <IconPerfil/>
              <BoxOptions/>
              <CardsPremiumCarrucel/>
+             <Image
+          source={require('./../../assets/Login/Ellipse 1.png')}
+          resizeMode="contain"
+          style={styles.eclipse2}
+        />
              <CardText/>
+             <Image
+          source={require('./../../assets/Login/Ellipse 1.png')}
+          resizeMode="contain"
+          style={styles.eclipse3}
+        />
              <CardsSimpleCarrucel/>
       </ScrollView>
     </View>
@@ -55,6 +65,25 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
+  eclipse2: {
+    position: 'absolute',
+    bottom:520,
+    right:-85,
+    transform: [{ rotate: '75deg' }],
+    opacity: 0.3,
+    width: 150,
+    height: 150,  
+    zIndex:-1,
+  },
+  eclipse3: {
+    position: 'absolute',
+    bottom:320,
+    transform: [{ rotate: '205deg' }],
+    opacity: 0.3,
+    width: 200,
+    height: 200,  
+    zIndex:-1,
+  }
 });
 
 export default Home;
