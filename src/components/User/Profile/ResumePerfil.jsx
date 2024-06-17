@@ -24,7 +24,6 @@ const ResumePerfil = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Información del Perfil</Text>
       <Text style={styles.text}><Text style={styles.label}>Nombre:</Text> {perfil.nombre} {perfil.apellido}</Text>
       <Text style={styles.text}><Text style={styles.label}>Carma:</Text> {perfil.carma.toFixed(1)} / 5.0</Text>
       <Text style={styles.text}><Text style={styles.label}>Estrellas:</Text> {renderEstrellas(perfil.estrellas)}</Text>

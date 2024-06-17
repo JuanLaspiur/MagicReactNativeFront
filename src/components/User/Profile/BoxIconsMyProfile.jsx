@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
+import ModalEditProfile from './ModalEditProfile';
 
 const BoxIconsMyProfile = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Función para abrir el modal de edición de perfil
+  const handleEditProfile = () => {
+    setIsModalVisible(true);
+  };
+
+  // Función para cerrar el modal de edición de perfil
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.box}>
+      {/* Botón para abrir el modal de edición de perfil */}
+      <TouchableOpacity style={styles.box} onPress={handleEditProfile}>
         <Ionicons name="create-outline" size={40} color="gray" />
         <Text style={styles.text}>Editar perfil</Text>
       </TouchableOpacity>
@@ -18,6 +31,9 @@ const BoxIconsMyProfile = () => {
         <Ionicons name="people-outline" size={40} color="gray" />
         <Text style={styles.text}>Amistad</Text>
       </TouchableOpacity>
+
+      {/* Modal de edición de perfil */}
+      <ModalEditProfile isVisible={isModalVisible} onClose={handleCloseModal} />
     </View>
   );
 };

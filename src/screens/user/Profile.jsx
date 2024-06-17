@@ -5,8 +5,6 @@ import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxIconsMyProfile from '../../components/User/Profile/BoxIconsMyProfile';
 import CardText from '../../components/User/Home/CardText';
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
-
-
 const Profile = () => {
   return (
     <View style={styles.container}>
