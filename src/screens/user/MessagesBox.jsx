@@ -17,7 +17,7 @@ const MessagesBox = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#F7F7F7',
     },
     title: {
       fontSize: 24,

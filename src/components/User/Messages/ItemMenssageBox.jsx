@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#DBDBDB',
   },
   profileImageContainer: {
     marginRight: 10,
