@@ -1,8 +1,22 @@
 import React from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos
+import { useNavigation } from '@react-navigation/native';
 
 const AppHeader = ({ title }) => {
+  const navigation = useNavigation();
+  const handlePress = () => {
+    switch (title) {
+      case "QuedadaDetail":
+        navigation.navigate('Home');
+        break;
+      case "Quedada B":
+        navigation.navigate('Home');
+        break;
+      default:
+        navigation.navigate('Home');
+    }
+  };
   return (
     <View style={styles.headerContainer}>
       <Image
@@ -21,7 +35,7 @@ const AppHeader = ({ title }) => {
         style={styles.eclipse3}
       />
       <TouchableOpacity style={styles.iconContainer}>
-        <Ionicons name="arrow-back" size={24} color="gray" />
+        <Ionicons name="arrow-back" size={24} color="gray" onPress={handlePress}/>
       </TouchableOpacity>
 
       <Image

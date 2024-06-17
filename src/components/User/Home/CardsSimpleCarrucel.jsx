@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
-import QuedadasSimpleCard from '../QuedadasViews/QuedadasSimpleCard'; // Ajusta la ruta según tu estructura de proyecto
+import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Ajusta la ruta según tu estructura de proyecto
 
 const { width: screenWidth } = Dimensions.get('window');
 
