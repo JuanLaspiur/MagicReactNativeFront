@@ -6,6 +6,7 @@ import BoxOptions from '../../components/User/Home/BoxOptions';
 import CardsPremiumCarrucel from '../../components/User/Home/CardsPremiumCarrucel'
 import CardText from '../../components/User/Home/CardText';
 import CardsSimpleCarrucel from '../../components/User/Home/CardsSimpleCarrucel';
+import Tabloide from '../../components/User/Home/Tabloide';
 
 const Home = () => {
   return (
@@ -32,7 +33,8 @@ const Home = () => {
           style={styles.eclipse3}
         />
              <CardsSimpleCarrucel/>
-      </ScrollView>
+             <Tabloide/>
+        </ScrollView>
     </View>
   );
 };
