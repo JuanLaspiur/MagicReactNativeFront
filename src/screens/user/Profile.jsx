@@ -29,6 +29,21 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse3}
         />
+                 <Image
+          source={require('./../../assets/Animals/ICONOS A COLOR-03.png')}
+          resizeMode="contain"
+          style={styles.eclipse4}
+        />
+             <Image
+          source={require('./../../assets/Animals/ICONOS A COLOR-09.png')}
+          resizeMode="contain"
+          style={styles.eclipse5}
+        />
+                   <Image
+          source={require('./../../assets/Animals/ICONOS A COLOR-15.png')}
+          resizeMode="contain"
+          style={styles.eclipse6}
+        />
         </ScrollView>
     </View>
   );
@@ -79,6 +94,36 @@ const styles = StyleSheet.create({
     opacity: 0.3,
     width: 200,
     height: 200,  
+    zIndex:-1,
+  },
+  eclipse4: {
+    position: 'absolute',
+    bottom:20,
+    left:-20,
+    transform: [{ rotate: '15deg' }],
+    opacity: 0.1,
+    width: 70,
+    height: 70,  
+    zIndex:-1,
+  },
+  eclipse5: {
+    position: 'absolute',
+    bottom:20,
+    right:-20,
+    transform: [{ rotate: '15deg' }],
+    opacity: 0.1,
+    width: 70,
+    height: 70,  
+    zIndex:-1,
+  },
+  eclipse6: {
+    position: 'absolute',
+    top:70,
+    right:-20,
+    transform: [{ rotate: '15deg' }],
+    opacity: 0.1,
+    width: 70,
+    height: 70,  
     zIndex:-1,
   }
 });
