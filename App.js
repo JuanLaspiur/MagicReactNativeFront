@@ -11,10 +11,13 @@ import Register from './src/screens/Auth/RegisterSteps/Register.jsx';
 import RegisterDos from './src/screens/Auth/RegisterSteps/RegisterDos.jsx';
 import RegisterTres from './src/screens/Auth/RegisterSteps/RegisterTres.jsx';
 import RegisterCuatro from './src/screens/Auth/RegisterSteps/RegisterCuatro.jsx';
-// ..... user 
+// ..... home 
 import Index from './src/screens/user/Index.jsx';
 import Home from './src/screens/user/Home.jsx';
 import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
+// .... messagges
+import ChatRoom from './src/screens/user/ChatRoom.jsx';
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -32,7 +35,8 @@ export default function App() {
           <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
-          
+         {/* User Messagges */}
+         <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
