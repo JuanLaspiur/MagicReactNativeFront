@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
-import ItemParticipantsQuedadaDetail from '../../components/User/Home/ItemParticipantsQuedadaDetail';
+import ParticipantsCarrucel from '../../components/User/Home/ParticipantsCarrucel';
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -40,7 +40,7 @@ const QuedadaDetail = () => {
           <Text style={styles.buttonText}>Denunciar</Text>
         </TouchableOpacity>
       </View>
-      <ItemParticipantsQuedadaDetail/>
+      <ParticipantsCarrucel/>
     </ScrollView>
   );
 };
