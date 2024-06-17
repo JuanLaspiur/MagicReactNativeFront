@@ -1,9 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 const QuedadasSimpleCard = () => {
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+     navigation.navigate('QuedadaDetail')
+  };
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
         <Image
           source={{ uri: "https://randomuser.me/api/portraits/men/41.jpg" }}
@@ -16,7 +23,7 @@ const QuedadasSimpleCard = () => {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,10 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 const QuedadaPremiumCard = () => {
+  const navigation = useNavigation();
+  const handlePress = () => {
+    navigation.navigate('QuedadaDetail')
+  };
+
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.iconContainer}>
         <Ionicons name="person-circle-outline" size={50} color="white" />
         <Text style={styles.name}>Juan Pérez</Text>
@@ -14,10 +20,9 @@ const QuedadaPremiumCard = () => {
         style={styles.image}
       />
       <Text style={styles.description}>
-        Este es el plan premium de la quedada. ¡Únete para más diversión y
-        actividades exclusivas!
+        Este es el plan premium de la quedada. ¡Únete para más diversión y actividades exclusivas!
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -59,3 +64,4 @@ const styles = StyleSheet.create({
 });
 
 export default QuedadaPremiumCard;
+

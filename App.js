@@ -14,6 +14,7 @@ import RegisterCuatro from './src/screens/Auth/RegisterSteps/RegisterCuatro.jsx'
 // ..... user 
 import Index from './src/screens/user/Index.jsx';
 import Home from './src/screens/user/Home.jsx';
+import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -30,7 +31,8 @@ export default function App() {
           {/* User Home */}
           <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-       
+          <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
+          
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
