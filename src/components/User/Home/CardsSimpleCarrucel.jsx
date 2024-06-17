@@ -12,7 +12,8 @@ const CardsSimpleCarrucel = () => {
       <Swiper
         style={styles.wrapper}
         loop={false}
-        autoplay={false}
+        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
+        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}

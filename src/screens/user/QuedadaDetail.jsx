@@ -32,6 +32,17 @@ const QuedadaDetail = () => {
           Esta es una descripción extensa de la quedada. Aquí puedes poner todos los detalles necesarios para que los asistentes sepan qué esperar. Puedes incluir información sobre el lugar, la hora, las actividades planificadas, y cualquier otra cosa relevante. Esta descripción puede ser tan larga como sea necesario para cubrir toda la información importante.
         </Text>
       </View>
+      <Image
+          source={require("../../assets/Login/Ellipse 2.png")}
+          resizeMode="contain"
+          style={styles.eclipseRosa1}
+        />
+      <Image
+          source={require("../../assets/Login/Ellipse 2.png")}
+          resizeMode="contain"
+          style={styles.eclipseRosa2}
+        />
+      <ParticipantsCarrucel/>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleAsistirPress}>
           <Text style={styles.buttonText}>{asistir ? 'No asistir' : 'Asistir'}</Text>
@@ -40,7 +51,7 @@ const QuedadaDetail = () => {
           <Text style={styles.buttonText}>Denunciar</Text>
         </TouchableOpacity>
       </View>
-      <ParticipantsCarrucel/>
+
     </ScrollView>
   );
 };
@@ -55,11 +66,30 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.6, // Ajusta la relación de aspecto de la imagen
     borderRadius: 5,
     marginHorizontal: 14
+  }, 
+   eclipseRosa1: {
+    position: "absolute",
+    top:360,
+    left:-100,
+    width:200,
+    height:200,
+    opacity:0.5,
+     zIndex:-1
+  },
+  eclipseRosa2: {
+    position: "absolute",
+    bottom:230,
+    width:200,
+    height:200,
+    right: -50,
+    opacity:0.5,
+     zIndex:-1
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginHorizontal: 14
+    margin: 14,
+    marginBottom:19
   },
   button: {
     backgroundColor: "gray", // Color azul para el botón de asistir
