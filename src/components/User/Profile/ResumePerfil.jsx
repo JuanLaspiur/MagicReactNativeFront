@@ -9,6 +9,7 @@ const ResumePerfil = () => {
     carma: 4.5, // Puntaje de carma
     estrellas: 4, // Número de estrellas basado en el puntaje (ejemplo)
     sexo: 'Masculino',
+    edad:30,
     intereses: ['Viajar', 'Leer', 'Cocinar'],
     hobbies: ['Deportes', 'Pintura', 'Jardinería'],
   };
@@ -28,7 +29,8 @@ const ResumePerfil = () => {
       <Text style={styles.text}><Text style={styles.label}>Carma:</Text> {perfil.carma.toFixed(1)} / 5.0</Text>
       <Text style={styles.text}><Text style={styles.label}>Estrellas:</Text> {renderEstrellas(perfil.estrellas)}</Text>
       <Text style={styles.text}><Text style={styles.label}>Sexo:</Text> {perfil.sexo}</Text>
-      <Text style={styles.text}><Text style={styles.label}>Hobbies:</Text> {perfil.hobbies.join(', ')}</Text>
+      <Text style={styles.text}><Text style={styles.label}>Edad:</Text> {perfil.edad} años</Text>
+      <Text style={styles.text}><Text style={styles.label}>Oficio/Hobbies:</Text> {perfil.hobbies.join(', ')}</Text>
     </View>
   );
 };

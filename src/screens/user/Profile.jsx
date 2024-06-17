@@ -5,6 +5,8 @@ import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxIconsMyProfile from '../../components/User/Profile/BoxIconsMyProfile';
 import CardTextMyAnimal from '../../components/User/Profile/CardTextMyAnimal';
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
+import InterestsTable from '../../components/User/Profile/InterestsTable';
+import MyQuedadas from '../../components/User/Profile/MyQuedadas';
 const Profile = () => {
   return (
     <View style={styles.container}>
@@ -44,6 +46,8 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
+              <InterestsTable/>
+              <MyQuedadas/>
         </ScrollView>
     </View>
   );
