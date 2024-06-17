@@ -23,9 +23,7 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
 
   // Función para guardar los cambios en el perfil
   const guardarCambios = () => {
-    // Aquí puedes implementar la lógica para guardar los cambios
-    // Por ejemplo, enviar los datos a la API, etc.
-    onClose(); // Cierra el modal después de guardar los cambios
+    onClose(); 
   };
 
   return (
@@ -77,14 +75,6 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
           <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
         </Picker>
 
-        <Text style={styles.label}>Intereses:</Text>
-        <TextInput
-          style={styles.input}
-          value={perfilEditable.intereses.join(', ')}
-          onChangeText={(text) => handleChange('intereses', text.split(', '))}
-          placeholderTextColor="gray"
-        />
-
         <Text style={styles.label}>Hobbies:</Text>
         <TextInput
           style={styles.input}
@@ -103,7 +93,6 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
 
 const styles = StyleSheet.create({
   modal: {
-    justifyContent: 'flex-end',
     margin: 0,
     paddingHorizontal:13
   },

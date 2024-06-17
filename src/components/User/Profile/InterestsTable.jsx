@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import ModalEditInterests from './ModalEditInterests';
 
 const InterestsTable = () => {
-  // Supongamos que estos son tus intereses
+  const [openModal, setOpenModal] = useState(false);
   const interests = {
     peliculas: ['Inception', 'The Shawshank Redemption', 'Interstellar'],
     artistaMusical: 'Queen',
@@ -13,11 +14,12 @@ const InterestsTable = () => {
 
   // Función para manejar la acción de editar intereses
   const handleEditInterests = () => {
-    alert('Editando intereses...');
+    setOpenModal(true)
     // Aquí puedes implementar la lógica para abrir un modal de edición o cualquier otra acción
   };
 
   return (
+    <>
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Mis Intereses</Text>
@@ -53,7 +55,9 @@ const InterestsTable = () => {
           <Text style={styles.dataText}>{interests.deportes.join(', ')}</Text>
         </View>
       </View>
+      <ModalEditInterests setOpenModal={setOpenModal} openModal={openModal}/>
     </View>
+      </>
   );
 };
 
