@@ -105,12 +105,14 @@ const styles = StyleSheet.create({
   modal: {
     justifyContent: 'flex-end',
     margin: 0,
+    paddingHorizontal:13
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 22,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
+    paddingHorizontal:30
   },
   title: {
     fontSize: 20,
