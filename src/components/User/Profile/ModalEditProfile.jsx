@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 
 const ModalEditProfile = ({ isVisible, onClose }) => {
@@ -7,7 +8,7 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
   const [perfilEditable, setPerfilEditable] = useState({
     nombre: 'John',
     apellido: 'Doe',
-    sexo: 'Masculino',
+    sexo: '',
     intereses: ['Viajar', 'Leer', 'Cocinar'],
     hobbies: ['Deportes', 'Pintura', 'Jardinería'],
   });
@@ -64,12 +65,17 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
         />
 
         <Text style={styles.label}>Sexo:</Text>
-        <TextInput
+        <Picker
+          selectedValue={perfilEditable.sexo}
           style={styles.input}
-          value={perfilEditable.sexo}
-          onChangeText={(text) => handleChange('sexo', text)}
-          placeholderTextColor="gray"
-        />
+          onValueChange={(itemValue) => handleChange('sexo', itemValue)}
+        >
+          <Picker.Item label="Selecciona Género" value="" />
+          <Picker.Item label="Hombre" value="Hombre" />
+          <Picker.Item label="Mujer" value="Mujer" />
+          <Picker.Item label="No binario" value="No binario" />
+          <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
+        </Picker>
 
         <Text style={styles.label}>Intereses:</Text>
         <TextInput
