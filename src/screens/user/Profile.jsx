@@ -3,7 +3,7 @@ import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, ScrollView 
 import AppHeader from '../../components/User/AppHeader';
 import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxIconsMyProfile from '../../components/User/Profile/BoxIconsMyProfile';
-import CardText from '../../components/User/Home/CardText';
+import CardTextMyAnimal from '../../components/User/Profile/CardTextMyAnimal';
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 const Profile = () => {
   return (
@@ -23,7 +23,7 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse2}
         />
-             <CardText/>
+             <CardTextMyAnimal/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"

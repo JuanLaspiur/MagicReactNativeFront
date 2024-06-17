@@ -28,7 +28,6 @@ const ResumePerfil = () => {
       <Text style={styles.text}><Text style={styles.label}>Carma:</Text> {perfil.carma.toFixed(1)} / 5.0</Text>
       <Text style={styles.text}><Text style={styles.label}>Estrellas:</Text> {renderEstrellas(perfil.estrellas)}</Text>
       <Text style={styles.text}><Text style={styles.label}>Sexo:</Text> {perfil.sexo}</Text>
-      <Text style={styles.text}><Text style={styles.label}>Intereses:</Text> {perfil.intereses.join(', ')}</Text>
       <Text style={styles.text}><Text style={styles.label}>Hobbies:</Text> {perfil.hobbies.join(', ')}</Text>
     </View>
   );
