@@ -8,7 +8,7 @@ import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 import InterestsTable from '../../components/User/Profile/InterestsTable';
 import FollowersBox from '../../components/User/Profile/FollowersBox';
 import MyQuedadas from '../../components/User/Profile/MyQuedadas';
-
+import ParticipationQuedadas from '../../components/User/Profile/ParticipationQuedadas';
 const Profile = () => {
   return (
     <View style={styles.container}>
@@ -51,6 +51,7 @@ const Profile = () => {
         />
               <InterestsTable/>
               <MyQuedadas/>
+              <ParticipationQuedadas/>
         </ScrollView>
     </View>
   );
