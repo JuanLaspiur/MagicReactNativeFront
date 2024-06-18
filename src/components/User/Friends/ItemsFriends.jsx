@@ -1,8 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Alert } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
 import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde @expo/vector-icons
+import { useNavigation } from '@react-navigation/native';
 
 function ItemsFriends({ name, lastName, age, avatarUrl }) {
+  const navigation = useNavigation();
+
   const handleAvatarPress = () => {
     Alert.alert('Llendo al perfil..');
     // Aquí podrías navegar a la pantalla de perfil u otra acción según tu aplicación
@@ -14,99 +17,88 @@ function ItemsFriends({ name, lastName, age, avatarUrl }) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleAvatarPress}>
-      <View style={styles.itemContainer}>
-        <View style={styles.contentContainer}>
-          <View style={styles.avatarContainer}>
-            {avatarUrl ? (
-              <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-            ) : (
-              <FontAwesome name="user-circle-o" size={50} color="#AED0F6" />
-            )}
-          </View>
-          <View style={styles.infoContainer}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.lastName}>{lastName}</Text>
-            <Text style={styles.age}>{age} años</Text>
-          </View>
-                 <View style={styles.avatarAnimalContainer}>
-          <Image source={require('../../../assets/Animals/ICONOS A COLOR-13.png')} style={styles.avatarAnimal} />
-        </View> 
+    <TouchableOpacity style={styles.card} onPress={handleAvatarPress}>
+      <View style={styles.avatarContainer}>
+        {avatarUrl ? (
+          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+        ) : (
+          <FontAwesome name="user-circle-o" size={50} color="#AED0F6" />
+        )}
+        <View style={styles.textContainer}>
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.description}>{`${lastName} - ${age} años`}</Text>
         </View>
-        <TouchableWithoutFeedback onPress={handleMessagePress}>
-          <View style={styles.messageContainer}>
-            <FontAwesome name="comment-o" size={25} color="#AED0F6" />
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.avatarAnimalContainer}>
+          <Image source={require('../../../assets/Animals/ICONOS A COLOR-13.png')} style={styles.avatarAnimal} />
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+      <TouchableOpacity onPress={handleMessagePress} style={styles.messageContainer}>
+        <FontAwesome name="comment-o" size={25} color="#AED0F6" />
+      </TouchableOpacity>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC',
-  },
-  contentContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+  card: {
+    width: "100%",
+    backgroundColor: "#F2F2F2",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    padding: 15,
+    marginVertical: 5,
+    alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   avatarContainer: {
-    marginRight: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    gap:10
   },
   avatar: {
     width: 50,
     height: 50,
-    borderRadius: 25, // Assuming the avatar is circular
-  },
-  infoContainer: {
-    marginRight: 15, // Misma distancia que el avatar
+    borderRadius: 25,
+    marginRight: 15,
   },
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    color: "#333333",
+    marginBottom: 5,
   },
-  lastName: {
-    fontSize: 16,
-    color: '#666666',
-  },
-  age: {
+  description: {
     fontSize: 14,
-    color: '#999999',
+    color: "#666666",
   },
   messageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 20,
-    backgroundColor: '#FFFFFF',
     borderWidth: 1,
-    borderColor: '#AED0F6',
-    marginLeft: 10,
+    borderColor: "#AED0F6",
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatarAnimalContainer: {
-    marginLeft:20,
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     borderRadius: 25,
     overflow: 'hidden',
-    opacity:0.5
+    opacity: 0.5,
+    marginTop:19
   },
   avatarAnimal: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-  }
+  },
 });
 
 export default ItemsFriends;
-
-
