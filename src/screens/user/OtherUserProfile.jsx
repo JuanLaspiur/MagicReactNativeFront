@@ -5,7 +5,7 @@ import IconPerfil from '../../components/User/Home/IconPerfil';
 import BoxIconsYourProfile from '../../components/User/OtherUserProfile/BoxIconsYourProfile';
 import CardTextYourAnimal from '../../components/User/OtherUserProfile/CardTextYourAnimal'
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
-import InterestsTable from '../../components/User/Profile/InterestsTable';
+import YourInterestsTable from '../../components/User/OtherUserProfile/YourInterestsTable';
 import FollowersBox from '../../components/User/Profile/FollowersBox';
 import MyQuedadas from '../../components/User/Profile/MyQuedadas';
 import ParticipationQuedadas from '../../components/User/Profile/ParticipationQuedadas';
@@ -50,7 +50,7 @@ const OtherUserProfile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
-        <InterestsTable />
+        <YourInterestsTable />
         <MyQuedadas />
         <ParticipationQuedadas />
       </ScrollView>
