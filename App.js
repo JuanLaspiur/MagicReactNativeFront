@@ -17,6 +17,8 @@ import Home from './src/screens/user/Home.jsx';
 import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
 // .... messagges
 import ChatRoom from './src/screens/user/ChatRoom.jsx';
+// .... other person profile
+import OtherUserProfile from './src/screens/user/OtherUserProfile.jsx';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +38,8 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
          {/* User Messagges */}
-         <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} />
+         <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
+         <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />

@@ -7,7 +7,7 @@ function ItemsFriends({ name, lastName, age, avatarUrl }) {
   const navigation = useNavigation();
 
   const handleAvatarPress = () => {
-    Alert.alert('Llendo al perfil..');
+    navigation.navigate('OtherUserProfile')
     // Aquí podrías navegar a la pantalla de perfil u otra acción según tu aplicación
   };
 
