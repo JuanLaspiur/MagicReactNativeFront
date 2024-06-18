@@ -8,6 +8,7 @@ import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 import InterestsTable from '../../components/User/Profile/InterestsTable';
 import FollowersBox from '../../components/User/Profile/FollowersBox';
 import MyQuedadas from '../../components/User/Profile/MyQuedadas';
+
 const Profile = () => {
   return (
     <View style={styles.container}>
@@ -19,7 +20,8 @@ const Profile = () => {
           style={styles.eclipse}
         />
              <IconPerfil/>
-                  <ResumePerfil/>
+                  <ResumePerfil/>   
+                  <FollowersBox/>
              <BoxIconsMyProfile/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
@@ -27,7 +29,7 @@ const Profile = () => {
           style={styles.eclipse2}
         />   
         <CardTextMyAnimal/>
-             <Image
+                     <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse3}

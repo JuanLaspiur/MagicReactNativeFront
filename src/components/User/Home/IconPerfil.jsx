@@ -16,8 +16,7 @@ const IconPerfil = () => {
     >
       <Image source={imageUri} style={styles.image} />
       <Text style={styles.text}>Perfil</Text>
-      <FollowersBox/>
-    </TouchableOpacity>
+      </TouchableOpacity>
   );
 };
 
@@ -25,7 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:'flex-end',
     paddingLeft:20,
   },
   image: {
