@@ -1,18 +1,21 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 const QuedadaPremiumCard = () => {
   const navigation = useNavigation();
+
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail')
+    navigation.navigate('QuedadaDetail');
   };
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
-      <View style={styles.iconContainer}>
-        <Ionicons name="person-circle-outline" size={50} color="white" />
+      <View style={styles.avatarContainer}>
+        <Image
+          source={{ uri: "https://this-person-does-not-exist.com/img/avatar-genac16e7b8e809ebc4980e1cb3e4944fff.jpg" }}
+          style={styles.avatar}
+        />
         <Text style={styles.name}>Juan Pérez</Text>
       </View>
       <Image
@@ -40,13 +43,18 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignSelf: "center",
   },
-  iconContainer: {
+  avatarContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
   },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
   name: {
-    marginLeft: 10,
     fontSize: 18,
     fontWeight: "bold",
     color: "white",
@@ -64,4 +72,3 @@ const styles = StyleSheet.create({
 });
 
 export default QuedadaPremiumCard;
-
