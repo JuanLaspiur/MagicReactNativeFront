@@ -15,17 +15,22 @@ const BoxIconsYourProfile = () => {
 
   return (
     <View style={styles.container}>
-      {/* Botón Seguir */}
-      <TouchableOpacity style={styles.box} onPress={toggleFollow}>
-        <Ionicons name={following ? "arrow-undo" : "dice"} size={40} color="gray" />
-        <Text style={styles.text}>{following ? "Dejar de Seguir" : "Seguir"}</Text>
-      </TouchableOpacity>
+    {/* Botón Seguir */}
+<TouchableOpacity
+  style={styles.box}
+  onPress={toggleFollow}
+>
+  <Ionicons name={following ? "dice" : "arrow-undo"} size={40} color={following ? "#AED0F6" : "gray"} />
+  <Text style={[styles.text, { color: following ? "#AED0F6" : "gray" }]}>
+    {following ? "Seguir" : "Dejar de Seguir"}
+  </Text>
+</TouchableOpacity>
 
       {/* Botón Mensajes */}
-      {following && (
+      {!following && (
         <TouchableOpacity style={styles.box} onPress={sendMessage}>
-          <Ionicons name="paper-plane-outline" size={40} color="gray" />
-          <Text style={styles.text}>Mensaje</Text>
+          <Ionicons name="paper-plane-outline" size={40} color="#AED0F6" />
+          <Text style={[styles.text, { color: '#AED0F6' }]}>Mensaje</Text>
         </TouchableOpacity>
       )}
 

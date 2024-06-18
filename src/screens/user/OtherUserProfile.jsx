@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Image, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
 import IconPerfil from '../../components/User/Home/IconPerfil';
-import BoxIconsYourProfile from '../../components/User/Profile/BoxIconsYourProfile';
-import CardTextMyAnimal from '../../components/User/Profile/CardTextMyAnimal';
+import BoxIconsYourProfile from '../../components/User/OtherUserProfile/BoxIconsYourProfile';
+import CardTextYourAnimal from '../../components/User/OtherUserProfile/CardTextYourAnimal'
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 import InterestsTable from '../../components/User/Profile/InterestsTable';
 import FollowersBox from '../../components/User/Profile/FollowersBox';
@@ -29,7 +29,7 @@ const OtherUserProfile = () => {
           resizeMode="contain"
           style={styles.eclipse2}
         />
-        <CardTextMyAnimal />
+        <CardTextYourAnimal />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"

@@ -74,7 +74,7 @@ const FollowersBox = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 10,
     margin: 10,
