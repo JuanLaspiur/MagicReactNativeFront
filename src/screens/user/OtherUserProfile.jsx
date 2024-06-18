@@ -7,9 +7,8 @@ import CardTextYourAnimal from '../../components/User/OtherUserProfile/CardTextY
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
 import YourInterestsTable from '../../components/User/OtherUserProfile/YourInterestsTable';
 import FollowersBox from '../../components/User/Profile/FollowersBox';
-import MyQuedadas from '../../components/User/Profile/MyQuedadas';
-import ParticipationQuedadas from '../../components/User/Profile/ParticipationQuedadas';
-
+import YourQuedadasCarrucell from '../../components/User/OtherUserProfile/YourQuedadasCarrucell';
+import YourParticipationQuedadas from '../../components/User/OtherUserProfile/YourParticipationQuedadas';
 const OtherUserProfile = () => {
   return (
     <View style={styles.container}>
@@ -51,8 +50,8 @@ const OtherUserProfile = () => {
           style={styles.eclipse6}
         />
         <YourInterestsTable />
-        <MyQuedadas />
-        <ParticipationQuedadas />
+        <YourQuedadasCarrucell/>
+        <YourParticipationQuedadas />
       </ScrollView>
     </View>
   );
