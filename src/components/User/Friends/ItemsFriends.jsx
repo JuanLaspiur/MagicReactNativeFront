@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
-import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde @expo/vector-icons
 import { useNavigation } from '@react-navigation/native';
-
+import { Ionicons } from '@expo/vector-icons';
 function ItemsFriends({ name, lastName, age, avatarUrl }) {
   const navigation = useNavigation();
 
@@ -19,6 +18,26 @@ function ItemsFriends({ name, lastName, age, avatarUrl }) {
   return (
     <TouchableOpacity style={styles.card} onPress={handleAvatarPress}>
       <View style={styles.avatarContainer}>
+      <Image
+        source={require("../../../assets/Login/Ellipse 1.png")}
+        resizeMode="contain"
+        style={styles.eclipse1}
+      />
+            <Image
+        source={require("../../../assets/Login/Ellipse 2.png")}
+        resizeMode="contain"
+        style={styles.eclipse2}
+      />
+          <Image
+        source={require("../../../assets/Login/Ellipse 1.png")}
+        resizeMode="contain"
+        style={styles.eclipse2}
+      />
+              <Image
+        source={require("../../../assets/Login/Ellipse 1.png")}
+        resizeMode="contain"
+        style={styles.eclipse3}
+      />
         {avatarUrl ? (
           <Image source={{ uri: avatarUrl }} style={styles.avatar} />
         ) : (
@@ -33,13 +52,31 @@ function ItemsFriends({ name, lastName, age, avatarUrl }) {
         </View>
       </View>
       <TouchableOpacity onPress={handleMessagePress} style={styles.messageContainer}>
-        <FontAwesome name="comment-o" size={25} color="#AED0F6" />
+        <Ionicons name="paper-plane-outline" size={22} color="#AED0F6" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
+  eclipse1: {
+    position:'absolute',
+    height:'140%',
+    opacity:0.2,
+    left:-40
+  },
+  eclipse2: {
+    position:'absolute',
+    height:'140%',
+    opacity:0.1,
+    left:-20
+  },  
+  eclipse3: {
+    position:'absolute',
+    height:'140%',
+    opacity:0.2,
+    left:-70
+  },
   card: {
     width: "100%",
     backgroundColor: "#F2F2F2",
@@ -87,8 +124,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatarAnimalContainer: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
     borderRadius: 25,
     overflow: 'hidden',
     opacity: 0.5,
