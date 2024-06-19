@@ -167,12 +167,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 36,
+    fontSize: 30,
     marginBottom: 20,
     textAlign: 'center',
-    color:'#D1D1D1',
+    color:'gray',
     textShadowColor: 'white', // Color gris para la sombra del texto
-    textShadowOffset: { width: 2, height: 1 },
+    textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2,
   }
   ,
