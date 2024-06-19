@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../AppHeader';
 import FilterCardQuedada from '../QuedadasViewsCards/FilterCardQuedada';
+import { Picker } from '@react-native-picker/picker';
 
 function TypeFilter() {
   const [activeFilter, setActiveFilter] = useState(''); // Estado para almacenar el filtro activo
@@ -16,33 +17,16 @@ function TypeFilter() {
     <>
       <AppHeader title="Inicio" />
       <View style={styles.container}>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            activeFilter === 'planesNocturnos' ? styles.activeButton : styles.inactiveButton,
-          ]}
-          onPress={() => handleFilter('planesNocturnos')}
+        <Picker
+          selectedValue={activeFilter}
+          style={styles.picker}
+          onValueChange={(itemValue) => handleFilter(itemValue)}
         >
-          <Text style={styles.buttonText}>Planes Nocturnos</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            activeFilter === 'cañas' ? styles.activeButton : styles.inactiveButton,
-          ]}
-          onPress={() => handleFilter('cañas')}
-        >
-          <Text style={styles.buttonText}>Cañas</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            activeFilter === 'cultura' ? styles.activeButton : styles.inactiveButton,
-          ]}
-          onPress={() => handleFilter('cultura')}
-        >
-          <Text style={styles.buttonText}>Cultura</Text>
-        </TouchableOpacity>
+          <Picker.Item label="Seleccionar filtro" value="" />
+          <Picker.Item label="Planes Nocturnos" value="planesNocturnos" />
+          <Picker.Item label="Cañas" value="cañas" />
+          <Picker.Item label="Cultura" value="cultura" />
+        </Picker>
       </View>
       <ScrollView style={styles.scrollView}>
         {/* Ejemplo de múltiples tarjetas FilterCardQuedada */}
@@ -62,25 +46,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    margin: 10,
-    borderRadius: 8,
-    borderWidth: 1,
+  picker: {
+    height: 50,
+    width: '80%',
+    borderRadius: 10, 
+    borderWidth: 3,
     borderColor: '#AED0F6',
-  },
-  activeButton: {
-    backgroundColor: '#AED0F6',
-  },
-  inactiveButton: {
-    backgroundColor: '#E0E0E0', // Color más apagado para botones no seleccionados
-  },
-  buttonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'white',
+    backgroundColor: '#FFFFFF', 
+    paddingHorizontal: 10,
   },
   scrollView: {
     flex: 1,
