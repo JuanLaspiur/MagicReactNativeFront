@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
 
 function FilterCardQuedada() {
   const navigation = useNavigation();
+  const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail');
@@ -25,6 +27,15 @@ function FilterCardQuedada() {
     }
   };
 
+  // Determinar el color del icono basado en el color del texto de la descripción
+  const iconColor = styles.description.color || '#666666'; // Color del texto de la descripción
+
+  // Función para manejar la confirmación del usuario
+  const handleConfirm = () => {
+    setConfirmado(true); // Cambia el estado a confirmado
+    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
@@ -42,6 +53,19 @@ function FilterCardQuedada() {
         <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
       </View>
+      {/* Renderizado condicional del icono */}
+      {confirmado ? (
+        <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
+          <Ionicons name="dice-outline" size={24} color="white" />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={[styles.iconContainer, { backgroundColor: iconColor }]}
+          onPress={handleConfirm}
+        >
+          <Ionicons name="flash-off-outline" size={24} color="white" />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 }
@@ -59,6 +83,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     alignSelf: 'center',
+    position: 'relative', // Para contener el icono con posición absoluta
   },
   avatarContainer: {
     flexDirection: 'row',
@@ -92,7 +117,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999999',
   },
+  iconContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 2,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default FilterCardQuedada;
+
 

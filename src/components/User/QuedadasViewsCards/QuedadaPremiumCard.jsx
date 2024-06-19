@@ -1,9 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
 
 const QuedadaPremiumCard = () => {
   const navigation = useNavigation();
+  const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail');
@@ -27,6 +29,15 @@ const QuedadaPremiumCard = () => {
     }
   };
 
+  // Determinar el color del icono basado en el color del texto de la descripción
+  const iconColor = styles.description.color || 'white'; // Color del texto de la descripción
+
+  // Función para manejar la confirmación del usuario
+  const handleConfirm = () => {
+    setConfirmado(true); // Cambia el estado a confirmado
+    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
@@ -47,6 +58,19 @@ const QuedadaPremiumCard = () => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
+      {/* Renderizado condicional del icono */}
+      {confirmado ? (
+        <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
+          <Ionicons name="dice-outline" size={24} color="black" />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={[styles.iconContainer, { backgroundColor: iconColor }]}
+          onPress={handleConfirm}
+        >
+          <Ionicons name="flash-off-outline" size={24} color="black" />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 };
@@ -64,6 +88,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     alignSelf: "center",
+    position: 'relative', // Para contener el icono con posición absoluta
   },
   avatarContainer: {
     flexDirection: "row",
@@ -100,6 +125,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
   },
+  iconContainer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 5,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default QuedadaPremiumCard;
+
