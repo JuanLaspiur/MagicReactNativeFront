@@ -15,7 +15,8 @@ const BoxOptions = () => {
   };
 
   const navigateToFiltrar = () => {
-    // Define la navegación para Filtrar (si existe otro componente correspondiente)
+    // FilterPlans
+    navigation.navigate('FilterPlans')
   };
 
   const navigateToAmistad = () => {

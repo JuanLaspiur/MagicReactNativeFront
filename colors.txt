@@ -6,3 +6,6 @@ logoRosaIntermedio=#B76193
 logoMoradoIntermedio=#7980C3
 logoCelesteIntermedio=#568DD8
 -logoCelesteExtremo=#009FF3
+
+
+Primary: #AED0F6

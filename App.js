@@ -17,7 +17,12 @@ import Home from './src/screens/user/Home.jsx';
 import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
 import CreateQuedada from './src/screens/user/CreateQuedada.jsx';
 import MyFriendsList from './src/screens/user/MyFriendsList.jsx';
-
+import FilterPlans from './src/screens/user/FilterPlans.jsx';
+// ..... home  ... filterplans
+import StatusFilter from './src/components/User/plansFilter/StatusFiler.jsx';
+import ZoneFilter from './src/components/User/plansFilter/ZoneFilter.jsx';
+import MyFriendsFilter from './src/components/User/plansFilter/MyFriendsFilter.jsx';
+import TypeFilter from './src/components/User/plansFilter/TypeFilter.jsx';
 // .... messagges
 import ChatRoom from './src/screens/user/ChatRoom.jsx';
 // .... other person profile
@@ -43,8 +48,12 @@ export default function App() {
           <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
           <Stack.Screen name="CreateQuedada" component={CreateQuedada} options={{ headerShown: false }} />
           <Stack.Screen name="MyFriendsList" component={MyFriendsList} options={{ headerShown: false }} />
-          
-         {/* User Messagges */}
+          <Stack.Screen name="FilterPlans" component={FilterPlans} options={{ headerShown: false }} />
+          <Stack.Screen name="StatusFilter" component={StatusFilter} options={{ headerShown: false }} />
+          <Stack.Screen name="ZoneFilter" component={ZoneFilter} options={{ headerShown: false }} />
+          <Stack.Screen name="MyFriendsFilter" component={MyFriendsFilter} options={{ headerShown: false }} />
+          <Stack.Screen name="TypeFilter" component={TypeFilter} options={{ headerShown: false }} />
+         {/* User Messagges  TypeFilter  */}
          <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />
         </Stack.Navigator>

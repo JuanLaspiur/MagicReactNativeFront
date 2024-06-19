@@ -15,12 +15,16 @@ const Index = () => {
   const navigation = useNavigation();
 
   const handleExitApp = () => {
- alert('saliendo')
+    alert('Saliendo');
   };
 
   return (
     <View style={styles.container}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeTintColor: "#AED0F6", // Color de la opción seleccionada
+        }}
+      >
         <Tab.Screen
           name="Home"
           component={Home}
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     backgroundColor: "lightgrey",
-    paddingLeft:3
+    paddingLeft: 3,
   },
 });
 
