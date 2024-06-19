@@ -32,6 +32,13 @@ const BoxIconsMyProfile = () => {
         <Text style={styles.text}>Amistad</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.box}>
+          <Ionicons name="diamond-outline" size={38} color="#AED0F6" />
+          <Text style={{ marginBottom:-9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
+
+      </TouchableOpacity>
+    
+
       {/* Modal de edición de perfil */}
       <ModalEditProfile isVisible={isModalVisible} onClose={handleCloseModal} />
     </View>
