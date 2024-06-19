@@ -9,6 +9,22 @@ function FilterCardQuedada() {
     navigation.navigate('QuedadaDetail');
   };
 
+  const nombreEvento = "Nombre del Evento";
+  const descripcionEvento =
+    "Descripción del evento. ¡Únete para más diversión y actividades exclusivas!";
+  const fecha = "20/07/2024"; // Fecha harcodeada
+  const confirmados = 30; // Cantidad de confirmados harcodeada
+  const maxParticipantes = 50; // Máximo número de participantes harcodeado
+
+  // Función para truncar la descripción si supera los 100 caracteres
+  const truncateDescription = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength - 3) + "...";
+    } else {
+      return text;
+    }
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
@@ -17,11 +33,14 @@ function FilterCardQuedada() {
           style={styles.avatar}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.name}>Event Name</Text>
-          <Text style={styles.description}>
-            Event description. Join for more fun and exclusive activities!
-          </Text>
+          <Text style={styles.name}>{nombreEvento}</Text>
+          <Text style={styles.description}>{truncateDescription(descripcionEvento, 100)}</Text>
         </View>
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>{fecha}</Text>
+        <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
+        <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -64,6 +83,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
   },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 5,
+  },
+  infoText: {
+    fontSize: 12,
+    color: '#999999',
+  },
 });
 
 export default FilterCardQuedada;
+

@@ -9,6 +9,24 @@ const QuedadaPremiumCard = () => {
     navigation.navigate('QuedadaDetail');
   };
 
+  // Datos harcodeados para la quedada premium
+  const nombreQuedada = "Plan Premium de la Quedada";
+  const descripcionQuedada =
+    "Este es el plan premium de la quedada. ¡Únete para más diversión y actividades exclusivas!";
+  const fecha = "15/07/24"; // Fecha harcodeada en formato dd/mm/AA
+  const confirmados = 50; // Cantidad de confirmados harcodeada
+  const maxParticipantes = 100; // Máximo número de participantes harcodeado
+  const zona = "Zona Sur"; // Zona harcodeada
+
+  // Función para truncar la descripción si supera los 120 caracteres
+  const truncateDescription = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength - 3) + "...";
+    } else {
+      return text;
+    }
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
@@ -22,9 +40,13 @@ const QuedadaPremiumCard = () => {
         source={{ uri: "https://d2il8hfach02z9.cloudfront.net/uploads/event_photo/photo/5291/Facebook-Event-La-Quedada.jpg?v=1558109781" }}
         style={styles.image}
       />
-      <Text style={styles.description}>
-        Este es el plan premium de la quedada. ¡Únete para más diversión y actividades exclusivas!
-      </Text>
+      <Text style={styles.description}>{truncateDescription(descripcionQuedada, 120)}</Text>
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>{fecha}</Text>
+        <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
+        <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
+        <Text style={styles.infoText}>{zona}</Text>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -67,6 +89,15 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
+    color: "white",
+    marginBottom: 10,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  infoText: {
+    fontSize: 12,
     color: "white",
   },
 });

@@ -13,9 +13,10 @@ const QuedadasSimpleCard = () => {
   const nombreQuedada = "Nombre de la Quedada";
   const descripcionQuedada =
     "Descripción de la quedada. ¡Únete para más diversión y actividades exclusivas!";
-  const fecha = "15 de julio de 2024"; // Fecha harcodeada
+  const fecha = "15/07/24"; // Fecha harcodeada en formato dd/mm/AA
   const asistentes = 25; // Cantidad de asistentes harcodeada
   const zona = "Zona Norte"; // Zona harcodeada
+  const maxParticipantes = 50; // Máximo número de participantes harcodeado
 
   // Función para truncar la descripción a máximo 2 líneas
   const truncateDescription = (text, maxLines) => {
@@ -41,7 +42,8 @@ const QuedadasSimpleCard = () => {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>{fecha}</Text>
-        <Text style={styles.infoText}>{`${asistentes} asistentes`}</Text>
+        <Text style={styles.infoText}>{`Confirmados: ${asistentes}`}</Text>
+        <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
     </TouchableOpacity>
@@ -98,6 +100,3 @@ const styles = StyleSheet.create({
 });
 
 export default QuedadasSimpleCard;
-
-
-

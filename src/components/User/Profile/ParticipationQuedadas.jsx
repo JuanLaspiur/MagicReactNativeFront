@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5, // Menor distancia vertical entre componentes
   },
   wrapper: {
-    height: 300, // Ajusta esta altura según sea necesario
+    height: 350, // Ajusta esta altura según sea necesario
   },
   h1: {
     fontSize: 20,
