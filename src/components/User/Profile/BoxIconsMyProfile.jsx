@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalEditProfile from './ModalEditProfile';
+import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
 
 const BoxIconsMyProfile = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigation = useNavigation(); // Obtiene el objeto de navegación
 
   // Función para abrir el modal de edición de perfil
   const handleEditProfile = () => {
@@ -16,6 +18,14 @@ const BoxIconsMyProfile = () => {
     setIsModalVisible(false);
   };
 
+  // Función para navegar a la pantalla MyFriendsList
+  const handleMyFriends = () => {
+    navigation.navigate('MyFriendsList'); // Reemplaza 'MyFriendsList' con el nombre de tu pantalla de amigos
+  };
+  const askPremium = () => {
+    alert('Solicitando plan premium..')
+  }  
+
   return (
     <View style={styles.container}>
       {/* Botón para abrir el modal de edición de perfil */}
@@ -23,21 +33,21 @@ const BoxIconsMyProfile = () => {
         <Ionicons name="create-outline" size={40} color="gray" />
         <Text style={styles.text}>Editar perfil</Text>
       </TouchableOpacity>
+
       <TouchableOpacity style={styles.box}>
         <Ionicons name="arrow-down" size={40} color="gray" />
         <Text style={styles.text}>Darse de baja</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.box}>
+
+      <TouchableOpacity style={styles.box} onPress={handleMyFriends}>
         <Ionicons name="people-outline" size={40} color="gray" />
-        <Text style={styles.text}>Amistad</Text>
+        <Text style={styles.text}>Mis amigos</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.box}>
-          <Ionicons name="diamond-outline" size={38} color="#AED0F6" />
-          <Text style={{ marginBottom:-9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
-
+      <TouchableOpacity style={styles.box}  onPress={askPremium}>
+        <Ionicons name="diamond-outline" size={38} color="#AED0F6" />
+        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
       </TouchableOpacity>
-    
 
       {/* Modal de edición de perfil */}
       <ModalEditProfile isVisible={isModalVisible} onClose={handleCloseModal} />

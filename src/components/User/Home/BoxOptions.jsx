@@ -24,15 +24,15 @@ const BoxOptions = () => {
 navigation.navigate('MyFriendsList')
   };
 
+const askPremium = () => {
+  alert('Solicitando plan premium..')
+}  
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.box} onPress={navigateToCreateQuedada}>
         <Ionicons name="add-circle-outline" size={40} color="gray" />
         <Text style={styles.text}>Crear</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.box} onPress={navigateToObservar}>
-        <Ionicons name="eye-outline" size={40} color="gray" />
-        <Text style={styles.text}>Observar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.box} onPress={navigateToFiltrar}>
         <Ionicons name="filter-outline" size={40} color="gray" />
@@ -42,6 +42,11 @@ navigation.navigate('MyFriendsList')
         <Ionicons name="people-outline" size={40} color="gray" />
         <Text style={styles.text}>Mis Amigos</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.box}>
+        <Ionicons name="diamond-outline" size={38} color="#AED0F6" onPress={askPremium} />
+        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };

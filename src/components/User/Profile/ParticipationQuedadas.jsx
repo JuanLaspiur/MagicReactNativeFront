@@ -66,10 +66,10 @@ const styles = StyleSheet.create({
     height: 300, // Ajusta esta altura según sea necesario
   },
   h1: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'gray',
     paddingHorizontal: 20,
-    paddingBottom: 5,
+    paddingBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',

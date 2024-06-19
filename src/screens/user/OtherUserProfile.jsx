@@ -9,11 +9,13 @@ import YourInterestsTable from '../../components/User/OtherUserProfile/YourInter
 import FollowersBox from '../../components/User/Profile/FollowersBox';
 import YourQuedadasCarrucell from '../../components/User/OtherUserProfile/YourQuedadasCarrucell';
 import YourParticipationQuedadas from '../../components/User/OtherUserProfile/YourParticipationQuedadas';
+import YourStatus from '../../components/User/OtherUserProfile/YourStatus';
 const OtherUserProfile = () => {
   return (
     <View style={styles.container}>
       <AppHeader title="Perfil" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <YourStatus />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"

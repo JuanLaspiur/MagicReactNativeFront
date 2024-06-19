@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Alert } from 'react-native';
 import ModalSendSurvey from './ModalSendSurvey';
+import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
 
 function MessageHeader() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleSurvey, setModalVisibleSurvey] = useState(false);
-  // URL de imagen harcodeada para el avatar
-  const avatarUrl = 'https://this-person-does-not-exist.com/img/avatar-gend32b61b99a67970d6a04e51c560b3a41.jpg'; // Reemplaza con la URL de tu avatar
+  const navigation = useNavigation(); // Obtiene el objeto de navegación
 
+  // URL de imagen harcodeada para el avatar
+  const avatarUrl = 'https://this-person-does-not-exist.com/img/avatar-gend32b61b99a67970d6a04e51c560b3a41.jpg';
+
+  // Función para navegar al perfil del usuario
   const handleAvatarPress = () => {
-    Alert.alert('Yendo al perfil...');
+    // Navega a la pantalla del perfil del usuario (reemplaza 'OtherUserProfile' con el nombre de tu pantalla)
+    navigation.navigate('OtherUserProfile');
   };
 
   const handleMenuPress = () => {
@@ -17,10 +22,10 @@ function MessageHeader() {
   };
 
   const handleOptionPress = (option) => {
-   // QUIERO QUE ESTE METODO ABRA EL MODAL  
-     setModalVisible(false); 
-   setModalVisibleSurvey(true)
-// Cerrar el modal después de seleccionar una opción
+    setModalVisible(false);
+    if (option === 'Enviar Encuesta') {
+      setModalVisibleSurvey(true);
+    }
   };
 
   return (
@@ -48,9 +53,7 @@ function MessageHeader() {
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false); // Manejar el cierre del modal al presionar fuera de él (en Android)
-        }}
+        onRequestClose={() => setModalVisible(false)}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalBackground}>
@@ -63,7 +66,9 @@ function MessageHeader() {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-      <ModalSendSurvey visible={modalVisibleSurvey}  setModalVisibleSurvey={setModalVisibleSurvey} />      
+
+      {/* Modal para enviar encuesta */}
+      <ModalSendSurvey visible={modalVisibleSurvey} setModalVisibleSurvey={setModalVisibleSurvey} />
     </View>
   );
 }
@@ -141,4 +146,3 @@ const styles = StyleSheet.create({
     color: '#333333',
   },
 });
-

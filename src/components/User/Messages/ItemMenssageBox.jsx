@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'; // Import TouchableOpacity
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const ItemMessageBox = ({ profileImage = require('../../../assets/Animals/ICONOS A COLOR-21.png'), name = 'John', lastName = 'Doe', lastMessage = 'Hey, how are you?', timestamp = 1660424800000 }) => {
-    const navigation = useNavigation();
-    const handlePress = () => {
-        navigation.navigate('ChatRoom')
+  const navigation = useNavigation();
+
+  const handlePress = () => {
+    navigation.navigate('ChatRoom');
   };
 
   return (
@@ -15,12 +16,12 @@ const ItemMessageBox = ({ profileImage = require('../../../assets/Animals/ICONOS
       </View>
       <View style={styles.messageDetails}>
         <Text style={styles.nameText}>{name} {lastName}</Text>
+        <Text style={styles.status}>{lastMessage}</Text>
         <Text style={styles.lastMessageText}>{lastMessage}</Text>
       </View>
     </TouchableOpacity>
   );
 };
-
 
 const styles = StyleSheet.create({
   messageContainer: {
@@ -45,6 +46,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  status: {
+    fontSize: 12,
+    fontStyle: 'italic',
+    color: '#AED0F6', // Celeste
+  },
   lastMessageText: {
     fontSize: 14,
     color: '#666',
@@ -56,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemMessageBox
+export default ItemMessageBox;
