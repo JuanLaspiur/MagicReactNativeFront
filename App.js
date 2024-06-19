@@ -16,6 +16,7 @@ import Index from './src/screens/user/Index.jsx';
 import Home from './src/screens/user/Home.jsx';
 import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
 import CreateQuedada from './src/screens/user/CreateQuedada.jsx';
+import MyFriendsList from './src/screens/user/MyFriendsList.jsx';
 
 // .... messagges
 import ChatRoom from './src/screens/user/ChatRoom.jsx';
@@ -41,6 +42,8 @@ export default function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
           <Stack.Screen name="CreateQuedada" component={CreateQuedada} options={{ headerShown: false }} />
+          <Stack.Screen name="MyFriendsList" component={MyFriendsList} options={{ headerShown: false }} />
+          
          {/* User Messagges */}
          <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />

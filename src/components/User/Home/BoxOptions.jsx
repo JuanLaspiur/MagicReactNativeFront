@@ -19,7 +19,8 @@ const BoxOptions = () => {
   };
 
   const navigateToAmistad = () => {
-    // Define la navegación para Amistad (si existe otro componente correspondiente)
+// MyFriendsList
+navigation.navigate('MyFriendsList')
   };
 
   return (
@@ -38,7 +39,7 @@ const BoxOptions = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.box} onPress={navigateToAmistad}>
         <Ionicons name="people-outline" size={40} color="gray" />
-        <Text style={styles.text}>Amistad</Text>
+        <Text style={styles.text}>Mis Amigos</Text>
       </TouchableOpacity>
     </View>
   );
