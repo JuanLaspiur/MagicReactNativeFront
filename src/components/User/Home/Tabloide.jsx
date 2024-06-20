@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Text, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 
+
 const { width: screenWidth } = Dimensions.get('window');
 
 const images = [

@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     alignItems: 'center',
+    opacity:0.7
   },
   image: {
     width: 30,

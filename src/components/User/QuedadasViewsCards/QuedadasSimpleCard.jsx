@@ -1,54 +1,61 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
+import { Ionicons } from '@expo/vector-icons'; 
+import env from '../../../../env.js';
 
-const QuedadasSimpleCard = () => {
+// Function to format date
+const formatDate = (dateTimeString) => {
+  // Split the dateTimeString by spaces and commas to get parts
+  const parts = dateTimeString.split(' ');
+
+  // Extract day, month, and year from the parts
+  const day = parts[1];
+  const month = getMonthNumber(parts[2]); // Convert month name to number
+  const year = parts[3];
+
+  // Return formatted date
+  return `${day}/${month}/${year}`;
+};
+// Function to get month number from month abbreviation
+const getMonthNumber = (monthAbbreviation) => {
+  const monthMap = {
+    'ene.': '01', 'feb.': '02', 'mar.': '03', 'abr.': '04',
+    'may.': '05', 'jun.': '06', 'jul.': '07', 'ago.': '08',
+    'sep.': '09', 'oct.': '10', 'nov.': '11', 'dic.': '12'
+  };
+  return monthMap[monthAbbreviation];
+};
+
+
+const QuedadasSimpleCard = ({ quedada }) => {
   const navigation = useNavigation();
-  const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
+  const [confirmado, setConfirmado] = useState(false); 
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail');
   };
 
-  // Datos harcodeados para la quedada
-  const nombreQuedada = "Nombre de la Quedada";
-  const descripcionQuedada =
-    "Descripción de la quedada. ¡Únete para más diversión y actividades exclusivas!";
-  const fecha = "15/07/24"; // Fecha harcodeada en formato dd/mm/AA
-  const asistentes = 25; // Cantidad de asistentes harcodeada
-  const zona = "Zona Norte"; // Zona harcodeada
-  const maxParticipantes = 50; // Máximo número de participantes harcodeado
-
-  // Función para truncar la descripción a máximo 2 líneas
-  const truncateDescription = (text, maxLines) => {
-    const lines = text.split('\n');
-    if (lines.length > maxLines) {
-      return lines.slice(0, maxLines).join('\n') + "...";
-    } else {
-      return text;
-    }
-  };
-
-  // Determinar el color del icono basado en el color del texto de la descripción
-  const iconColor = styles.description.color || 'white'; // Color del texto de la descripción
-
-  // Función para manejar la confirmación del usuario
+  const nombreQuedada = quedada.name.charAt(0).toUpperCase() + quedada.name.slice(1).toLowerCase();
+  const asistentes = quedada.asistentes.length; 
+  const zona = "Zona " + quedada.zone; 
+  const maxParticipantes = quedada.limit;
+  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
+  const iconColor = 'white'; 
   const handleConfirm = () => {
-    setConfirmado(true); // Cambia el estado a confirmado
-    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
+    setConfirmado(true); 
   };
+  const fecha = quedada.dateTime && formatDate(quedada.dateTime);
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.content}>
         <Image
-          source={{ uri: "https://randomuser.me/api/portraits/men/41.jpg" }}
+          source={{ uri: urlImagePerfil }}
           style={styles.avatar}
         />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{nombreQuedada}</Text>
-          <Text style={styles.description}>{truncateDescription(descripcionQuedada, 2)}</Text>
         </View>
       </View>
       <View style={styles.infoContainer}>
@@ -57,7 +64,7 @@ const QuedadasSimpleCard = () => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {/* Renderizado condicional del icono */}
+      {/* Conditional rendering of the icon */}
       {confirmado ? (
         <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
           <Ionicons name="flash-outline" size={24} color="black" />
@@ -87,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 10,
     alignSelf: "center",
-    position: 'relative', // Para contener el icono con posición absoluta
+    position: 'relative', // To contain the icon with absolute position
   },
   content: {
     flexDirection: "row",
@@ -101,17 +108,13 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    marginRight:25
   },
   name: {
     fontSize: 16,
     fontWeight: "bold",
     color: "white",
     marginBottom: 3,
-  },
-  description: {
-    fontSize: 13,
-    color: "white",
-    lineHeight: 18, // Ajusta el interlineado según sea necesario
   },
   infoContainer: {
     flexDirection: "row",
@@ -134,4 +137,3 @@ const styles = StyleSheet.create({
 });
 
 export default QuedadasSimpleCard;
-
