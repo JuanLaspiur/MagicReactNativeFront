@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
+import { Ionicons } from '@expo/vector-icons'; 
 
 const QuedadaPremiumCard = () => {
   const navigation = useNavigation();

@@ -53,7 +53,8 @@ export default function App() {
           <Stack.Screen name="ZoneFilter" component={ZoneFilter} options={{ headerShown: false }} />
           <Stack.Screen name="MyFriendsFilter" component={MyFriendsFilter} options={{ headerShown: false }} />
           <Stack.Screen name="TypeFilter" component={TypeFilter} options={{ headerShown: false }} />
-         {/* User Messagges  TypeFilter  */}
+         
+         {/* User Messagges  MyPlansGestion  */}
          <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />
         </Stack.Navigator>

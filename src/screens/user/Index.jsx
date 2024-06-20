@@ -8,6 +8,7 @@ import Home from "./Home";
 import Friends from "./Friends";
 import Profile from "./Profile";
 import MessagesBox from "./MessagesBox";
+import MyPlansGestion from "./MyPlansGestion";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,11 @@ const Index = () => {
 
   const handleExitApp = () => {
     alert('Saliendo');
+  };
+
+  const handleGoToMyPlans = () => {
+    // Navegar al componente MyPlansGestion
+    navigation.navigate('Exit');
   };
 
   return (
@@ -47,7 +53,7 @@ const Index = () => {
         />
         <Tab.Screen
           name="Exit"
-          component={() => null} // Componente vacío porque no necesitas renderizar nada
+          component={MyPlansGestion} // Componente vacío porque no necesitas renderizar nada
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="exit-outline" size={size} color={color} />
@@ -55,9 +61,9 @@ const Index = () => {
             tabBarButton: ({ onPress }) => (
               <TouchableOpacity
                 style={styles.exitButton}
-                onPress={handleExitApp} // Función para salir de la app
+                onPress={handleGoToMyPlans} // Agrega el onPress para navegar al componente MyPlansGestion
               >
-                <Ionicons name="exit-outline" size={24} color="black" />
+                <Ionicons name="flash-outline" size={24} color="black" />
               </TouchableOpacity>
             ),
             headerShown: false,

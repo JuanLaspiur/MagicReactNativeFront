@@ -33,6 +33,7 @@ const QuedadaDetail = () => {
           Esta es una descripción extensa de la quedada. toda la información importante. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum tempora laboriosam, cumque reiciendis id officiis consequatur magnam corporis quibusdam deleniti!
         </Text>
         <View style={styles.datos}>
+        <Text style={styles.datosText}><Ionicons name="person-remove-outline" size={14} color="white " /> Max: Centro</Text>
           <Text style={styles.datosText}><Ionicons name="map-outline" size={14} color="white" /> Zona: Centro</Text>
           <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: 12/04/2025</Text>
           <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: 12</Text>
