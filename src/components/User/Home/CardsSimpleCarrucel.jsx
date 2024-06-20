@@ -56,7 +56,7 @@ const CardsSimpleCarrucel = () => {
         {quedadasChunks.map((chunk, index) => (
           <View style={styles.slide} key={index}>
             {chunk.map(quedada => (
-              <QuedadasSimpleCard quedada={quedada} key={quedada.id} />
+              <QuedadasSimpleCard quedada={quedada} key={quedada._id} />
             ))}
           </View>
         ))}

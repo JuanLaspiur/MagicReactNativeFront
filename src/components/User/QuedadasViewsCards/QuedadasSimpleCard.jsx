@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -6,17 +6,18 @@ import env from '../../../../env.js';
 
 // Function to format date
 const formatDate = (dateTimeString) => {
-  // Split the dateTimeString by spaces and commas to get parts
+  if (!dateTimeString) return ''; // Handle case where dateTimeString is not defined
   const parts = dateTimeString.split(' ');
 
   // Extract day, month, and year from the parts
   const day = parts[1];
   const month = getMonthNumber(parts[2]); // Convert month name to number
-  const year = parts[3];
+  const year = parts[3].slice(-2); // Get last two digits of the year
 
   // Return formatted date
   return `${day}/${month}/${year}`;
 };
+
 // Function to get month number from month abbreviation
 const getMonthNumber = (monthAbbreviation) => {
   const monthMap = {
@@ -45,7 +46,13 @@ const QuedadasSimpleCard = ({ quedada }) => {
   const handleConfirm = () => {
     setConfirmado(true); 
   };
-  const fecha = quedada.dateTime && formatDate(quedada.dateTime);
+
+  // Ensure dateTime exists before formatting
+  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
+
+  // Hardcoded example name and age
+  const nombrePersona =` ${quedada.userInfo.name}  ${quedada.userInfo.last_name !== null ?  quedada.userInfo.last_name : ''} `;
+  const edadPersona = quedada.userInfo.birthdate;
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
@@ -56,6 +63,9 @@ const QuedadasSimpleCard = ({ quedada }) => {
         />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{nombreQuedada}</Text>
+          {edadPersona !== null && (
+            <Text style={styles.edadText}>{`${nombrePersona}`}</Text>
+          )}
         </View>
       </View>
       <View style={styles.infoContainer}>
@@ -108,13 +118,17 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    marginRight:25
+    marginRight: 25,
   },
   name: {
     fontSize: 16,
     fontWeight: "bold",
     color: "white",
     marginBottom: 3,
+  },
+  edadText: {
+    fontSize: 12,
+    color: "white",
   },
   infoContainer: {
     flexDirection: "row",

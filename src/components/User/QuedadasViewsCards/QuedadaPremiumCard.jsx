@@ -2,8 +2,33 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
+import env from '../../../../env.js';
 
-const QuedadaPremiumCard = () => {
+const formatDate = (dateTimeString) => {
+  if (!dateTimeString) return ''; // Handle case where dateTimeString is not defined
+  const parts = dateTimeString.split(' ');
+
+  // Extract day, month, and year from the parts
+  const day = parts[1];
+  const month = getMonthNumber(parts[2]); // Convert month name to number
+  const year = parts[3].slice(-2); // Get last two digits of the year
+
+  // Return formatted date
+  return `${day}/${month}/${year}`;
+};
+
+// Function to get month number from month abbreviation
+const getMonthNumber = (monthAbbreviation) => {
+  const monthMap = {
+    'ene.': '01', 'feb.': '02', 'mar.': '03', 'abr.': '04',
+    'may.': '05', 'jun.': '06', 'jul.': '07', 'ago.': '08',
+    'sep.': '09', 'oct.': '10', 'nov.': '11', 'dic.': '12'
+  };
+  return monthMap[monthAbbreviation];
+};
+
+
+const QuedadaPremiumCard = ({quedada}) => {
   const navigation = useNavigation();
   const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
@@ -13,13 +38,13 @@ const QuedadaPremiumCard = () => {
 
   // Datos harcodeados para la quedada premium
   const nombreQuedada = "Plan Premium de la Quedada";
-  const descripcionQuedada =
-    "Este es el plan premium de la quedada. ¡Únete para más diversión y actividades exclusivas!";
-  const fecha = "15/07/24"; // Fecha harcodeada en formato dd/mm/AA
-  const confirmados = 50; // Cantidad de confirmados harcodeada
-  const maxParticipantes = 100; // Máximo número de participantes harcodeado
-  const zona = "Zona Sur"; // Zona harcodeada
-
+  const descripcionQuedada = quedada.description 
+  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
+  const confirmados = quedada.asistentes.length; // Cantidad de confirmados harcodeada
+  const maxParticipantes = quedada.limit; // Máximo número de participantes harcodeado
+  const zona = "Zona " + quedada.zone; 
+  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
+  const urlImagenQuedada=`${env.BACK_URL}/quedada_img/${quedada._id}`;
   // Función para truncar la descripción si supera los 120 caracteres
   const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -30,7 +55,7 @@ const QuedadaPremiumCard = () => {
   };
 
   // Determinar el color del icono basado en el color del texto de la descripción
-  const iconColor = styles.description.color || 'white'; // Color del texto de la descripción
+  const iconColor = 'white'; // Color del texto de la descripción
 
   // Función para manejar la confirmación del usuario
   const handleConfirm = () => {
@@ -42,13 +67,13 @@ const QuedadaPremiumCard = () => {
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
         <Image
-          source={{ uri: "https://this-person-does-not-exist.com/img/avatar-genac16e7b8e809ebc4980e1cb3e4944fff.jpg" }}
+          source={{ uri: urlImagePerfil }}
           style={styles.avatar}
         />
         <Text style={styles.name}>Juan Pérez</Text>
       </View>
       <Image
-        source={{ uri: "https://d2il8hfach02z9.cloudfront.net/uploads/event_photo/photo/5291/Facebook-Event-La-Quedada.jpg?v=1558109781" }}
+        source={{ uri: urlImagenQuedada }}
         style={styles.image}
       />
       <Text style={styles.description}>{truncateDescription(descripcionQuedada, 120)}</Text>

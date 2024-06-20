@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
 import QuedadaPremiumCard from '../QuedadasViewsCards/QuedadaPremiumCard'; // Ajusta la ruta según tu estructura de proyecto
+import { getAllQuedadasPremium } from '../../../api/Quedada.controller';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 const CardsPremiumCarrucel = () => {
+  const [quedadas, setQuedadas] = useState([]);
+
+  useEffect(() => {
+    const fetchQuedadas = async () => {
+      try {
+        const response = await getAllQuedadasPremium(); // Obtener las quedadas desde la API
+        setQuedadas(response); // Actualizar el estado con las quedadas obtenidas
+      } catch (error) {
+        console.error('Error fetching quedadas:', error);
+        // Manejo de errores: podrías mostrar un mensaje de error o manejarlo de otra manera
+      }
+    };
+
+    fetchQuedadas();
+  }, []); // Se ejecuta solo una vez al montar el componente
+
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Panes premium</Text>
       <Swiper style={styles.wrapper} loop={true} autoplay={true} autoplayTimeout={8}>
-        <View style={styles.slide}>
-          <QuedadaPremiumCard />
-        </View>
-        <View style={styles.slide}>
-          <QuedadaPremiumCard />
-        </View>
-        <View style={styles.slide}>
-          <QuedadaPremiumCard />
-        </View>
+        {quedadas.length > 0 && (
+          quedadas.map((quedada, index) => (
+            <View key={index} style={styles.slide}>
+              <QuedadaPremiumCard quedada={quedada} />
+            </View>
+          ))
+        ) }
       </Swiper>
     </View>
   );
@@ -29,17 +44,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     paddingHorizontal: 10,
-    width:'110%',
+    width: '110%',
   },
   wrapper: {
-    height:370
+    height: 370,
   },
   h1: {
-    fontSize:20, 
-    color:'gray',
-    paddingHorizontal:15,
-    paddingVertical:15
-  }
+    fontSize: 20,
+    color: 'gray',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+  },
 });
 
 export default CardsPremiumCarrucel;
