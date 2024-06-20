@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
 import { FontAwesome } from "@expo/vector-icons"; 
 import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
+import * as ImagePicker from 'expo-image-picker'; // Importar expo-image-picker
 
 const ChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
+  useEffect(() => {
+    // Solicitar permiso al cargar el componente
+    (async () => {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Se necesita permiso para acceder a la galería de imágenes.');
+      }
+    })();
+  }, []);
+
   const handleSend = () => {
     if (inputText.trim() === "") return;
 
+    const currentTime = getCurrentTime(); // Obtener la hora actual
     const newMessage = {
       text: inputText,
+      time: currentTime,
       isMine: true, // Indica si el mensaje es propio o ajeno
     };
 
@@ -21,25 +34,56 @@ const ChatRoom = () => {
     setInputText("");
   };
 
+  const handleImagePicker = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      // Aquí podrías enviar la imagen seleccionada como mensaje si lo deseas
+      // Por ahora, solo mostramos un alert con la URI de la imagen seleccionada
+      alert(`Imagen seleccionada: ${result.uri}`);
+    }
+  };
+
+  // Función para obtener la hora actual en formato HH:mm
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
   return (
     <View style={styles.container}>
-        <AppHeader title="Chat" />
-        <MessageHeader />
+      <AppHeader title="Chat" />
+      <MessageHeader />
       <ScrollView contentContainerStyle={styles.messagesContainer}>
         {messages.map((message, index) => (
           <View
             key={index}
             style={[
               styles.messageBubble,
-              message.isMine ? styles.myMessage : styles.otherMessage
+              message.isMine ? styles.myMessageContainer : styles.otherMessageContainer
             ]}
           >
-            <Text style={styles.messageText}>{message.text}</Text>
+            <View style={styles.messageContent}>
+              <Text style={styles.messageText(message.isMine)}>{message.text}</Text>
+            </View>
+            <View style={styles.messageInfo}>
+              <Text style={styles.messageOwner}>{message.isMine ? 'Tú' : ''}</Text>
+              <Text style={styles.messageTime}>{message.time}</Text>
+            </View>
           </View>
         ))}
       </ScrollView>
       <View style={styles.inputContainer}>
-        <TouchableOpacity onPress={() => alert("Enviar imagen")} style={styles.iconContainer}>
+        <TouchableOpacity onPress={handleImagePicker} style={styles.iconContainer}>
           <FontAwesome name="image" size={24} color="gray" />
         </TouchableOpacity>
         <TextInput
@@ -67,28 +111,47 @@ const styles = StyleSheet.create({
   messagesContainer: {
     flexGrow: 1,
     paddingVertical: 10,
-    paddingTop:25,
+    paddingTop: 25,
     paddingHorizontal: 15,
   },
   messageBubble: {
+    flexDirection: 'column', // Cambiado a column para apilar los elementos
     maxWidth: '80%',
     marginBottom: 10,
     padding: 10,
     borderRadius: 10,
   },
-  myMessage: {
+  myMessageContainer: {
     alignSelf: 'flex-end',
     backgroundColor: '#AED0F6',
-    color:'gray'
   },
-  otherMessage: {
+  otherMessageContainer: {
     alignSelf: 'flex-start',
     backgroundColor: '#D3D3D3',
-    color: '#000000',
   },
-  messageText: {
+  messageContent: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  messageInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: 3,
+    gap: 2,
+  },
+  messageOwner: {
+    fontSize: 10,
+    color: 'gray',
+  },
+  messageText: (isMine) => ({
     fontSize: 16,
-
+    color: isMine ? '#FFFFFF' : '#000000',
+  }),
+  messageTime: {
+    fontSize: 10,
+    color: 'gray',
+    alignSelf: 'flex-end',
   },
   inputContainer: {
     flexDirection: 'row',

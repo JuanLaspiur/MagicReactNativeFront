@@ -1,20 +1,20 @@
 import React from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Para los iconos
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const AppHeader = ({ title }) => {
   const navigation = useNavigation();
   const handlePress = () => {
     switch (title) {
       case "QuedadaDetail":
-        navigation.navigate('Home');
+        navigation.navigate("Index");
         break;
       case "Quedada B":
-        navigation.navigate('Home');
+        navigation.navigate("Index");
         break;
       default:
-        navigation.navigate('Home');
+        navigation.navigate("Index");
     }
   };
   return (
@@ -34,10 +34,14 @@ const AppHeader = ({ title }) => {
         resizeMode="contain"
         style={styles.eclipse3}
       />
-      <TouchableOpacity style={styles.iconContainer}>
-        <Ionicons name="arrow-back" size={24} color="gray" onPress={handlePress}/>
-      </TouchableOpacity>
-
+    <TouchableOpacity style={title === 'Inicio' || title === 'Amigos' || title === 'MyPlansGestion' || title === 'Perfil' || title === 'Mensajes'? styles.hiddenContainer : styles.iconContainer }>
+      <Ionicons
+        name="arrow-back"
+        size={24}
+        color="gray"
+        onPress={handlePress}
+      />
+    </TouchableOpacity>
       <Image
         source={require("./../../assets/Login/smallIcon.png")}
         resizeMode="contain"
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
     height: 70,
-     backgroundColor: '#fff',
+    backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -89,6 +93,10 @@ const styles = StyleSheet.create({
   iconContainer: {
     padding: 10,
   },
+  hiddenContainer: {
+    opacity: 0,
+    padding: 10
+},
 });
 
 export default AppHeader;

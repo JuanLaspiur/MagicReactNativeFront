@@ -28,7 +28,7 @@ import ChatRoom from './src/screens/user/ChatRoom.jsx';
 // .... other person profile
 import OtherUserProfile from './src/screens/user/OtherUserProfile.jsx';
 
-
+// ... INDEX
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -43,7 +43,6 @@ export default function App() {
           <Stack.Screen name="RegisterTres" component={RegisterTres} options={{ headerShown: false }} />
           <Stack.Screen name="RegisterCuatro" component={RegisterCuatro} options={{ headerShown: false }} />
           {/* User Home */}
-          <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
           <Stack.Screen name="CreateQuedada" component={CreateQuedada} options={{ headerShown: false }} />
@@ -57,6 +56,9 @@ export default function App() {
          {/* User Messagges  MyPlansGestion  */}
          <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
          <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />
+        
+        {/* INDEX  Index */}
+        <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
