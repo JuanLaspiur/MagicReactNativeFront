@@ -54,10 +54,8 @@ const QuedadaPremiumCard = ({quedada}) => {
     }
   };
 
-  // Determinar el color del icono basado en el color del texto de la descripción
-  const iconColor = 'white'; // Color del texto de la descripción
+  const iconColor = 'white'; 
 
-  // Función para manejar la confirmación del usuario
   const handleConfirm = () => {
     setConfirmado(true); // Cambia el estado a confirmado
     // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
