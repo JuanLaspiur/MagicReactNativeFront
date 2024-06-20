@@ -7,6 +7,8 @@ import CardsPremiumCarrucel from '../../components/User/Home/CardsPremiumCarruce
 import CardText from '../../components/User/Home/CardText';
 import CardsSimpleCarrucel from '../../components/User/Home/CardsSimpleCarrucel';
 import Tabloide from '../../components/User/Home/Tabloide';
+// encuesta
+import AdminSurvey from '../../components/User/Home/AdminSurvey';
 
 const Home = () => {
   return (
@@ -27,13 +29,15 @@ const Home = () => {
           style={styles.eclipse2}
         />
              <CardText/>
-             <Image
+         
+                   <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse3}
         />
              <CardsSimpleCarrucel/>
              <Tabloide/>
+             <AdminSurvey/>
         </ScrollView>
     </View>
   );
