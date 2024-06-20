@@ -61,7 +61,7 @@ const QuedadaPremiumCard = () => {
       {/* Renderizado condicional del icono */}
       {confirmado ? (
         <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
-          <Ionicons name="dice-outline" size={24} color="black" />
+          <Ionicons name="flash-outline" size={24} color="black" />
         </View>
       ) : (
         <TouchableOpacity

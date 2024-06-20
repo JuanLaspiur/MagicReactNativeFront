@@ -56,7 +56,7 @@ function FilterCardQuedada() {
       {/* Renderizado condicional del icono */}
       {confirmado ? (
         <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
-          <Ionicons name="dice-outline" size={24} color="white" />
+          <Ionicons name="flash-outline" size={24} color="white" />
         </View>
       ) : (
         <TouchableOpacity
