@@ -22,14 +22,20 @@ const Home = () => {
         />
              <IconPerfil/>
              <BoxOptions/>
+             <Image
+          source={require('./../../assets/Login/Ellipse 1.png')}
+          resizeMode="contain"
+          style={styles.eclipse4}
+        />
+             <Tabloide/>     
+                <CardText/>
              <CardsPremiumCarrucel/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse2}
         />
-             <CardText/>
-         
+                <AdminSurvey/>
                    <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
@@ -37,7 +43,7 @@ const Home = () => {
         />
              <CardsSimpleCarrucel/>
              <Tabloide/>
-             <AdminSurvey/>
+      
         </ScrollView>
     </View>
   );
@@ -89,7 +95,17 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,  
     zIndex:-1,
+  },
+  eclipse4: {
+    position: 'absolute',
+    top:750,
+    transform: [{ rotate: '205deg' }],
+    opacity: 0.5,
+    width: 200,
+    height: 200, 
+    zIndex:-1,
   }
+
 });
 
 export default Home;
