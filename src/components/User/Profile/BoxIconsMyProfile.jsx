@@ -20,7 +20,7 @@ const BoxIconsMyProfile = () => {
 
   // Función para navegar a la pantalla MyFriendsList
   const handleMyFriends = () => {
-    navigation.navigate('MyFriendsList'); // Reemplaza 'MyFriendsList' con el nombre de tu pantalla de amigos
+    navigation.navigate('MyFriendsList', {user}); // Reemplaza 'MyFriendsList' con el nombre de tu pantalla de amigos
   };
   const askPremium = () => {
     alert('Solicitando plan premium..')
@@ -36,7 +36,7 @@ const BoxIconsMyProfile = () => {
 
       <TouchableOpacity style={styles.box}>
         <Ionicons name="arrow-down" size={40} color="gray" />
-        <Text style={styles.text}>Darse de baja</Text>
+        <Text style={styles.text}>Eliminar</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.box} onPress={handleMyFriends}>
@@ -46,7 +46,7 @@ const BoxIconsMyProfile = () => {
 
       <TouchableOpacity style={styles.box}  onPress={askPremium}>
         <Ionicons name="diamond-outline" size={38} color="#AED0F6" />
-        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
+        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Premium</Text>
       </TouchableOpacity>
 
       {/* Modal de edición de perfil */}

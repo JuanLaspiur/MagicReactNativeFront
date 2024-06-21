@@ -1,12 +1,34 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Ajusta la ruta según tu estructura de proyecto
+import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard';
+import { getQuedadasByUserId } from '../../../api/Quedada.controller';
 
-const { width: screenWidth } = Dimensions.get('window');
+const MyQuedadas = ({ user }) => {
+  const [filter, setFilter] = useState('todos');
+  const [quedadas, setQuedadas] = useState([]);
 
-const MyQuedadas = () => {
-  const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
+  useEffect(() => {
+    const fetchMyQuedadas = async () => {
+      try {
+        const data = await getQuedadasByUserId(user._id);
+        setQuedadas(data);
+      } catch (error) {
+        console.error('Error al obtener quedadas:', error);
+      }
+    };
+
+    fetchMyQuedadas();
+  }, []);
+
+  // Dividir las quedadas en grupos de tres
+  const chunkArray = (arr, size) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
+      arr.slice(index * size, index * size + size)
+    );
+  };
+
+  const groupedQuedadas = chunkArray(quedadas, 3);
 
   return (
     <View style={styles.container}>
@@ -34,24 +56,36 @@ const MyQuedadas = () => {
       <Swiper
         style={styles.wrapper}
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true}
+        autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
-        dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}
-        activeDotStyle={{ backgroundColor: 'white', width: 8, height: 8, borderRadius: 4 }}
+        dotStyle={{
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+        }}
+        activeDotStyle={{
+          backgroundColor: 'white',
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+        }}
       >
-        <View style={styles.slide}>
-          <QuedadasSimpleCard />
-          <QuedadasSimpleCard />
-          <QuedadasSimpleCard />
-        </View>
-        <View style={styles.slide}>
-          <QuedadasSimpleCard />
-          <QuedadasSimpleCard />
-          <QuedadasSimpleCard />
-        </View>
-        {/* Agrega más vistas según sea necesario */}
+        {groupedQuedadas.length > 0 ? (
+          groupedQuedadas.map((group, index) => (
+            <View key={index} style={styles.slide}>
+              {group.map(quedada => (
+                <QuedadasSimpleCard key={quedada._id} quedada={quedada} />
+              ))}
+            </View>
+          ))
+        ) : (
+          <View style={styles.slide}>
+            <Text style={styles.noDataText}>No hay quedadas para mostrar</Text>
+          </View>
+        )}
       </Swiper>
     </View>
   );
@@ -92,8 +126,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: screenWidth,
+    width: '100%',
     flexDirection: 'column',
+  },
+  noDataText: {
+    paddingHorizontal: 14,
+    color: 'gray',
   },
 });
 
