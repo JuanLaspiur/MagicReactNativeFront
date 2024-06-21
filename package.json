@@ -29,7 +29,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "15.2.0",
     "react-native-swiper": "^1.6.0",
-    "react-native-vector-icons": "^10.1.0"
+    "react-native-vector-icons": "^10.1.0",
+    "expo-secure-store": "~13.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

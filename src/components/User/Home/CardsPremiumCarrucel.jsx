@@ -12,16 +12,15 @@ const CardsPremiumCarrucel = () => {
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
-        const response = await getAllQuedadasPremium(); // Obtener las quedadas desde la API
-        setQuedadas(response); // Actualizar el estado con las quedadas obtenidas
+        const response = await getAllQuedadasPremium();
+        setQuedadas(response); 
       } catch (error) {
         console.error('Error fetching quedadas:', error);
-        // Manejo de errores: podrías mostrar un mensaje de error o manejarlo de otra manera
       }
     };
 
     fetchQuedadas();
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []); 
 
   return (
     <View style={styles.container}>

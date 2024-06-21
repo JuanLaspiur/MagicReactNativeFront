@@ -1,64 +1,162 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import "react-native-gesture-handler";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 // Components
-import Login from './src/screens/Auth/Login.jsx';
+import Login from "./src/screens/Auth/Login.jsx";
 // ..... register
-import Register from './src/screens/Auth/RegisterSteps/Register.jsx';
-import RegisterDos from './src/screens/Auth/RegisterSteps/RegisterDos.jsx';
-import RegisterTres from './src/screens/Auth/RegisterSteps/RegisterTres.jsx';
-import RegisterCuatro from './src/screens/Auth/RegisterSteps/RegisterCuatro.jsx';
-// ..... home 
-import Index from './src/screens/user/Index.jsx';
-import Home from './src/screens/user/Home.jsx';
-import QuedadaDetail from './src/screens/user/QuedadaDetail.jsx';
-import CreateQuedada from './src/screens/user/CreateQuedada.jsx';
-import MyFriendsList from './src/screens/user/MyFriendsList.jsx';
-import FilterPlans from './src/screens/user/FilterPlans.jsx';
+import Register from "./src/screens/Auth/RegisterSteps/Register.jsx";
+import RegisterDos from "./src/screens/Auth/RegisterSteps/RegisterDos.jsx";
+import RegisterTres from "./src/screens/Auth/RegisterSteps/RegisterTres.jsx";
+import RegisterCuatro from "./src/screens/Auth/RegisterSteps/RegisterCuatro.jsx";
+// ..... home
+import Index from "./src/screens/user/Index.jsx";
+import Home from "./src/screens/user/Home.jsx";
+import QuedadaDetail from "./src/screens/user/QuedadaDetail.jsx";
+import CreateQuedada from "./src/screens/user/CreateQuedada.jsx";
+import MyFriendsList from "./src/screens/user/MyFriendsList.jsx";
+import FilterPlans from "./src/screens/user/FilterPlans.jsx";
 // ..... home  ... filterplans
-import StatusFilter from './src/components/User/plansFilter/StatusFiler.jsx';
-import ZoneFilter from './src/components/User/plansFilter/ZoneFilter.jsx';
-import MyFriendsFilter from './src/components/User/plansFilter/MyFriendsFilter.jsx';
-import TypeFilter from './src/components/User/plansFilter/TypeFilter.jsx';
+import StatusFilter from "./src/components/User/plansFilter/StatusFiler.jsx";
+import ZoneFilter from "./src/components/User/plansFilter/ZoneFilter.jsx";
+import MyFriendsFilter from "./src/components/User/plansFilter/MyFriendsFilter.jsx";
+import TypeFilter from "./src/components/User/plansFilter/TypeFilter.jsx";
 // .... messagges
-import ChatRoom from './src/screens/user/ChatRoom.jsx';
+import ChatRoom from "./src/screens/user/ChatRoom.jsx";
 // .... other person profile
-import OtherUserProfile from './src/screens/user/OtherUserProfile.jsx';
-
+import OtherUserProfile from "./src/screens/user/OtherUserProfile.jsx";
+import { saveToSecureStore } from "./src/helpers/ExpoSecureStore.js";
 // ... INDEX
+import env from "./env.js";
+import { getUserById } from "./src/api/User.controller.js";
 const Stack = createStackNavigator();
+// env
 
 export default function App() {
+  useEffect(() => {
+    saveAuthTokenToSecureStore();
+    saveLoginUser();
+  }, []);
+
+  const saveAuthTokenToSecureStore = async () => {
+    try {
+      const authToken = env.auth_token;
+      await saveToSecureStore("token", authToken);
+      console.log("Token guardado en SecureStore correctamente.");
+    } catch (error) {
+      console.error("Error al guardar el token en SecureStore:", error);
+    }
+  };
+
+  const saveLoginUser = async () => {
+    try{ 
+    const id = "65f991ef7bce022d620d26df"
+      let user = await getUserById(id);
+      user = user.data
+      await saveToSecureStore("user", JSON.stringify(user));
+      } catch (error) {
+        console.log("Error al guardar user harcode ");
+      }
+
+  };
+
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login" >
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
           {/* User Register */}
-          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-          <Stack.Screen name="RegisterDos" component={RegisterDos} options={{ headerShown: false }} />
-          <Stack.Screen name="RegisterTres" component={RegisterTres} options={{ headerShown: false }} />
-          <Stack.Screen name="RegisterCuatro" component={RegisterCuatro} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Register"
+            component={Register}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RegisterDos"
+            component={RegisterDos}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RegisterTres"
+            component={RegisterTres}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RegisterCuatro"
+            component={RegisterCuatro}
+            options={{ headerShown: false }}
+          />
           {/* User Home */}
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-          <Stack.Screen name="QuedadaDetail" component={QuedadaDetail} options={{ headerShown: false }} />
-          <Stack.Screen name="CreateQuedada" component={CreateQuedada} options={{ headerShown: false }} />
-          <Stack.Screen name="MyFriendsList" component={MyFriendsList} options={{ headerShown: false }} />
-          <Stack.Screen name="FilterPlans" component={FilterPlans} options={{ headerShown: false }} />
-          <Stack.Screen name="StatusFilter" component={StatusFilter} options={{ headerShown: false }} />
-          <Stack.Screen name="ZoneFilter" component={ZoneFilter} options={{ headerShown: false }} />
-          <Stack.Screen name="MyFriendsFilter" component={MyFriendsFilter} options={{ headerShown: false }} />
-          <Stack.Screen name="TypeFilter" component={TypeFilter} options={{ headerShown: false }} />
-         
-         {/* User Messagges  MyPlansGestion  */}
-         <Stack.Screen name="ChatRoom" component={ChatRoom} options={{ headerShown: false }} /> 
-         <Stack.Screen name="OtherUserProfile" component={OtherUserProfile} options={{ headerShown: false }} />
-        
-        {/* INDEX  Index */}
-        <Stack.Screen name="Index" component={Index} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="QuedadaDetail"
+            component={QuedadaDetail}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="CreateQuedada"
+            component={CreateQuedada}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MyFriendsList"
+            component={MyFriendsList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="FilterPlans"
+            component={FilterPlans}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="StatusFilter"
+            component={StatusFilter}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ZoneFilter"
+            component={ZoneFilter}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MyFriendsFilter"
+            component={MyFriendsFilter}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TypeFilter"
+            component={TypeFilter}
+            options={{ headerShown: false }}
+          />
+
+          {/* User Messagges  MyPlansGestion  */}
+          <Stack.Screen
+            name="ChatRoom"
+            component={ChatRoom}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OtherUserProfile"
+            component={OtherUserProfile}
+            options={{ headerShown: false }}
+          />
+
+          {/* INDEX  Index */}
+          <Stack.Screen
+            name="Index"
+            component={Index}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
@@ -69,7 +167,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff', 
+    backgroundColor: "#fff",
     // Puedes ajustar el color de fondo según tus preferencias
   },
 });

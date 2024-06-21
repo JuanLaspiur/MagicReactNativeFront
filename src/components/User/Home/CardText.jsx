@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EAEAEA', // Color de fondo gris claro
+    backgroundColor: '#EAEAEA', 
     borderRadius: 10,
     padding: 10,
     margin: 7,
@@ -29,11 +29,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   textContainer: {
-    flex: 1, // Esta línea asegura que el contenedor se expanda para ajustarse al contenido del texto
+    flex: 1, 
   },
   text: {
     fontSize: 13,
-    color: 'gray', // Color del texto
+    color: 'gray', 
   },
 });
 

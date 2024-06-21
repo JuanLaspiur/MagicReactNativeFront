@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
-import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Ajusta la ruta según tu estructura de proyecto
+import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; 
 import { getAllQuedadas } from '../../../api/Quedada.controller';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -12,18 +12,16 @@ const CardsSimpleCarrucel = () => {
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
-        const response = await getAllQuedadas(); // Obtener las quedadas desde la API
-        setQuedadas(response); // Actualizar el estado con las quedadas obtenidas
+        const response = await getAllQuedadas(); 
+        setQuedadas(response); 
       } catch (error) {
         console.error('Error fetching quedadas:', error);
-        // Manejo de errores: podrías mostrar un mensaje de error o manejarlo de otra manera
       }
     };
 
     fetchQuedadas();
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
-  // Función para dividir las quedadas en grupos de tres
   const chunkArray = (myArray, chunk_size) => {
     let index = 0;
     let arrayLength = myArray.length;
