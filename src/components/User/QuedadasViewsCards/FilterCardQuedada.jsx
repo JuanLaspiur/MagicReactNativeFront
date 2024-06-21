@@ -8,7 +8,7 @@ function FilterCardQuedada() {
   const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail', {quedada});
   };
 
   const nombreEvento = "Nombre del Evento";

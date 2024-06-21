@@ -8,7 +8,7 @@ const ParticipationQuedadaCard = () => {
   const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail',{quedada});
   };
 
   // Datos harcodeados para la participación en la quedada

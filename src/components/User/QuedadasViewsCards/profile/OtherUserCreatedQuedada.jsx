@@ -1,27 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import { getQuedadaById } from "../../../../api/Quedada.controller";
 
 const OtherUserCreatedQuedada = () => {
   const navigation = useNavigation();
+  const [quedada, setQuedada] = useState(null);
+
+  useEffect(() => {
+    const fetchQuedada = async () => {
+      try {
+        const response = await getQuedadaById('6670884ffe2bc567972f31de'); // Llamada a la API para obtener la quedada por ID
+        setQuedada(response); // Actualiza el estado con los datos de la quedada obtenidos
+      } catch (error) {
+        console.error('Error al obtener la quedada:', error);
+        // Manejo de errores aquí
+      }
+    };
+
+    fetchQuedada();
+  }, []); // Se ejecuta cada vez que quedadaId cambia
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail', { quedada });
   };
+
+  if (!quedada) {
+    return null; // Puedes mostrar un spinner u otra interfaz mientras se carga la quedada
+  }
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
         <Image
-          source={{ uri: "https://d2il8hfach02z9.cloudfront.net/uploads/event_photo/photo/5291/Facebook-Event-La-Quedada.jpg?v=1558109781" }}
+          source={{ uri: quedada.imagen }} // Ajusta el campo según la estructura de la quedada obtenida
           style={styles.avatar}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.name}>Nombre de la Quedada</Text>
-          <Text style={styles.description}>
-            Este es el plan premium de la quedada. ¡Únete para más diversión y actividades exclusivas!
-          </Text>
+          <Text style={styles.name}>{quedada.nombre}</Text> {/* Ajusta el campo según la estructura de la quedada obtenida */}
+          <Text style={styles.description}>{quedada.descripcion}</Text> {/* Ajusta el campo según la estructura de la quedada obtenida */}
         </View>
       </View>
     </TouchableOpacity>

@@ -11,7 +11,7 @@ const QuedadasSimpleCard = ({ quedada }) => {
   const [confirmado, setConfirmado] = useState(false); 
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail', {quedada});
   };
   const handleConfirm = () => {
     setConfirmado(true); 

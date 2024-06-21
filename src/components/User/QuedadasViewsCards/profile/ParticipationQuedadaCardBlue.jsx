@@ -4,9 +4,24 @@ import { useNavigation } from '@react-navigation/native';
 
 const ParticipationQuedadaCardBlue = () => {
   const navigation = useNavigation();
+  const [quedada, setQuedada] = useState(null);
+
+  useEffect(() => {
+    const fetchQuedada = async () => {
+      try {
+        const response = await getQuedadaById('6670884ffe2bc567972f31de'); // Llamada a la API para obtener la quedada por ID
+        setQuedada(response); // Actualiza el estado con los datos de la quedada obtenidos
+      } catch (error) {
+        console.error('Error al obtener la quedada:', error);
+        // Manejo de errores aquí
+      }
+    };
+
+    fetchQuedada();
+  }, []); // Se ejecuta cada vez que quedadaId cambia
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail', {quedada});
   };
 
   return (

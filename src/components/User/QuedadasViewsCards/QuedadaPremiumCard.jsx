@@ -12,7 +12,7 @@ const QuedadaPremiumCard = ({quedada}) => {
   const [confirmado, setConfirmado] = useState(false); 
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail');
+    navigation.navigate('QuedadaDetail', {quedada}); // Quiero pasarle un parametro a la navavegacion se pude?
   };
  const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
