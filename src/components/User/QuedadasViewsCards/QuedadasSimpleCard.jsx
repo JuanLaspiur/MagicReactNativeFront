@@ -1,58 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import env from '../../../../env.js';
-
-// Function to format date
-const formatDate = (dateTimeString) => {
-  if (!dateTimeString) return ''; // Handle case where dateTimeString is not defined
-  const parts = dateTimeString.split(' ');
-
-  // Extract day, month, and year from the parts
-  const day = parts[1];
-  const month = getMonthNumber(parts[2]); // Convert month name to number
-  const year = parts[3].slice(-2); // Get last two digits of the year
-
-  // Return formatted date
-  return `${day}/${month}/${year}`;
-};
-
-// Function to get month number from month abbreviation
-const getMonthNumber = (monthAbbreviation) => {
-  const monthMap = {
-    'ene.': '01', 'feb.': '02', 'mar.': '03', 'abr.': '04',
-    'may.': '05', 'jun.': '06', 'jul.': '07', 'ago.': '08',
-    'sep.': '09', 'oct.': '10', 'nov.': '11', 'dic.': '12'
-  };
-  return monthMap[monthAbbreviation];
-};
-
+import { formatDate } from '../../../helpers/UpdateQuedadaDay.js'
 
 const QuedadasSimpleCard = ({ quedada }) => {
+  // functions
   const navigation = useNavigation();
   const [confirmado, setConfirmado] = useState(false); 
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail');
   };
-
+  const handleConfirm = () => {
+    setConfirmado(true); 
+  };
+// atributes
   const nombreQuedada = quedada.name.charAt(0).toUpperCase() + quedada.name.slice(1).toLowerCase();
   const asistentes = quedada.asistentes.length; 
   const zona = "Zona " + quedada.zone; 
   const maxParticipantes = quedada.limit;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const iconColor = 'white'; 
-  const handleConfirm = () => {
-    setConfirmado(true); 
-  };
-
-  // Ensure dateTime exists before formatting
   const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
-
-  // Hardcoded example name and age
-  const nombrePersona =` ${quedada.userInfo.name}  ${quedada.userInfo.last_name !== null ?  quedada.userInfo.last_name : ''} `;
-  const edadPersona = quedada.userInfo.birthdate;
+  const nombrePersona = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
@@ -63,8 +35,8 @@ const QuedadasSimpleCard = ({ quedada }) => {
         />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{nombreQuedada}</Text>
-          {edadPersona !== null && (
-            <Text style={styles.edadText}>{`${nombrePersona}`}</Text>
+          {quedada.userInfo.birthdate !== null && (
+            <Text style={styles.edadText}>{nombrePersona}</Text>
           )}
         </View>
       </View>
@@ -75,18 +47,12 @@ const QuedadasSimpleCard = ({ quedada }) => {
         <Text style={styles.infoText}>{zona}</Text>
       </View>
       {/* Conditional rendering of the icon */}
-      {confirmado ? (
-        <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
-          <Ionicons name="flash-outline" size={24} color="black" />
-        </View>
-      ) : (
-        <TouchableOpacity
-          style={[styles.iconContainer, { backgroundColor: iconColor }]}
-          onPress={handleConfirm}
-        >
-          <Ionicons name="flash-off-outline" size={24} color="black" />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={[styles.iconContainer, { backgroundColor: iconColor }]}
+        onPress={handleConfirm}
+      >
+        <Ionicons name={confirmado ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };

@@ -3,63 +3,38 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import env from '../../../../env.js';
+import { formatDate } from '../../../helpers/UpdateQuedadaDay.js'
 
-const formatDate = (dateTimeString) => {
-  if (!dateTimeString) return ''; // Handle case where dateTimeString is not defined
-  const parts = dateTimeString.split(' ');
-
-  // Extract day, month, and year from the parts
-  const day = parts[1];
-  const month = getMonthNumber(parts[2]); // Convert month name to number
-  const year = parts[3].slice(-2); // Get last two digits of the year
-
-  // Return formatted date
-  return `${day}/${month}/${year}`;
-};
-
-// Function to get month number from month abbreviation
-const getMonthNumber = (monthAbbreviation) => {
-  const monthMap = {
-    'ene.': '01', 'feb.': '02', 'mar.': '03', 'abr.': '04',
-    'may.': '05', 'jun.': '06', 'jul.': '07', 'ago.': '08',
-    'sep.': '09', 'oct.': '10', 'nov.': '11', 'dic.': '12'
-  };
-  return monthMap[monthAbbreviation];
-};
 
 
 const QuedadaPremiumCard = ({quedada}) => {
   const navigation = useNavigation();
-  const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
+  const [confirmado, setConfirmado] = useState(false); 
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail');
   };
-
-  // Datos harcodeados para la quedada premium
-  const nombreQuedada = "Plan Premium de la Quedada";
-  const descripcionQuedada = quedada.description 
-  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
-  const confirmados = quedada.asistentes.length; // Cantidad de confirmados harcodeada
-  const maxParticipantes = quedada.limit; // Máximo número de participantes harcodeado
-  const zona = "Zona " + quedada.zone; 
-  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
-  const urlImagenQuedada=`${env.BACK_URL}/quedada_img/${quedada._id}`;
-  // Función para truncar la descripción si supera los 120 caracteres
-  const truncateDescription = (text, maxLength) => {
+ const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength - 3) + "...";
     } else {
       return text;
     }
+  }; 
+  const handleConfirm = () => {
+    setConfirmado(true);
   };
 
+  const nombreQuedada = quedada.name;
+  const descripcionQuedada = quedada.description 
+  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
+  const confirmados = quedada.asistentes.length; 
+  const maxParticipantes = quedada.limit; 
+  const zona = "Zona " + quedada.zone; 
+  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
+  const urlImagenQuedada=`${env.BACK_URL}/quedada_img/${quedada._id}`;
   const iconColor = 'white'; 
 
-  const handleConfirm = () => {
-    setConfirmado(true); // Cambia el estado a confirmado
-    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
-  };
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
@@ -81,7 +56,6 @@ const QuedadaPremiumCard = ({quedada}) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {/* Renderizado condicional del icono */}
       {confirmado ? (
         <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
           <Ionicons name="flash-outline" size={24} color="black" />
