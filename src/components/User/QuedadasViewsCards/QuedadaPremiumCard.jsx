@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     padding: 10,
-    marginVertical: 10,
     alignSelf: "center",
     position: 'relative', // Para contener el icono con posición absoluta
   },

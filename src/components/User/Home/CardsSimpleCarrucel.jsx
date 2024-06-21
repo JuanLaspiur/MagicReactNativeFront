@@ -67,11 +67,10 @@ const CardsSimpleCarrucel = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingVertical: 20,
   },
   wrapper: {
-    height: 405, // Ajusta esta altura según sea necesario
+    minHeight: 500, // Ajusta esta altura según sea necesario
   },
   h1: {
     fontSize: 20,
