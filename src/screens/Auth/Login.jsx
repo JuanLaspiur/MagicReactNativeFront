@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   logo_logo: {
     position: "absolute",
-    width: 210, // por que cuando trato de hacer el width se corta la imagen en vez de achicarse?
+    width: 210,
   },
   container_inicia_session_gooogle: {
     display: "flex",

@@ -1,15 +1,24 @@
 import api from './configure'; 
 
 const getLasterAdminSurvey = async () => {
-    try {
-      const response = await api.get('/encuestas-admin'); 
-      const ultimaEncuesta = response.length > 0 ? response[response.length - 1] : []
-      return ultimaEncuesta;
-    } catch (error) {
-      console.error('Error al obtener encuesta de admin: ', error);
-      throw error;
+  try {
+    const response = await api.get('/encuestas-admin'); 
+    let ultimaEncuesta = response.data;
+    
+    // Verificar si hay encuestas en la respuesta
+    if (ultimaEncuesta.length > 0) {
+      ultimaEncuesta = ultimaEncuesta[ultimaEncuesta.length - 1];
+    } else {
+      ultimaEncuesta = null; // o [] dependiendo de lo que necesites en caso de no haber encuestas
     }
-  };
+    
+    return ultimaEncuesta;
+  } catch (error) {
+    console.error('Error al obtener encuesta de admin: ', error);
+    throw error;
+  }
+};
+
 
 const getLasterAdminSurveyOptions = async (surveyID) =>{
     try {

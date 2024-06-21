@@ -40,11 +40,11 @@ const askPremium = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.box} onPress={navigateToAmistad}>
         <Ionicons name="people-outline" size={40} color="gray" />
-        <Text style={styles.text}>Mis Amigos</Text>
+        <Text style={styles.text}>Amigos</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.box}>
         <Ionicons name="diamond-outline" size={38} color="#AED0F6" onPress={askPremium} />
-        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Ser Premium</Text>
+        <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Premium</Text>
       </TouchableOpacity>
 
     </View>
