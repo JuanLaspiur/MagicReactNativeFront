@@ -5,7 +5,21 @@ import ItemParticipantsQuedadaDetail from './ItemParticipantsQuedadaDetail'; // 
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const ParticipantsCarrucel = () => {
+const ParticipantsCarrucel = ({ quedada }) => {
+  const asistentes = quedada.asistentes;
+
+  // Función para dividir los asistentes en grupos de 4
+  const chunkArray = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
+  // Dividir los asistentes en grupos de 4
+  const asistentesChunks = chunkArray(asistentes, 4);
+
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Participantes</Text>
@@ -16,22 +30,26 @@ const ParticipantsCarrucel = () => {
         autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
-        dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}
-        activeDotStyle={{ backgroundColor: 'white', width: 8, height: 8, borderRadius: 4 }}
+        dotStyle={{
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+        }}
+        activeDotStyle={{
+          backgroundColor: 'white',
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+        }}
       >
-        <View style={styles.slide}>
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-        </View>
-        <View style={styles.slide}>
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-          <ItemParticipantsQuedadaDetail />
-        </View>
-        {/* Agrega más vistas según sea necesario */}
+        {asistentesChunks.map((chunk, index) => (
+          <View key={index} style={styles.slide}>
+            {chunk.map((asistente, i) => (
+              <ItemParticipantsQuedadaDetail key={i} asistente={asistente} />
+            ))}
+          </View>
+        ))}
       </Swiper>
     </View>
   );

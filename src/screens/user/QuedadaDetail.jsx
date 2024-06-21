@@ -13,7 +13,7 @@ const QuedadaDetail = ({ route }) => {
   const [expanded, setExpanded] = useState(false); // Estado para expandir la descripción
   const urlImagenQuedada = env.BACK_URL+'/quedada_img/'+quedada._id;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
-  const nombreYApellido = quedada.userInfo.name+' '+quedada.userInfo.last_name;
+  const nombreYApellido = quedada.userInfo.name;
   const handleAsistirPress = () => {
     if (asistir) {
       alert('Cancelar asistencia');
@@ -28,7 +28,7 @@ const QuedadaDetail = ({ route }) => {
     setExpanded(!expanded);
   };
 
-  alert(JSON.stringify(quedada))
+ 
   // Función para truncar la descripción si es más larga de 300 caracteres
   const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -89,7 +89,7 @@ const QuedadaDetail = ({ route }) => {
         resizeMode="contain"
         style={styles.eclipseRosa2}
       />
-      <ParticipantsCarrucel/>
+      <ParticipantsCarrucel quedada={quedada}/>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => alert('Denunciar quedada')}>
           <Text style={styles.buttonText}>Denunciar</Text>

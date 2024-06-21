@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+// ItemParticipantsQuedadaDetail.js
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-
-const ItemParticipantsQuedadaDetail = () => {
+import { getUserById } from '../../../api/User.controller'; // Ajusta la ruta según tu estructura de proyecto
+import env from '../../../../env'
+const ItemParticipantsQuedadaDetail = ({ asistente }) => {
+  const [usuario, setUsuario] = useState(null);
   const [asistenciaConfirmada, setAsistenciaConfirmada] = useState(false);
 
-  const handlePress = () => {
-    Alert.alert(
-      "Confirmación de asistencia",
-      asistenciaConfirmada ? "¿Deseas cancelar tu asistencia?" : "¿Deseas confirmar tu asistencia?",
-      [
-        {
-          text: "Cancelar",
-          style: "cancel"
-        },
-        {
-          text: "Confirmar",
-          onPress: () => setAsistenciaConfirmada(!asistenciaConfirmada)
-        }
-      ]
-    );
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {  
+        const userData = await getUserById(asistente.user_id);
+        setUsuario(userData.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
+    fetchUserData();
+  }, [asistente._id]);
+
+ 
   return (
-    <TouchableOpacity style={styles.card} onPress={handlePress}>
-      <View style={styles.avatarContainer}>
+    <TouchableOpacity style={styles.card} >
+      <View style={styles.avatarContainer}>{usuario && usuario._id &&
         <Image
-          source={{ uri: "https://randomuser.me/api/portraits/men/41.jpg" }}
+          source={{ uri: `${env.BACK_URL}/perfil_img/${usuario._id}` }}
           style={styles.avatar}
-        />
+        />}
         <View style={styles.textContainer}>
-          <Text style={styles.name}>Nombre del Participante</Text>
+          <Text style={styles.name}>{usuario ? `${usuario.name} ${usuario.last_name}` : "Nombre del Participante"}</Text>
           <Text style={styles.description}>
-            Edad: 44
+            Edad: {usuario ? usuario.age : "44"}
           </Text>
         </View>
       </View>
