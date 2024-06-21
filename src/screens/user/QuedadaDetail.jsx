@@ -3,41 +3,72 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions
 import AppHeader from '../../components/User/AppHeader';
 import ParticipantsCarrucel from '../../components/User/Home/ParticipantsCarrucel';
 import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
-
+import env from '../../../env';
 const { width: screenWidth } = Dimensions.get('window');
+import { formatDate } from '../../helpers/UpdateQuedadaDay'
 
-const QuedadaDetail = () => {
+const QuedadaDetail = ({ route }) => {
+  const { quedada } = route.params;
   const [asistir, setAsistir] = useState(false); // Estado inicial: no asistiendo
-
+  const [expanded, setExpanded] = useState(false); // Estado para expandir la descripción
+  const urlImagenQuedada = env.BACK_URL+'/quedada_img/'+quedada._id;
+  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
+  const nombreYApellido = quedada.userInfo.name+' '+quedada.userInfo.last_name;
   const handleAsistirPress = () => {
     if (asistir) {
-      // Si ya se ha confirmado asistencia, aquí puedes agregar la lógica para cancelarla
       alert('Cancelar asistencia');
     } else {
-      // Si no se ha confirmado asistencia, aquí puedes agregar la lógica para asistir
       alert('Asistir a la quedada');
     }
     // Cambiar el estado opuesto
     setAsistir(!asistir);
   };
 
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
+  alert(JSON.stringify(quedada))
+  // Función para truncar la descripción si es más larga de 300 caracteres
+  const truncateDescription = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    } else {
+      return text;
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <AppHeader title="QuedadaDetail" />
       <Image
-        source={{ uri: 'https://d2il8hfach02z9.cloudfront.net/uploads/event_photo/photo/5291/Facebook-Event-La-Quedada.jpg?v=1558109781' }}
+        source={{ uri: urlImagenQuedada }}
         style={styles.image}
       />
       <View style={styles.card}>
+        <Text style={styles.titulo}>{quedada.name}</Text>
         <Text style={styles.description}>
-          Esta es una descripción extensa de la quedada. toda la información importante. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsum tempora laboriosam, cumque reiciendis id officiis consequatur magnam corporis quibusdam deleniti!
+          {expanded ? quedada.description : truncateDescription(quedada.description, 300)}
         </Text>
+        {quedada.description.length > 300 && (
+          <TouchableOpacity onPress={toggleExpanded}>
+            <Text style={styles.verMas}>{expanded ? 'Ver menos' : 'Ver más'}</Text>
+          </TouchableOpacity>
+        )}
+  
         <View style={styles.datos}>
-        <Text style={styles.datosText}><Ionicons name="person-remove-outline" size={14} color="white " /> Max: Centro</Text>
-          <Text style={styles.datosText}><Ionicons name="map-outline" size={14} color="white" /> Zona: Centro</Text>
-          <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: 12/04/2025</Text>
-          <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: 12</Text>
-          <Text style={styles.datosText}><Ionicons name="dice-outline" size={14} color="white" /> Confirmados: 7</Text>
+          <View style={styles.avatarContainer}>
+        <Image
+          source={{ uri: urlImagePerfil }}
+          style={styles.avatar}
+        />
+        <Text style={styles.name}>{nombreYApellido}</Text>
+      </View>
+          <Text style={styles.datosText}><Ionicons name="person-remove-outline" size={14} color="white " /> Max: {quedada.limit}</Text>
+          <Text style={styles.datosText}><Ionicons name="map-outline" size={14} color="white" /> Zona: {quedada.zone}</Text>
+          <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: {quedada.dateTime && formatDate(quedada.dateTime)}</Text>
+          <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: {( quedada.asistentes ? quedada.asistentes.length : 0 )+ ( quedada.solicitudesDeParticipacion ?  quedada.solicitudesDeParticipacion.length : 0)} </Text>
+          <Text style={styles.datosText}><Ionicons name="dice-outline" size={14} color="white" /> Confirmados: {quedada.asistentes.length} </Text>
           <TouchableOpacity style={styles.asistenciaStatus} onPress={handleAsistirPress}>
             <View style={styles.circle}>
               <Ionicons name={asistir ? 'flash-outline' : 'flash-off-outline'} size={24} color="white" />
@@ -48,8 +79,7 @@ const QuedadaDetail = () => {
           </TouchableOpacity>
         </View>
       </View>
-      
-      <Image
+          <Image
         source={require("../../assets/Login/Ellipse 2.png")}
         resizeMode="contain"
         style={styles.eclipseRosa1}
@@ -73,6 +103,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  }, 
+   avatarContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingBottom:20,
+    justifyContent:'center',
+    color:'gray'
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "400",
+    color: "#fff",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+  titulo: {
+    fontWeight:'700'
   },
   image: {
     width: '100%',
@@ -147,8 +199,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   description: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
+  },
+  verMas: {
+    color: 'gray',
+    marginTop: 10,
   },
   asistenciaStatus: {
     flexDirection: 'row',
