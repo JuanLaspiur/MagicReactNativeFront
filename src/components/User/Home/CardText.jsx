@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EAEAEA', // Color de fondo gris claro
     borderRadius: 10,
     padding: 10,
-    margin: 5,
+    margin: 7,
     marginHorizontal: 11,
     elevation: 2,
   },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    color: '#333', // Color del texto
+    color: 'gray', // Color del texto
   },
 });
 

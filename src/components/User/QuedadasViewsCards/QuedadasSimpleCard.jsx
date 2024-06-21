@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "white",
+    color: "#E0E0E0",
     marginBottom: 3,
   },
   edadText: {
     fontSize: 12,
-    color: "white",
+    color: "#fff",
   },
   infoContainer: {
     flexDirection: "row",
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   infoText: {
-    fontSize: 12,
-    color: "white",
+    fontSize: 11,
+    color: "#fff",
   },
   iconContainer: {
     position: 'absolute',

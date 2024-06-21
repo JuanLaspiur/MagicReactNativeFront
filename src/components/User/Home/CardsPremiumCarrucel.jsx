@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     width: '110%',
   },
   wrapper: {
-    minHeight: 400,
+   maxHeight: 350
   },
   h1: {
     fontSize: 20,

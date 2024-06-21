@@ -184,17 +184,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },  
   loginButton: {
+    display:'flex',
     backgroundColor: "#007AFF", // Azul
     padding: 10,
     borderRadius: 5,
-    height: 40,
-    width: "100%",
+    width: "100%",    
+    justifyContent:"center",
+    alignItems:'center'
   },
   loginButtonText: {
     color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-    height: 20,
   },
   container_crear_recuperar: {
     position: "absolute",

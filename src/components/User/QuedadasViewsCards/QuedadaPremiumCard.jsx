@@ -26,6 +26,7 @@ const QuedadaPremiumCard = ({quedada}) => {
   };
 
   const nombreQuedada = quedada.name;
+  const nombreYApellido = quedada.userInfo.name+' '+quedada.userInfo.last_name;
   const descripcionQuedada = quedada.description 
   const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
   const confirmados = quedada.asistentes.length; 
@@ -43,14 +44,15 @@ const QuedadaPremiumCard = ({quedada}) => {
           source={{ uri: urlImagePerfil }}
           style={styles.avatar}
         />
-        <Text style={styles.name}>Juan Pérez</Text>
+        <Text style={styles.name}>{nombreYApellido}</Text>
       </View>
       <Image
         source={{ uri: urlImagenQuedada }}
         style={styles.image}
       />
-      <Text style={styles.description}>{truncateDescription(descripcionQuedada, 120)}</Text>
-      <View style={styles.infoContainer}>
+      {/* nombreQuedada */}
+      <Text style={styles.nombreQuedada}>{nombreQuedada}</Text>
+         <View style={styles.infoContainer}>
         <Text style={styles.infoText}>{fecha}</Text>
         <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
@@ -69,7 +71,7 @@ const QuedadaPremiumCard = ({quedada}) => {
         </TouchableOpacity>
       )}
     </TouchableOpacity>
-  );
+  );1
 };
 
 const styles = StyleSheet.create({
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "white",
+    color: "#fff",
   },
   image: {
     width: "100%",
@@ -108,18 +110,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-  description: {
+  nombreQuedada: {
     fontSize: 14,
-    color: "white",
+    color: "#E0E0E0",
     marginBottom: 10,
+    fontWeight: "bold"
   },
   infoContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
   infoText: {
-    fontSize: 12,
-    color: "white",
+    fontSize: 11,
+    color: "#fff",
   },
   iconContainer: {
     position: 'absolute',

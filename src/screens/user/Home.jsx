@@ -28,13 +28,13 @@ const Home = () => {
           style={styles.eclipse4}
         />
              <Tabloide/>     
-                <CardText/>
              <CardsPremiumCarrucel/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse2}
         />
+                  <CardText/>
                 <AdminSurvey/>
                    <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
