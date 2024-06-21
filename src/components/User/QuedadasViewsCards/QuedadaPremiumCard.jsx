@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#E0E0E0",
     marginBottom: 10,
-    fontWeight: "bold"
+    fontWeight: "400"
   },
   infoContainer: {
     flexDirection: "row",

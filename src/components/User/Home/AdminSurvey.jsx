@@ -47,7 +47,7 @@ const AdminSurvey = () => {
           style={[
             styles.option,
             selectedOption === option.texto && styles.selectedOption,
-            !selectedOption && index === opciones.length - 1 && styles.bottomBorder
+            index === opciones.length - 1 && !selectedOption && styles.bottomBorder
           ]}
           onPress={() => handleOptionPress(option.texto)}
         >
@@ -126,3 +126,4 @@ const styles = StyleSheet.create({
 });
 
 export default AdminSurvey;
+

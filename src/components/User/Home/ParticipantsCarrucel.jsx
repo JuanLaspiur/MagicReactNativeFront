@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   wrapper: {
-    height: 400, // Ajusta esta altura según sea necesario
+    height:'auto',
+    minHeight:400,
+    maxHeight: 600, // Ajusta esta altura según sea necesario
   },
   h1: {
     fontSize: 20,

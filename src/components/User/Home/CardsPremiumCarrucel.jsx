@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
    maxHeight: 350
   },
   h1: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'gray',
     paddingHorizontal: 15,
     paddingVertical: 15,

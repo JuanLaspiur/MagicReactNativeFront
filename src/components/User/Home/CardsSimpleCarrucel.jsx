@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     maxHeight: 550
   },
   h1: {
-    fontSize: 20,
+    fontSize: 16,
     color: 'gray',
     paddingHorizontal: 15,
     paddingBottom: 10,

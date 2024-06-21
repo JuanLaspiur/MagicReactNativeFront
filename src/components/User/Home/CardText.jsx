@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     flex: 1, // Esta línea asegura que el contenedor se expanda para ajustarse al contenido del texto
   },
   text: {
-    fontSize: 16,
+    fontSize: 13,
     color: 'gray', // Color del texto
   },
 });
