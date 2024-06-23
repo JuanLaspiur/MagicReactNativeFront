@@ -16,13 +16,12 @@ const IconPerfil = () => {
         const userData = await getValueFromSecureStore('user');
         const userDataJSON = JSON.parse(userData);
         setUser(userDataJSON);
-        // Aquí estableces correctamente la imagen después de setUser
         setImageUri(env.BACK_URL + '/perfil_img/' + userDataJSON._id);
       } catch (error) {
         console.error('Error al obtener el usuario desde SecureStore:', error);
       }
     };
-    fetchUser(); // Llamar a la función de obtención al cargar el componente
+    fetchUser(); 
   }, []);
 
   return (
@@ -31,7 +30,6 @@ const IconPerfil = () => {
       onPress={() => navigation.navigate('Perfil')}
     >
       <Image source={{ uri: imageUri }} style={styles.image} />
-      {/* Aquí necesitas verificar que user esté definido antes de acceder a sus propiedades */}
       <Text style={styles.text}>{user ? `${user.name} ${user.last_name}` : 'Cargando...'}</Text>
     </TouchableOpacity>
   );

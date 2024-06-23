@@ -21,7 +21,6 @@ const MyQuedadas = ({ user }) => {
     fetchMyQuedadas();
   }, []);
 
-  // Dividir las quedadas en grupos de tres
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
       arr.slice(index * size, index * size + size)

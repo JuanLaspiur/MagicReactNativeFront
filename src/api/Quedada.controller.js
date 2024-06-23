@@ -31,6 +31,17 @@ const getAllQuedadasPremium = async () => {
     }
   };
 
+  const getQuedadasAsistidasByUserId = async (userId) => {
+    try {
+      const response = await api.get(`/evetos_asistidos/${userId}`);
+      return response;
+    } catch (error) {
+      console.error(`Error al obtener quedadas del usuario con ID ${userId}:`, error);
+      throw error;
+    }
+  };
+
+
 const getQuedadaById = async (id) => {
   try {
     const response = await api.get(`/quedada_by_id/${id}`); 
@@ -62,4 +73,4 @@ const updateQuedada = async (id, updatedQuedada) => {
 };
 
 
-export { getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedada, updateQuedada, getQuedadasByUserId };
+export { getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedada, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };

@@ -79,6 +79,8 @@ const Profile = () => {
         />
         <InterestsTable user={user} />
         <MyQuedadas user={user}/> 
+        {/* ParticipationQuedadas */}
+        <ParticipationQuedadas user={user}/> 
       </ScrollView>
     </View>
   );
