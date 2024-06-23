@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { calculateAge } from '../../../helpers/calculator';
 
-const ResumePerfil = () => {
+const ResumePerfil = ({user}) => {
   // Supongamos que estos son los datos del perfil (solo como ejemplo)
   const perfil = {
     nombre: 'John',
@@ -25,12 +26,11 @@ const ResumePerfil = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}><Text style={styles.label}>Nombre:</Text> {perfil.nombre} {perfil.apellido}</Text>
       <Text style={styles.text}><Text style={styles.label}>Carma:</Text> {perfil.carma.toFixed(1)} / 5.0</Text>
       <Text style={styles.text}><Text style={styles.label}>Estrellas:</Text> {renderEstrellas(perfil.estrellas)}</Text>
-      <Text style={styles.text}><Text style={styles.label}>Sexo:</Text> {perfil.sexo}</Text>
-      <Text style={styles.text}><Text style={styles.label}>Edad:</Text> {perfil.edad} años</Text>
-      <Text style={styles.text}><Text style={styles.label}>Oficio/Hobbies:</Text> {perfil.hobbies.join(', ')}</Text>
+      <Text style={styles.text}><Text style={styles.label}>Genero:</Text> {user && user.gender && user.gender}</Text>
+      <Text style={styles.text}><Text style={styles.label}>Edad:</Text> {user && user.birthdate && calculateAge(user.birthdate)} años</Text>
+      <Text style={styles.text}><Text style={styles.label}>Descripción:</Text> {user && user.description && user.description}</Text>
     </View>
   );
 };

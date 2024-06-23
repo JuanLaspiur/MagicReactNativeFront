@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -18,7 +18,25 @@ import FollowersBox from "../../components/User/Profile/FollowersBox";
 import MyQuedadas from "../../components/User/Profile/MyQuedadas";
 import ParticipationQuedadas from "../../components/User/Profile/ParticipationQuedadas";
 import MyStatus from "../../components/User/Profile/MyStatus";
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 const Profile = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await getValueFromSecureStore('user');
+        const userDataJSON = JSON.parse(userData);
+        setUser(userDataJSON);
+      } catch (error) {
+        console.error('Error al obtener el usuario desde SecureStore:', error);
+      }
+    };
+    fetchUser(); // Llamar a la función de obtención al cargar el componente
+  }, []);
+
+
+
   return (
     <View style={styles.container}>
       <AppHeader title="Perfil" />
@@ -30,15 +48,15 @@ const Profile = () => {
         />
         <MyStatus />
         <IconPerfil />
-        <ResumePerfil />
-        <FollowersBox />
-        <BoxIconsMyProfile />
+        <ResumePerfil user={user} />
+        <FollowersBox user={user} />
+        <BoxIconsMyProfile user={user}  />
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}
           resizeMode="contain"
           style={styles.eclipse2}
         />
-        <CardTextMyAnimal />
+        <CardTextMyAnimal user={user} />
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}
           resizeMode="contain"
@@ -59,9 +77,10 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
-        <InterestsTable />
-        <MyQuedadas />
-        <ParticipationQuedadas />
+        <InterestsTable user={user} />
+        <MyQuedadas user={user}/> 
+        {/* ParticipationQuedadas */}
+        <ParticipationQuedadas user={user}/> 
       </ScrollView>
     </View>
   );
