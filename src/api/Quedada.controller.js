@@ -72,5 +72,15 @@ const updateQuedada = async (id, updatedQuedada) => {
   }
 };
 
+const getQuedadaCategories = async () =>{
+  try{
+    const response = await api.get('/categories')
+    return response.data
+  }catch (error){
+    console.error(`Error al obtener categorias :`, error);
+    throw error;
+  }
+}
 
-export { getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedada, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };
+
+export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedada, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };

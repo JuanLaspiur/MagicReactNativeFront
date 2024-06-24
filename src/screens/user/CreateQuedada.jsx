@@ -1,23 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, ScrollView, Platform } from 'react-native';
-import * as ImagePicker from 'expo-image-picker'; // Importamos ImagePicker desde Expo
+import * as ImagePicker from 'expo-image-picker';
 import AppHeader from '../../components/User/AppHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
+import { getQuedadaCategories } from '../../api/Quedada.controller';
 
-// Imagen por defecto para mostrar si no se ha seleccionado ninguna imagen
-const defaultImage = 'https://via.placeholder.com/200'; // URL de una imagen de ejemplo
+const defaultImage = 'https://via.placeholder.com/200';
 
 function CreateQuedada() {
-  const [image, setImage] = useState(null); // Estado para la imagen seleccionada
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date()); // Estado para la fecha
+  const [date, setDate] = useState(new Date());
   const [maxParticipants, setMaxParticipants] = useState('');
   const [location, setLocation] = useState('');
-  const [privacy, setPrivacy] = useState('public'); // Valor por defecto para la privacidad
-  const [showDatePicker, setShowDatePicker] = useState(false); // Estado para mostrar/ocultar el DatePicker
+  const [privacy, setPrivacy] = useState('public');
+  const [zone, setZone] = useState('Norte');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [quedadaName, setQuedadaName] = useState('');
+  const [categories, setCategories] = useState([]);
 
-  // Función para manejar la selección de imagen desde el dispositivo
+  useEffect(() => {
+    fetchGetCategories();
+  }, []);
+
+  const fetchGetCategories = async () => {
+    try {
+      const data = await getQuedadaCategories(); 
+      setCategories(data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -25,32 +40,28 @@ function CreateQuedada() {
       aspect: [4, 3],
       quality: 1,
     });
-
     if (!result.cancelled) {
-      setImage(result.uri); // Guardamos la URI de la imagen seleccionada
+      setImage(result.uri);
     }
   };
 
-  // Función para manejar el cambio de fecha en el picker
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDatePicker(Platform.OS === 'ios'); // Ocultar el picker en iOS automáticamente
+    setShowDatePicker(Platform.OS === 'ios');
     setDate(currentDate);
   };
 
   const handleSubmit = () => {
-    // Lógica para enviar los datos al servidor o manejarlos como necesites
     const quedadaData = {
       image,
       description,
       date,
       maxParticipants,
       location,
-      privacy
+      privacy,
     };
-    console.log(quedadaData); // Solo para demostración, reemplaza con tu lógica real
-    // Aquí podrías hacer la solicitud HTTP para crear la quedada
-    // Resetear los estados después de enviar los datos si es necesario
+    console.log(quedadaData);
+
     setImage(null);
     setDescription('');
     setDate(new Date());
@@ -63,14 +74,8 @@ function CreateQuedada() {
     <View style={styles.container}>
       <AppHeader title="Crear Quedada" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Image source={require('../../assets/Login/Grey-Wave-PNG-Image.png')} style={styles.imageBackground} />
-        <Image source={require('../../assets/Login/pngwing.com.png')} style={styles.imageBackground2} />
-        <Text style={styles.title}>Crear Quedada</Text>
-        
-        {/* Mostrar la imagen seleccionada o la imagen por defecto */}
         <Image source={{ uri: image || defaultImage }} style={styles.image} />
 
-        {/* Botón para seleccionar una imagen */}
         <TouchableOpacity
           style={styles.button}
           onPress={pickImage}
@@ -80,14 +85,24 @@ function CreateQuedada() {
         </TouchableOpacity>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Descripción:</Text>
+          <Text style={styles.label}>Nombre Quedada:</Text>
           <TextInput
             style={styles.input}
+            placeholder="Ingresá nombre de la Quedada"
+            value={quedadaName}
+            onChangeText={setQuedadaName}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Descripción:</Text>
+          <TextInput
+            style={[styles.input, { height: 100 }]} // Adjusted height for multiline input
             placeholder="Ingresa la descripción"
             value={description}
             onChangeText={setDescription}
             multiline
-            numberOfLines={7}
+            numberOfLines={4}
           />
         </View>
 
@@ -100,7 +115,6 @@ function CreateQuedada() {
           >
             <Text style={styles.dateButtonText}>{date.toLocaleDateString()}</Text>
           </TouchableOpacity>
-          {/* Mostrar el DateTimePicker si showDatePicker es true */}
           {showDatePicker && (
             <DateTimePicker
               value={date}
@@ -123,6 +137,21 @@ function CreateQuedada() {
         </View>
 
         <View style={styles.inputContainer}>
+          <Text style={styles.label}>Zona:</Text>
+          <Picker
+            selectedValue={zone}
+            style={styles.input}
+            onValueChange={(itemValue, itemIndex) => setZone(itemValue)}
+          >
+            <Picker.Item label="Selecciona zona" value="" />
+            <Picker.Item label="Norte" value="Norte" />
+            <Picker.Item label="Sur" value="Sur" />
+            <Picker.Item label="Este" value="Este" />
+            <Picker.Item label="Oeste" value="Oeste" />
+          </Picker>
+        </View>
+
+        <View style={styles.inputContainer}>
           <Text style={styles.label}>Ubicación:</Text>
           <TextInput
             style={styles.input}
@@ -130,6 +159,20 @@ function CreateQuedada() {
             value={location}
             onChangeText={setLocation}
           />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Categoría:</Text>
+          <Picker
+            selectedValue={privacy}
+            style={styles.input}
+            onValueChange={(itemValue, itemIndex) => setPrivacy(itemValue)}
+          >
+            <Picker.Item label="Selecciona categoría" value="" />
+            {categories.map((category) => (
+              <Picker.Item key={category._id} label={category.name} value={category._id} />
+            ))}
+          </Picker>
         </View>
 
         <View style={styles.inputContainer}>
@@ -165,28 +208,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20,
-  },
-  title: {
-    fontSize: 30,
-    marginBottom: 20,
-    textAlign: 'center',
-    color:'gray',
-    textShadowColor: 'white', // Color gris para la sombra del texto
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 2,
-  }
-  ,
-  imageBackground: {
-    position: 'absolute',
-    zIndex: -1,
-    opacity: 0.2,
-    bottom: 0,
-  },
-  imageBackground2: {
-    position: 'absolute',
-    zIndex: -1,
-    opacity: 0.2,
-    top: -50,
   },
   image: {
     width: '100%',
