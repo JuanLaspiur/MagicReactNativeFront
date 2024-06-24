@@ -10,10 +10,10 @@ const getUserById = async (userID) => {
 }
 };
 
-const getSeguidores_seguidos = async (userID) =>{
+const getSeguidores_seguidos = async (userID, num) =>{
   try {
-    const response = await api.get(`/seguidores_seguidos/${userID}`);
-    return response;
+    const response = await api.get(`/seguidores_seguidos/${num}/${userID}`);
+    return response.data;
   } catch (error) {
     console.error('Error fetching user by ID:', error);
     throw error; 

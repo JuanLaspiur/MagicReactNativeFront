@@ -9,30 +9,55 @@ import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore.js';
 
 function Friends() { 
   const [modalVisible, setModalVisible] = useState(false);
-  const [friends, setFriends] = useState([]);
-  const [user, setUser] = useState([]);
+  const [friends, setFriends] = useState([])
+  const [seguidores, setSeguidores] = useState([]);
+  const [seguidos, setSeguidos] =useState([]);
+  const [user, setUser] = useState(null);
 
   const handleFilterPress = () => {
     setModalVisible(true);
   };
 
-  const fetchMyFriends = async() =>{
-  console.log('Mi Id: '+ user._id)
-  //  const data = await getSeguidores_seguidos(user._id)
-  //  console.log('Mis amigos  '+ data)
-  //  setFriends(data)
+  const handleOptionPress = (option) => {
+    setModalVisible(false); // Cerrar el modal al seleccionar una opción
+  
+    switch (option) {
+      case 'Seguidores':
+        setFriends(seguidores);
+        break;
+      case 'Seguidos':
+        setFriends(seguidos);
+        break;
+      case 'Mi zona':
+        break;
+      default:
+        break;
+    }
+  };
+  
+
+  const fetchMyFriendsSeguidores = async() =>{
+  const response = await getSeguidores_seguidos(user._id, '1')
+  setSeguidores(response)
+  setFriends(seguidores)  
+  console.log('[depure]  ' + seguidores)  
+}
+  const fetchMyFriendsSeguidos = async () => {
+    const response = await getSeguidores_seguidos(user._id, '2')
+    setSeguidos(response)  
   }
+
   const getAuthUser = async() =>{
     const data = await getValueFromSecureStore('user')
-    setUser(JSON.stringify(data))
-    console.log('Juan  '+data)
-    console.log('USER ID ' + data._id)
+    setUser(JSON.parse(data))
   }
 
   useEffect(()=>{
     getAuthUser();
-    fetchMyFriends();
-  },[friends])
+    fetchMyFriendsSeguidores();
+    fetchMyFriendsSeguidos();
+  },[])
+
 
 
   return (
@@ -49,23 +74,16 @@ function Friends() {
           <Ionicons name="filter-outline" size={24} color="gray" style={styles.iconFilter} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.scrollContainer}>
-        <ItemsFriends name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriends name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriends name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        <ItemsFriends name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriends name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriends name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        <ItemsFriends name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriends name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriends name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        <ItemsFriends name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriends name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriends name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-
-        
-        
-        {/* Agrega más ItemsFriends según sea necesario */}
+          <ScrollView style={styles.scrollContainer}>
+        {friends.length > 0 && friends.map((friend) => (
+          <ItemsFriends
+            key={friend.seguidorInfo._id}
+            name={friend.seguidorInfo.name}
+            lastName={friend.seguidorInfo.last_name}
+            age={friend.seguidorInfo.age}
+            avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} 
+          />
+        ))}
       </ScrollView>
       <Image
         source={require("../../assets/Login/Ellipse 1.png")}
@@ -88,20 +106,20 @@ function Friends() {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          setModalVisible(false); // Manejar el cierre del modal al presionar fuera de él (en Android)
+          setModalVisible(false);
         }}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
           <View style={styles.modalBackground}>   
             <View style={styles.modalContent}>
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Enviar Encuesta')}>
+              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Seguidores')}>
                 <Text style={styles.optionText}>Solo mis seguidos</Text>
               </TouchableOpacity>
               {/* Agrega más opciones aquí según sea necesario */}
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Enviar Encuesta')}>
+              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Seguidos')}>
                 <Text style={styles.optionText}>Solo mis seguidores</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Enviar Encuesta')}>
+              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Mi zona')}>
                 <Text style={styles.optionText}>De mi zona</Text>
               </TouchableOpacity>
             </View>

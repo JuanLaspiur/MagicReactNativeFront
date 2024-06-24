@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native'; // Import ScrollView
+import { View, Text, StyleSheet, ScrollView } from 'react-native'; 
 import AppHeader from '../../components/User/AppHeader';
-import ItemMessage from '../../components/User/Messages/ItemMenssageBox'; // Assuming ItemMessage is in a separate file
-
+import ItemMessage from '../../components/User/Messages/ItemMenssageBox';
 const MessagesBox = () => {
   return (
     <ScrollView style={styles.container}>
