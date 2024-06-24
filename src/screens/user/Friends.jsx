@@ -1,15 +1,39 @@
-import React,  { useState }  from 'react';
+import React,  { useState, useEffect }  from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableWithoutFeedback ,TouchableOpacity, Modal } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde @expo/vector-icons
+import { FontAwesome } from '@expo/vector-icons'; 
 import AppHeader from '../../components/User/AppHeader';
 import ItemsFriends from '../../components/User/Friends/ItemsFriends';
 import { Ionicons } from '@expo/vector-icons';
+import { getSeguidores_seguidos } from '../../api/User.controller.js'
+import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore.js';
 
 function Friends() { 
   const [modalVisible, setModalVisible] = useState(false);
+  const [friends, setFriends] = useState([]);
+  const [user, setUser] = useState([]);
+
   const handleFilterPress = () => {
     setModalVisible(true);
   };
+
+  const fetchMyFriends = async() =>{
+  console.log('Mi Id: '+ user._id)
+  //  const data = await getSeguidores_seguidos(user._id)
+  //  console.log('Mis amigos  '+ data)
+  //  setFriends(data)
+  }
+  const getAuthUser = async() =>{
+    const data = await getValueFromSecureStore('user')
+    setUser(JSON.stringify(data))
+    console.log('Juan  '+data)
+    console.log('USER ID ' + data._id)
+  }
+
+  useEffect(()=>{
+    getAuthUser();
+    fetchMyFriends();
+  },[friends])
+
 
   return (
     <View style={styles.container}>

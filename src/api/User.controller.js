@@ -9,4 +9,14 @@ const getUserById = async (userID) => {
     throw error; 
 }
 };
-export {getUserById}
+
+const getSeguidores_seguidos = async (userID) =>{
+  try {
+    const response = await api.get(`/seguidores_seguidos/${userID}`);
+    return response;
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    throw error; 
+}
+}
+export {getUserById, getSeguidores_seguidos}
