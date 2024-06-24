@@ -52,7 +52,7 @@ const getQuedadaById = async (id) => {
   }
 };
 
-const createQuedada = async (quedada) => {
+const createQuedadaBack = async (quedada) => {
   try {
     const response = await api.post('/register_quedada', quedada); 
     return response.data;
@@ -83,4 +83,4 @@ const getQuedadaCategories = async () =>{
 }
 
 
-export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedada, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };
+export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };

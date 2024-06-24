@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AppHeader from '../../components/User/AppHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { getQuedadaCategories, createQuedada } from '../../api/Quedada.controller';
+import { getQuedadaCategories, createQuedadaBack } from '../../api/Quedada.controller';
 import {getValueFromSecureStore} from '../../helpers/ExpoSecureStore'
 const defaultImage = 'https://via.placeholder.com/200';
 
@@ -70,22 +70,37 @@ function CreateQuedada() {
     setDate(currentDate);
   };
 
-  const handleSubmit = async() => {
-    const quedadaData = {
-      image,
-      description,
-      date,
-      maxParticipants,
-      location,
-      privacy,
-    };
-    console.log(quedadaData);
-    setImage(null);
-    setDescription('');
-    setDate(new Date());
-    setMaxParticipants('');
-    setLocation('');
-    setPrivacy('public');
+  const handleSubmit = async () => {
+    try {
+      const quedadaData = {
+        image,
+        description,
+        dateTime: date,
+        maxParticipants: parseInt(maxParticipants), // Convertir a entero si es necesario
+        zone,
+        location,
+        category: categories.find(cat => cat._id === privacy), // Asignar la categoría seleccionada
+        privacy,
+      };
+
+      // Llamar a la función para crear la quedada en el backend
+      const response = await createQuedadaBack(quedadaData);
+
+      // Limpiar los estados después de crear la quedada
+      setImage(null);
+      setDescription('');
+      setDate(new Date());
+      setMaxParticipants('');
+      setLocation('');
+      setPrivacy('public');
+      setQuedadaName('');
+
+      // Aquí podrías manejar la respuesta del backend, como navegar a otra pantalla o mostrar un mensaje de éxito
+      console.log('Quedada creada exitosamente:', response);
+    } catch (error) {
+      console.error('Error al crear la quedada:', error);
+      // Manejar el error, mostrar un mensaje al usuario, etc.
+    }
   };
 
   return (
@@ -203,7 +218,7 @@ function CreateQuedada() {
             <Picker.Item label="Selecciona privacidad" value="" />
             <Picker.Item label="Público" value="public" />
         {user && user.quedadasPriv && <Picker.Item label="Privado" value="private" /> }
-        {user && user.premium && <Picker.Item label="Premium" value="premium" /> }
+        {user &&  user.premium && <Picker.Item label="Premium" value="premium" /> }
           </Picker>
         </View>
 
