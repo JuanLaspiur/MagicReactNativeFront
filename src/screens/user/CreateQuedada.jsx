@@ -4,8 +4,8 @@ import * as ImagePicker from 'expo-image-picker';
 import AppHeader from '../../components/User/AppHeader';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import { getQuedadaCategories } from '../../api/Quedada.controller';
-
+import { getQuedadaCategories, createQuedada } from '../../api/Quedada.controller';
+import {getValueFromSecureStore} from '../../helpers/ExpoSecureStore'
 const defaultImage = 'https://via.placeholder.com/200';
 
 function CreateQuedada() {
@@ -19,10 +19,17 @@ function CreateQuedada() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [quedadaName, setQuedadaName] = useState('');
   const [categories, setCategories] = useState([]);
+  const [user, setUser] = useState({})
 
   useEffect(() => {
     fetchGetCategories();
+    getAuthUser();
   }, []);
+
+  const getAuthUser = async() => {
+      const data = await getValueFromSecureStore('user');
+      setUser(JSON.parse(data))
+  }
 
   const fetchGetCategories = async () => {
     try {
@@ -32,6 +39,18 @@ function CreateQuedada() {
       console.error('Error fetching categories:', error);
     }
   };
+  /*
+    form: {
+      name: { required },
+      dateTime: { required },
+      description: { required },
+      zone: { required },
+      location: { required },
+      limit: { required },
+      category: { required },
+      privacy: { required }
+    } 
+  */
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,9 +59,9 @@ function CreateQuedada() {
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
+
+      setImage(result.assets[0].uri);
+    
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -51,7 +70,7 @@ function CreateQuedada() {
     setDate(currentDate);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     const quedadaData = {
       image,
       description,
@@ -61,7 +80,6 @@ function CreateQuedada() {
       privacy,
     };
     console.log(quedadaData);
-
     setImage(null);
     setDescription('');
     setDate(new Date());
@@ -184,8 +202,8 @@ function CreateQuedada() {
           >
             <Picker.Item label="Selecciona privacidad" value="" />
             <Picker.Item label="Público" value="public" />
-            <Picker.Item label="Privado" value="private" />
-            <Picker.Item label="Premium" value="premium" />
+        {user && user.quedadasPriv && <Picker.Item label="Privado" value="private" /> }
+        {user && user.premium && <Picker.Item label="Premium" value="premium" /> }
           </Picker>
         </View>
 
