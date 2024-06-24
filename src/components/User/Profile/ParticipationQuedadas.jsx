@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; // Ajusta la ruta según tu estructura de proyecto
+import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; 
 import { getQuedadasAsistidasByUserId } from '../../../api/Quedada.controller';
 
 const ParticipationQuedadas = ({ user }) => {
-  const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
+  const [filter, setFilter] = useState('todos'); 
   const [quedadas, setQuedadas] = useState([]);
+  const [hasQuedadas, setHasQuedadas] = useState(true); // Estado para verificar si hay quedadas
 
   useEffect(() => {
     const fetchMyParticipationQuedadas = async () => {
       try {
         const result = await getQuedadasAsistidasByUserId(user._id);
-        console.log('[quedadas participé] # depure # '+JSON.stringify(result.data))
         setQuedadas(result);
+        setHasQuedadas(result.length > 0); // Actualiza el estado basado en si hay quedadas
       } catch (error) {
         console.error('Error al obtener quedadas asistidas:', error);
       }
@@ -22,7 +23,6 @@ const ParticipationQuedadas = ({ user }) => {
     fetchMyParticipationQuedadas();
   }, []);
 
-  // Dividir las quedadas en grupos de tres
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
       arr.slice(index * size, index * size + size)
@@ -55,10 +55,10 @@ const ParticipationQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={styles.wrapper}
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} // Ajuste dinámico de altura
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true} 
+        autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   wrapper: {
-    height: 405, // Ajusta esta altura según sea necesario
+    // La altura inicial se establece basada en si hay quedadas o no
   },
   h1: {
     fontSize: 20,

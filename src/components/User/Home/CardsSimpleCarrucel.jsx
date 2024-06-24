@@ -13,6 +13,7 @@ const CardsSimpleCarrucel = () => {
     const fetchQuedadas = async () => {
       try {
         const response = await getAllQuedadas(); 
+        alert(' ' + JSON.stringify(response))
         setQuedadas(response); 
       } catch (error) {
         console.error('Error fetching quedadas:', error);
@@ -35,7 +36,6 @@ const CardsSimpleCarrucel = () => {
     return tempArray;
   };
 
-  // Dividir las quedadas en grupos de tres
   const quedadasChunks = chunkArray(quedadas, 3);
 
   return (
@@ -44,8 +44,8 @@ const CardsSimpleCarrucel = () => {
       <Swiper
         style={styles.wrapper}
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true} 
+        autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}

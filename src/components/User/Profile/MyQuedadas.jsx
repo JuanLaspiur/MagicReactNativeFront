@@ -7,12 +7,14 @@ import { getQuedadasByUserId } from '../../../api/Quedada.controller';
 const MyQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos');
   const [quedadas, setQuedadas] = useState([]);
+  const [hasQuedadas, setHasQuedadas] = useState(true); // Estado para verificar si hay quedadas
 
   useEffect(() => {
     const fetchMyQuedadas = async () => {
       try {
         const data = await getQuedadasByUserId(user._id);
         setQuedadas(data);
+        setHasQuedadas(data.length > 0); // Actualiza el estado basado en si hay quedadas
       } catch (error) {
         console.error('Error al obtener quedadas:', error);
       }
@@ -53,7 +55,7 @@ const MyQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={styles.wrapper}
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} // Ajuste dinámico de altura
         loop={false}
         autoplay={true}
         autoplayTimeout={3}
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   wrapper: {
-    height: 405, // Ajusta esta altura según sea necesario
+    // La altura inicial se establece basada en si hay quedadas o no
   },
   h1: {
     fontSize: 20,
