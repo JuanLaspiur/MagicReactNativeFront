@@ -1,0 +1,58 @@
+import api from './configure'; 
+
+const getAllMyChats = async(userID)=>{
+    try {
+        const response = await api.get('/chatsByUserId/'+userID);
+        return response.data 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const getChatBychatID = async(chatID)=>{
+    try {
+        const response = await api.get('/chat_by_id/'+chatID); 
+        return response 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const ChatPrivadoByuserID = async(userID)=>{
+    try {
+        const response = await api.post('/chat_privado/'+userID); 
+        return response 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const sendMessageBychatID = async(chatID)=>{
+    try {
+        const response = await api.post('/send_message/'+chatID); 
+        return response 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+const udateChatBychatID = async(chatID)=>{
+    try {
+        const response = await api.put('/send_message/'+chatID); 
+        return response 
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+
+
+export { getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID }
+
+/*
+    Route.get("all_chats", "ChatController.index");
+    Route.get("chat_by_id/:id", "ChatController.chatById");
+    Route.post("chat_privado/:user_id", "ChatController.store");
+    Route.post("send_message/:id", "ChatController.create");
+    Route.put("chat/:id", "ChatController.update");
+*/

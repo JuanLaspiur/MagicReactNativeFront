@@ -1,9 +1,43 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getUserById } from '../../../api/User.controller'
+import { getChatBychatID } from '../../../api/Chat.controller';
 
-const ItemMessageBox = ({ profileImage = require('../../../assets/Animals/ICONOS A COLOR-21.png'), name = 'John', lastName = 'Doe', lastMessage = 'Hey, how are you?', timestamp = 1660424800000 }) => {
+const ItemMessageBox = ({ message, profileImage = require('../../../assets/Animals/ICONOS A COLOR-21.png'), name = 'John', lastName = 'Doe', timestamp = 1660424800000 }) => {
   const navigation = useNavigation();
+  const [user , setUser] = useState(null)
+  const [ chat , setChat ] = useState([])
+  const [ mensajes , setMensajes ] = useState([])
+  const [lastMessage, setLastMessage] = useState('Hey, how are you?'); // Estado para almacenar el último mensaje
+
+  useEffect(() => {
+    const fetchUserById = async () => {
+      try {
+        const response = await getUserById(message.otro_id);
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchChatById = async () => {
+      try {
+        const response = await getChatBychatID(message._id);
+        setChat(response.data);
+        // Actualizar el estado del último mensaje
+        if (response.data && response.data.messages && response.data.messages.length > 0) {
+          const lastMessageText = response.data.messages[response.data.messages.length - 1].text;
+          setLastMessage(lastMessageText);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserById();
+    fetchChatById();
+  }, []);
 
   const handlePress = () => {
     navigation.navigate('ChatRoom');
@@ -15,8 +49,8 @@ const ItemMessageBox = ({ profileImage = require('../../../assets/Animals/ICONOS
         <Image source={profileImage} style={styles.profileImage} />
       </View>
       <View style={styles.messageDetails}>
-        <Text style={styles.nameText}>{name} {lastName}</Text>
-        <Text style={styles.status}>{lastMessage}</Text>
+      <Text style={styles.nameText}>{user?.name} {user?.last_name}</Text>
+      { /*  <Text style={styles.status}>{lastMessage}</Text> */ }
         <Text style={styles.lastMessageText}>{lastMessage}</Text>
       </View>
     </TouchableOpacity>

@@ -5,11 +5,10 @@ const getLasterAdminSurvey = async () => {
     const response = await api.get('/encuestas-admin'); 
     let ultimaEncuesta = response.data;
     
-    // Verificar si hay encuestas en la respuesta
     if (ultimaEncuesta.length > 0) {
       ultimaEncuesta = ultimaEncuesta[ultimaEncuesta.length - 1];
     } else {
-      ultimaEncuesta = null; // o [] dependiendo de lo que necesites en caso de no haber encuestas
+      ultimaEncuesta = null; 
     }
     
     return ultimaEncuesta;
