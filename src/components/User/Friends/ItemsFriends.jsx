@@ -1,18 +1,29 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-function ItemsFriends({ name, lastName, age, avatarUrl }) {
+import { getUserById } from '../../../api/User.controller'
+function ItemsFriends({ name, lastName, age, avatarUrl, userID }) {
+  const [user, setUser] = useState([]);
+
+ const obtenerUsuario = async() => {
+  const response  = await getUserById(userID)
+  setUser(response.data)
+}
+
+  useEffect(()=>{
+    obtenerUsuario()
+  },[])
+
+
   const navigation = useNavigation();
 
   const handleAvatarPress = () => {
     navigation.navigate('OtherUserProfile')
-    // Aquí podrías navegar a la pantalla de perfil u otra acción según tu aplicación
   };
 
   const handleMessagePress = () => {
     Alert.alert('Llendo al chat..');
-    // Aquí podrías navegar a la pantalla de chat u otra acción según tu aplicación
   };
 
   return (
@@ -44,8 +55,8 @@ function ItemsFriends({ name, lastName, age, avatarUrl }) {
           <FontAwesome name="user-circle-o" size={50} color="#AED0F6" />
         )}
         <View style={styles.textContainer}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.description}>{`${lastName} - ${age} años`}</Text>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.description}>{`${user.last_name} - ${user.age} años`}</Text>
         </View>
         <View style={styles.avatarAnimalContainer}>
           <Image source={require('../../../assets/Animals/ICONOS A COLOR-13.png')} style={styles.avatarAnimal} />

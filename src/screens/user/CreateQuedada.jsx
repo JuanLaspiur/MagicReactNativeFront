@@ -1,56 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, ScrollView, Platform } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import AppHeader from '../../components/User/AppHeader';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
-import { getQuedadaCategories, createQuedadaBack } from '../../api/Quedada.controller';
-import {getValueFromSecureStore} from '../../helpers/ExpoSecureStore'
-const defaultImage = 'https://via.placeholder.com/200';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Platform,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import AppHeader from "../../components/User/AppHeader";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import {
+  getQuedadaCategories,
+  createQuedadaBack,
+} from "../../api/Quedada.controller";
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import { apiFormData } from "../../api/configure";
+
+const defaultImage = "https://via.placeholder.com/200";
 
 function CreateQuedada() {
   const [image, setImage] = useState(null);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [date, setDate] = useState(new Date());
-  const [maxParticipants, setMaxParticipants] = useState('');
-  const [location, setLocation] = useState('');
-  const [privacy, setPrivacy] = useState('public');
-  const [zone, setZone] = useState('Norte');
+  const [time, setTime] = useState(new Date());
+  const [maxParticipants, setMaxParticipants] = useState("");
+  const [location, setLocation] = useState("");
+  const [privacy, setPrivacy] = useState("public");
+  const [zone, setZone] = useState("Norte");
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [quedadaName, setQuedadaName] = useState('');
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [quedadaName, setQuedadaName] = useState("");
   const [categories, setCategories] = useState([]);
-  const [user, setUser] = useState({})
-
+  const [category, setCategory] = useState("");
+  const [user, setUser] = useState({});
+  
   useEffect(() => {
     fetchGetCategories();
     getAuthUser();
   }, []);
 
-  const getAuthUser = async() => {
-      const data = await getValueFromSecureStore('user');
-      setUser(JSON.parse(data))
-  }
+  const getAuthUser = async () => {
+    const data = await getValueFromSecureStore("user");
+    setUser(JSON.parse(data));
+  };
 
   const fetchGetCategories = async () => {
     try {
-      const data = await getQuedadaCategories(); 
+      const data = await getQuedadaCategories();
       setCategories(data);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
-  /*
-    form: {
-      name: { required },
-      dateTime: { required },
-      description: { required },
-      zone: { required },
-      location: { required },
-      limit: { required },
-      category: { required },
-      privacy: { required }
-    } 
-  */
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,48 +65,54 @@ function CreateQuedada() {
       quality: 1,
     });
 
-      setImage(result.assets[0].uri);
-    
+    setImage(result.assets[0].uri);
   };
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShowDatePicker(Platform.OS === 'ios');
+    setShowDatePicker(Platform.OS === "ios");
     setDate(currentDate);
+  };
+
+  const handleTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShowTimePicker(Platform.OS === "ios");
+    setTime(currentTime);
   };
 
   const handleSubmit = async () => {
     try {
-      const quedadaData = {
-        image,
-        description,
-        dateTime: date,
-        maxParticipants: parseInt(maxParticipants), // Convertir a entero si es necesario
-        zone,
-        location,
-        category: categories.find(cat => cat._id === privacy), // Asignar la categoría seleccionada
-        privacy,
-      };
-
-      // Llamar a la función para crear la quedada en el backend
-      const response = await createQuedadaBack(quedadaData);
-
-      // Limpiar los estados después de crear la quedada
-      setImage(null);
-      setDescription('');
-      setDate(new Date());
-      setMaxParticipants('');
-      setLocation('');
-      setPrivacy('public');
-      setQuedadaName('');
-
-      // Aquí podrías manejar la respuesta del backend, como navegar a otra pantalla o mostrar un mensaje de éxito
-      console.log('Quedada creada exitosamente:', response);
+      const formData = new FormData();
+      formData.append("file", {
+        uri: image,
+        name: "image.jpg",
+        type: "image/jpeg",
+      });
+      formData.append(
+        "dat",
+        JSON.stringify({
+          image,
+          description,
+          dateTime: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
+          maxParticipants: parseInt(maxParticipants),
+          zone,
+          location,
+          category: category,
+          privacy,
+          user_id: user._id,
+          asistentes: []
+        })
+      );
+      console.log(formData)
+      //const response = await createQuedadaBack(formData);
+     // console.log("Quedada creada exitosamente:", response.data);
+      // Aquí puedes manejar la respuesta exitosa según tus necesidades (actualizar estado, mostrar mensajes, etc.)
     } catch (error) {
-      console.error('Error al crear la quedada:', error);
-      // Manejar el error, mostrar un mensaje al usuario, etc.
+      console.error("Error al crear la quedada:", error);
+      // Manejar el error (mostrar mensaje de error, etc.)
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -130,7 +141,7 @@ function CreateQuedada() {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Descripción:</Text>
           <TextInput
-            style={[styles.input, { height: 100 }]} // Adjusted height for multiline input
+            style={[styles.input, { height: 100 }]}
             placeholder="Ingresa la descripción"
             value={description}
             onChangeText={setDescription}
@@ -140,13 +151,18 @@ function CreateQuedada() {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Fecha:</Text>
+          <Text style={styles.label}>Fecha y Hora:</Text>
           <TouchableOpacity
             style={styles.dateButton}
-            onPress={() => setShowDatePicker(true)}
+            onPress={() => {
+              setShowDatePicker(true);
+              setShowTimePicker(false);
+            }}
             activeOpacity={0.7}
           >
-            <Text style={styles.dateButtonText}>{date.toLocaleDateString()}</Text>
+            <Text style={styles.dateButtonText}>
+              {`${date.toLocaleDateString()} ${time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+            </Text>
           </TouchableOpacity>
           {showDatePicker && (
             <DateTimePicker
@@ -156,6 +172,24 @@ function CreateQuedada() {
               onChange={handleDateChange}
             />
           )}
+          {showTimePicker && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              display="default"
+              onChange={handleTimeChange}
+            />
+          )}
+          <TouchableOpacity
+            style={styles.dateButton}
+            onPress={() => {
+              setShowTimePicker(true);
+              setShowDatePicker(false);
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.dateButtonText}>Seleccionar Hora</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.inputContainer}>
@@ -174,7 +208,7 @@ function CreateQuedada() {
           <Picker
             selectedValue={zone}
             style={styles.input}
-            onValueChange={(itemValue, itemIndex) => setZone(itemValue)}
+            onValueChange={(itemValue) => setZone(itemValue)}
           >
             <Picker.Item label="Selecciona zona" value="" />
             <Picker.Item label="Norte" value="Norte" />
@@ -197,13 +231,13 @@ function CreateQuedada() {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Categoría:</Text>
           <Picker
-            selectedValue={privacy}
+            selectedValue={category}
             style={styles.input}
-            onValueChange={(itemValue, itemIndex) => setPrivacy(itemValue)}
+            onValueChange={(itemValue) => setCategory(itemValue)}
           >
             <Picker.Item label="Selecciona categoría" value="" />
-            {categories.map((category) => (
-              <Picker.Item key={category._id} label={category.name} value={category._id} />
+            {categories.map((cat) => (
+              <Picker.Item key={cat._id} label={cat.name} value={cat._id} />
             ))}
           </Picker>
         </View>
@@ -213,27 +247,31 @@ function CreateQuedada() {
           <Picker
             selectedValue={privacy}
             style={styles.input}
-            onValueChange={(itemValue, itemIndex) => setPrivacy(itemValue)}
+            onValueChange={(itemValue) => setPrivacy(itemValue)}
           >
             <Picker.Item label="Selecciona privacidad" value="" />
             <Picker.Item label="Público" value="public" />
-        {user && user.quedadasPriv && <Picker.Item label="Privado" value="private" /> }
-        {user &&  user.premium && <Picker.Item label="Premium" value="premium" /> }
+            {user && user.quedadasPriv && (
+              <Picker.Item label="Privado" value="private" />
+            )}
+            {user && user.premium && (
+              <Picker.Item label="Premium" value="premium" />
+            )}
           </Picker>
         </View>
 
         <TouchableOpacity
-          style={[styles.submitButton, { backgroundColor: '#AED0F6' }]}
+          style={[styles.submitButton, { backgroundColor: "#AED0F6" }]}
           onPress={handleSubmit}
           activeOpacity={0.7}
         >
           <Text style={styles.submitButtonText}>Crear Quedada</Text>
         </TouchableOpacity>
-
       </ScrollView>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -243,18 +281,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 200,
     marginBottom: 10,
     borderRadius: 10,
   },
   button: {
-    backgroundColor: '#D1D1D1',
+    backgroundColor: "#D1D1D1",
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -262,11 +300,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    transitionProperty: 'opacity',
-    transitionDuration: '0.3s',
+    transitionProperty: "opacity",
+    transitionDuration: "0.3s",
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
   inputContainer: {
@@ -274,31 +312,31 @@ const styles = StyleSheet.create({
   },
   label: {
     marginBottom: 5,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
   },
   dateButton: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
   },
   dateButtonText: {
-    color: '#333',
+    color: "#333",
   },
   submitButton: {
     padding: 15,
     borderRadius: 8,
     marginBottom: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -306,11 +344,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    transitionProperty: 'opacity',
-    transitionDuration: '0.3s',
+    transitionProperty: "opacity",
+    transitionDuration: "0.3s",
   },
   submitButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
 });

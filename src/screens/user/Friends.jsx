@@ -1,17 +1,25 @@
-import React,  { useState, useEffect }  from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableWithoutFeedback ,TouchableOpacity, Modal } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; 
-import AppHeader from '../../components/User/AppHeader';
-import ItemsFriends from '../../components/User/Friends/ItemsFriends';
-import { Ionicons } from '@expo/vector-icons';
-import { getSeguidores_seguidos } from '../../api/User.controller.js'
-import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore.js';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import AppHeader from "../../components/User/AppHeader";
+import ItemsFriends from "../../components/User/Friends/ItemsFriends";
+import { Ionicons } from "@expo/vector-icons";
+import { seguidoresQueMeSiguen } from "../../api/User.controller.js";
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore.js";
 
-function Friends() { 
+function Friends() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [friends, setFriends] = useState([])
-  const [seguidores, setSeguidores] = useState([]);
-  const [seguidos, setSeguidos] =useState([]);
+  const [friends, setFriends] = useState([]);
   const [user, setUser] = useState(null);
 
   const handleFilterPress = () => {
@@ -19,71 +27,76 @@ function Friends() {
   };
 
   const handleOptionPress = (option) => {
-    setModalVisible(false); // Cerrar el modal al seleccionar una opción
-  
+    setModalVisible(false);
+
     switch (option) {
-      case 'Seguidores':
-        setFriends(seguidores);
+      case "Seguidores":
+        console.log("Seguidores " + option);
         break;
-      case 'Seguidos':
-        setFriends(seguidos);
+      case "Seguidos":
+        console.log("Seguidos " + option);
         break;
-      case 'Mi zona':
+      case "To":
         break;
       default:
         break;
     }
   };
-  
 
-  const fetchMyFriendsSeguidores = async() =>{
-  const response = await getSeguidores_seguidos(user._id, '1')
-  setSeguidores(response)
-  setFriends(seguidores)  
-  console.log('[depure]  ' + seguidores)  
-}
-  const fetchMyFriendsSeguidos = async () => {
-    const response = await getSeguidores_seguidos(user._id, '2')
-    setSeguidos(response)  
-  }
+  const getAuthUser = async () => {
+    const data = await getValueFromSecureStore("user");
+    setUser(JSON.parse(data));
+  };
 
-  const getAuthUser = async() =>{
-    const data = await getValueFromSecureStore('user')
-    setUser(JSON.parse(data))
-  }
-
-  useEffect(()=>{
-    getAuthUser();
-    fetchMyFriendsSeguidores();
-    fetchMyFriendsSeguidos();
-  },[])
-
-
+  const getSeguidoresQueMeSiguen = async () => {
+    try {
+      const response = await seguidoresQueMeSiguen(user._id);
+      setFriends(response)
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+ if(!user) {
+    getAuthUser();}
+    getSeguidoresQueMeSiguen();
+  }, [user]);
 
   return (
     <View style={styles.container}>
       <AppHeader title="Amigos" />
       <View style={styles.searchContainer}>
-        <FontAwesome name="search" size={24} color="#CCCCCC" style={styles.icon} />
+        <FontAwesome
+          name="search"
+          size={24}
+          color="#CCCCCC"
+          style={styles.icon}
+        />
         <TextInput
           style={styles.input}
           placeholder="Buscar amigos..."
           placeholderTextColor="#CCCCCC"
         />
         <TouchableOpacity onPress={handleFilterPress}>
-          <Ionicons name="filter-outline" size={24} color="gray" style={styles.iconFilter} />
+          <Ionicons
+            name="filter-outline"
+            size={24}
+            color="gray"
+            style={styles.iconFilter}
+          />
         </TouchableOpacity>
       </View>
-          <ScrollView style={styles.scrollContainer}>
-        {friends.length > 0 && friends.map((friend) => (
-          <ItemsFriends
-            key={friend.seguidorInfo._id}
-            name={friend.seguidorInfo.name}
-            lastName={friend.seguidorInfo.last_name}
-            age={friend.seguidorInfo.age}
-            avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} 
-          />
-        ))}
+      <ScrollView style={styles.scrollContainer}>
+        {friends.length > 0 &&
+          friends.map((friend) => (
+            <ItemsFriends
+              key={friend.seguidor_id}
+              userID ={friend.seguidor_id}
+              avatarUrl={
+                "https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg"
+              }
+            />
+          ))}
       </ScrollView>
       <Image
         source={require("../../assets/Login/Ellipse 1.png")}
@@ -101,7 +114,7 @@ function Friends() {
         style={styles.eclipse3}
       />
 
-<Modal
+      <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -110,16 +123,24 @@ function Friends() {
         }}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={styles.modalBackground}>   
+          <View style={styles.modalBackground}>
             <View style={styles.modalContent}>
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Seguidores')}>
+              <TouchableOpacity
+                style={styles.option}
+                onPress={() => handleOptionPress("Seguidores")}
+              >
                 <Text style={styles.optionText}>Solo mis seguidos</Text>
               </TouchableOpacity>
-              {/* Agrega más opciones aquí según sea necesario */}
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Seguidos')}>
+              <TouchableOpacity
+                style={styles.option}
+                onPress={() => handleOptionPress("Seguidos")}
+              >
                 <Text style={styles.optionText}>Solo mis seguidores</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.option} onPress={() => handleOptionPress('Mi zona')}>
+              <TouchableOpacity
+                style={styles.option}
+                onPress={() => handleOptionPress("Mi zona")}
+              >
                 <Text style={styles.optionText}>De mi zona</Text>
               </TouchableOpacity>
             </View>
@@ -136,7 +157,7 @@ const styles = StyleSheet.create({
     top: -10,
     right: -105,
     zIndex: -1,
-    opacity: 0.2
+    opacity: 0.2,
   },
   eclipse2: {
     position: "absolute",
@@ -144,7 +165,7 @@ const styles = StyleSheet.create({
     top: 90,
     left: -105,
     zIndex: -1,
-    opacity: 0.2
+    opacity: 0.2,
   },
   eclipse3: {
     position: "absolute",
@@ -152,33 +173,33 @@ const styles = StyleSheet.create({
     top: 50,
     left: 0,
     zIndex: -1,
-    opacity: 0.2
+    opacity: 0.2,
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC',
-    backgroundColor: '#FFFFFF',
+    borderBottomColor: "#CCCCCC",
+    backgroundColor: "#FFFFFF",
   },
   icon: {
     marginRight: 10,
   },
   iconFilter: {
-    marginLeft:10,
-    marginRight:2
+    marginLeft: 10,
+    marginRight: 2,
   },
   input: {
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: "#F0F0F0",
     borderRadius: 20,
     fontSize: 16,
   },
@@ -189,30 +210,30 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
     borderRadius: 10,
-    backgroundColor:'#fff',
-    padding:10,
-    width: '90%',
-    borderRadius:20,
+    backgroundColor: "#fff",
+    padding: 10,
+    width: "90%",
+    borderRadius: 20,
   },
   option: {
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderBottomColor: "#fff",
     backgroundColor: "#AED0F6",
-    paddingHorizontal:10,
-    borderRadius:20,
-    margin:5
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    margin: 5,
   },
   optionText: {
     fontSize: 18,
-    color: '#fff',
-  }
+    color: "#fff",
+  },
 });
 
 export default Friends;

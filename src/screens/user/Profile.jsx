@@ -32,7 +32,7 @@ const Profile = () => {
         console.error('Error al obtener el usuario desde SecureStore:', error);
       }
     };
-    fetchUser(); // Llamar a la función de obtención al cargar el componente
+    fetchUser(); 
   }, []);
 
 

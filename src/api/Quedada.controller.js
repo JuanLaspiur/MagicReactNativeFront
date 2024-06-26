@@ -1,4 +1,5 @@
 import api from './configure'; 
+import apiFormData from './configure'
 
 
 const getAllQuedadas = async () => {
@@ -14,7 +15,7 @@ const getAllQuedadas = async () => {
 const getAllQuedadasPremium = async () => {
     try {
       const response = await api.get('/all_quedadas_premium'); 
-      return response;
+      return response.data;
     } catch (error) {
       console.error('Error al obtener quedadas:', error);
       throw error;
@@ -52,9 +53,9 @@ const getQuedadaById = async (id) => {
   }
 };
 
-const createQuedadaBack = async (quedada) => {
+const createQuedadaBack = async (form) => {
   try {
-    const response = await api.post('/register_quedada', quedada); 
+    const response = await apiFormData.post('/register_quedada', form); 
     return response.data;
   } catch (error) {
     console.error('Error al crear quedada:', error);

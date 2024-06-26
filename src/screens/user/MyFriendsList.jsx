@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, ScrollView, Image, StyleSheet } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Importa FontAwesome desde @expo/vector-icons
+import { FontAwesome } from '@expo/vector-icons';
 import AppHeader from '../../components/User/AppHeader';
 import ItemsFriendsList from '../../components/User/MyFriendsList/ItemsFriendsList';
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import { seguidoresQueMeSiguen } from '../../api/User.controller';
+
 function MyFriendsList() {
+  const [authUser, setAuthUser] = useState(null); 
+  const [idList, setIdList] = useState([]); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userData = await getValueFromSecureStore('user');
+        const parsedUser = JSON.parse(userData);
+        setAuthUser(parsedUser);
+
+        const followers = await seguidoresQueMeSiguen(parsedUser._id);
+        setIdList(followers);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+  }, []); 
+
   return (
     <View style={styles.container}>
-   <AppHeader title="MisAmigos" />
+      <AppHeader title="Mis Amigos" />
       <View style={styles.searchContainer}>
         <FontAwesome name="search" size={24} color="#CCCCCC" style={styles.icon} />
         <TextInput
@@ -14,22 +37,24 @@ function MyFriendsList() {
           placeholder="Buscar en mis amigos..."
           placeholderTextColor="#CCCCCC"
         />
-       
-      </View>      
-     
-      <ScrollView style={styles.scrollContainer}>  
+      </View>
+
+      <ScrollView style={styles.scrollContainer}>
         <Text style={styles.misamigosh4}>Mis Amigos</Text>
-         <ItemsFriendsList name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriendsList name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriendsList name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        <ItemsFriendsList name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriendsList name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriendsList name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        <ItemsFriendsList name="Juan" lastName="Pérez" age={25} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'} />
-        <ItemsFriendsList name="María" lastName="García" age={28} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen339bf125824a554545913556a90a43a7.jpg'} />
-        <ItemsFriendsList name="Carlos" lastName="López" age={30} avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen1107514e9bf4f1898b0f129c5b55616f.jpg'} />
-        {/* Agrega más ItemsFriends según sea necesario */}
+        {/* Renderizar cada elemento de idList como un componente ItemsFriendsList */}
+        {idList.map((item) => (
+          <ItemsFriendsList
+            key={item.seguidor_id} // Asegúrate de usar una clave única para cada elemento en la lista
+            name="Juan" // Ejemplo estático, reemplaza con datos dinámicos si corresponde
+            lastName="Pérez"
+            age={25}
+            avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'}
+            userID={item.seguidor_id} // Pasa el ID del seguidor como prop userID
+          />
+        ))}
       </ScrollView>
+
+      {/* Imágenes de fondo */}
       <Image
         source={require("../../assets/Login/pngwing.com (3).png")}
         style={styles.eclipse1}
@@ -48,7 +73,6 @@ function MyFriendsList() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
