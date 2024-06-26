@@ -5,12 +5,13 @@ import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
 import * as ImagePicker from 'expo-image-picker'; // Importar expo-image-picker
 
-const ChatRoom = () => {
+
+const ChatRoom = ({route}) => {
+  const { user, chat, mensajes } = route.params;
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
   useEffect(() => {
-    // Solicitar permiso al cargar el componente
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
@@ -62,7 +63,7 @@ const ChatRoom = () => {
   return (
     <View style={styles.container}>
       <AppHeader title="Chat" />
-      <MessageHeader />
+      <MessageHeader user={user} />
       <ScrollView contentContainerStyle={styles.messagesContainer}>
         {messages.map((message, index) => (
           <View

@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, Alert } from 'react-native';
 import ModalSendSurvey from './ModalSendSurvey';
 import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
+import env from '../../../../env';
 
-function MessageHeader() {
+function MessageHeader({user}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleSurvey, setModalVisibleSurvey] = useState(false);
   const navigation = useNavigation(); // Obtiene el objeto de navegación
 
   // URL de imagen harcodeada para el avatar
-  const avatarUrl = 'https://this-person-does-not-exist.com/img/avatar-gend32b61b99a67970d6a04e51c560b3a41.jpg';
+  const avatarUrl = env.BACK_URL+'/perfil_img/'+user._id
 
   // Función para navegar al perfil del usuario
   const handleAvatarPress = () => {
@@ -36,8 +37,8 @@ function MessageHeader() {
         </View>
       </TouchableOpacity>
       <View style={styles.userInfo}>
-        <Text style={styles.name}>John</Text>
-        <Text style={styles.lastname}>Doe</Text>
+        <Text style={styles.name}>{user?.name}</Text>
+        <Text style={styles.lastname}>{user?.last_name}</Text>
       </View>
       <View style={styles.menuContainer}>
         <View style={styles.avatarAnimal}>

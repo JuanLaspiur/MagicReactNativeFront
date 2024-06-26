@@ -43,7 +43,7 @@ const ItemMessageBox = ({ message, profileImage = require('../../../assets/Anima
   }, []);
 
   const handlePress = () => {
-    navigation.navigate('ChatRoom');
+    navigation.navigate('ChatRoom',{user, chat, mensajes});
   };
 
   return (
