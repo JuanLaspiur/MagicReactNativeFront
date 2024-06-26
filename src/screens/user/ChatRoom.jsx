@@ -5,10 +5,12 @@ import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
 import * as ImagePicker from 'expo-image-picker'; 
 import { sendMessageBychatID } from "../../api/Chat.controller";
+import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
 
 
 const ChatRoom = ({route}) => {
-  const { user, chat, mensajes } = route.params;
+  const { user, chat, mensajes } = route.params; // otro usuario
+  const [authUser, setAuthUser ] = useState([])
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
@@ -19,7 +21,13 @@ const ChatRoom = ({route}) => {
         alert('Se necesita permiso para acceder a la galería de imágenes.');
       }
     })();
+    const getAuthUser = async() => {
+      const data = await getValueFromSecureStore('user')
+      setAuthUser(JSON.parse(data))
+    }
+    getAuthUser()
     setMessages(chat.messages)
+    
   }, []);
 
   const handleSend = async() => {
@@ -34,7 +42,7 @@ const ChatRoom = ({route}) => {
 
    const sendMessaje = {
     message: inputText,
-    user_id: user._id,
+    user_id: authUser._id,
     chat_id: chat._id, 
    }
    try{
