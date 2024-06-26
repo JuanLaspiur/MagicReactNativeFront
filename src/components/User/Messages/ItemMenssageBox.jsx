@@ -3,13 +3,15 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { getUserById } from '../../../api/User.controller'
 import { getChatBychatID } from '../../../api/Chat.controller';
+import env from '../../../../env';
 
 const ItemMessageBox = ({ message, profileImage = require('../../../assets/Animals/ICONOS A COLOR-21.png'), name = 'John', lastName = 'Doe', timestamp = 1660424800000 }) => {
   const navigation = useNavigation();
   const [user , setUser] = useState(null)
   const [ chat , setChat ] = useState([])
   const [ mensajes , setMensajes ] = useState([])
-  const [lastMessage, setLastMessage] = useState('Hey, how are you?'); // Estado para almacenar el último mensaje
+  const [lastMessage, setLastMessage] = useState('Hey, how are you?'); 
+  const [imageUri, setImageUri] = useState('');
 
   useEffect(() => {
     const fetchUserById = async () => {
@@ -37,6 +39,7 @@ const ItemMessageBox = ({ message, profileImage = require('../../../assets/Anima
 
     fetchUserById();
     fetchChatById();
+    setImageUri(env.BACK_URL + '/perfil_img/' + message.otro_id);
   }, []);
 
   const handlePress = () => {
@@ -46,7 +49,7 @@ const ItemMessageBox = ({ message, profileImage = require('../../../assets/Anima
   return (
     <TouchableOpacity onPress={handlePress} style={styles.messageContainer}>
       <View style={styles.profileImageContainer}>
-        <Image source={profileImage} style={styles.profileImage} />
+        <Image source={{ uri: imageUri }} style={styles.profileImage} />
       </View>
       <View style={styles.messageDetails}>
       <Text style={styles.nameText}>{user?.name} {user?.last_name}</Text>
