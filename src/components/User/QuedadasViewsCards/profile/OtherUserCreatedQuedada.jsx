@@ -11,35 +11,34 @@ const OtherUserCreatedQuedada = () => {
   useEffect(() => {
     const fetchQuedada = async () => {
       try {
-        const response = await getQuedadaById('6670884ffe2bc567972f31de'); // Llamada a la API para obtener la quedada por ID
-        setQuedada(response); // Actualiza el estado con los datos de la quedada obtenidos
+        const response = await getQuedadaById('6670884ffe2bc567972f31de'); 
+        setQuedada(response);
       } catch (error) {
         console.error('Error al obtener la quedada:', error);
-        // Manejo de errores aquí
       }
     };
 
     fetchQuedada();
-  }, []); // Se ejecuta cada vez que quedadaId cambia
+  }, []);
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail', { quedada });
   };
 
   if (!quedada) {
-    return null; // Puedes mostrar un spinner u otra interfaz mientras se carga la quedada
+    return null; 
   }
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
         <Image
-          source={{ uri: quedada.imagen }} // Ajusta el campo según la estructura de la quedada obtenida
+          source={{ uri: quedada.imagen }} 
           style={styles.avatar}
         />
         <View style={styles.textContainer}>
-          <Text style={styles.name}>{quedada.nombre}</Text> {/* Ajusta el campo según la estructura de la quedada obtenida */}
-          <Text style={styles.description}>{quedada.descripcion}</Text> {/* Ajusta el campo según la estructura de la quedada obtenida */}
+          <Text style={styles.name}>{quedada.nombre}</Text> 
+          <Text style={styles.description}>{quedada.descripcion}</Text> 
         </View>
       </View>
     </TouchableOpacity>

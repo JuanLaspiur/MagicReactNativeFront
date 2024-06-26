@@ -1,7 +1,7 @@
-import React from 'react';
+import React , {useState} from 'react';
 import { View, Image, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
-import IconPerfil from '../../components/User/Home/IconPerfil';
+import YourIconPerfil from '../../components/User/OtherUserProfile/YourIconPerfil';
 import BoxIconsYourProfile from '../../components/User/OtherUserProfile/BoxIconsYourProfile';
 import CardTextYourAnimal from '../../components/User/OtherUserProfile/CardTextYourAnimal'
 import ResumePerfil from '../../components/User/Profile/ResumePerfil';
@@ -10,27 +10,30 @@ import FollowersBox from '../../components/User/Profile/FollowersBox';
 import YourQuedadasCarrucell from '../../components/User/OtherUserProfile/YourQuedadasCarrucell';
 import YourParticipationQuedadas from '../../components/User/OtherUserProfile/YourParticipationQuedadas';
 import YourStatus from '../../components/User/OtherUserProfile/YourStatus';
-const OtherUserProfile = () => {
+
+
+const OtherUserProfile = ({route}) => {
+  const { user } = route.params;
   return (
     <View style={styles.container}>
       <AppHeader title="Perfil" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <YourStatus />
+      <YourStatus  user={user} />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse}
         />
-        <IconPerfil />
-        <ResumePerfil />
-        <FollowersBox />
+        <YourIconPerfil user={user} />
+        <ResumePerfil  user={user} />
+        <FollowersBox  user={user} />
         <BoxIconsYourProfile />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
           style={styles.eclipse2}
         />
-        <CardTextYourAnimal />
+        <CardTextYourAnimal  user={user} />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"
@@ -51,9 +54,9 @@ const OtherUserProfile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
-        <YourInterestsTable />
-        <YourQuedadasCarrucell/>
-        <YourParticipationQuedadas />
+        <YourInterestsTable  user={user} />
+        <YourQuedadasCarrucell  user={user} />
+        <YourParticipationQuedadas  user={user}  />
       </ScrollView>
     </View>
   );

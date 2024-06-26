@@ -15,7 +15,7 @@ function MessageHeader({user}) {
   // Función para navegar al perfil del usuario
   const handleAvatarPress = () => {
     // Navega a la pantalla del perfil del usuario (reemplaza 'OtherUserProfile' con el nombre de tu pantalla)
-    navigation.navigate('OtherUserProfile');
+    navigation.navigate('OtherUserProfile', {user});
   };
 
   const handleMenuPress = () => {
