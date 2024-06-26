@@ -27,9 +27,9 @@ const ChatPrivadoByuserID = async(userID)=>{
     }
 }
 
-const sendMessageBychatID = async(chatID)=>{
+const sendMessageBychatID = async(data,chatID)=>{
     try {
-        const response = await api.post('/send_message/'+chatID); 
+        const response = await api.post('/send_message/'+chatID, data); 
         return response 
     } catch (error) {
         console.error(error)

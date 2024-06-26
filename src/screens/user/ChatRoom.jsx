@@ -3,7 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 
 import { FontAwesome } from "@expo/vector-icons"; 
 import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
-import * as ImagePicker from 'expo-image-picker'; // Importar expo-image-picker
+import * as ImagePicker from 'expo-image-picker'; 
+import { sendMessageBychatID } from "../../api/Chat.controller";
 
 
 const ChatRoom = ({route}) => {
@@ -21,7 +22,7 @@ const ChatRoom = ({route}) => {
     setMessages(chat.messages)
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async() => {
     if (inputText.trim() === "") return;
     const currentTime = getCurrentTime(); 
     const newMessage = {
@@ -30,6 +31,17 @@ const ChatRoom = ({route}) => {
       isMine: true, 
     };
     setMessages([...messages, newMessage]);
+
+   const sendMessaje = {
+    message: inputText,
+    user_id: user._id,
+    chat_id: chat._id, 
+   }
+   try{
+    const data = await sendMessageBychatID(sendMessaje,  chat._id);
+   } catch (err) {
+    console.log(err)
+   }
     setInputText("");
   };
 
@@ -50,7 +62,7 @@ const ChatRoom = ({route}) => {
     }
   };
 
-  // Función para obtener la hora actual en formato HH:mm
+
   const getCurrentTime = () => {
     const now = new Date();
     const hours = now.getHours().toString().padStart(2, "0");
