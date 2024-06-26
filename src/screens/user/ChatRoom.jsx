@@ -18,19 +18,17 @@ const ChatRoom = ({route}) => {
         alert('Se necesita permiso para acceder a la galería de imágenes.');
       }
     })();
+    setMessages(chat.messages)
   }, []);
 
   const handleSend = () => {
     if (inputText.trim() === "") return;
-
-    const currentTime = getCurrentTime(); // Obtener la hora actual
+    const currentTime = getCurrentTime(); 
     const newMessage = {
       text: inputText,
       time: currentTime,
-      isMine: true, // Indica si el mensaje es propio o ajeno
+      isMine: true, 
     };
-
-    // Agregar el nuevo mensaje al estado de mensajes
     setMessages([...messages, newMessage]);
     setInputText("");
   };
@@ -70,15 +68,15 @@ const ChatRoom = ({route}) => {
             key={index}
             style={[
               styles.messageBubble,
-              message.isMine ? styles.myMessageContainer : styles.otherMessageContainer
+              (message.isMine || message.user_id === user._id) ? styles.myMessageContainer : styles.otherMessageContainer
             ]}
           >
             <View style={styles.messageContent}>
               <Text style={styles.messageText(message.isMine)}>{message.text}</Text>
             </View>
             <View style={styles.messageInfo}>
-              <Text style={styles.messageOwner}>{message.isMine ? 'Tú' : ''}</Text>
-              <Text style={styles.messageTime}>{message.time}</Text>
+              <Text style={styles.messageOwner}>{(message.isMine || message.user_id === user._id) ? 'Tú' : `${message.full_name}`}</Text>
+              <Text style={styles.messageTime}>{message.stamp}</Text>
             </View>
           </View>
         ))}
