@@ -2,25 +2,49 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore";
-import { getSeguidores_seguidos, seguirUsuario } from "../../../api/User.controller";
+import {
+  getSeguidores_seguidos,
+  seguirUsuario,
+} from "../../../api/User.controller";
+import {
+  getAllMyChats,
+  ChatPrivadoByuserID,
+} from "../../../api/Chat.controller";
+import { useNavigation } from "@react-navigation/native";
 
 const BoxIconsYourProfile = ({ user }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [authUser, setAuthUser] = useState(null);
+  const navigation = useNavigation();
 
-  const toggleFollow = async() => {
+  const toggleFollow = async () => {
     try {
-    const data = await seguirUsuario(user._id)
-    console.log('response ' +JSON.stringify(data ))  
-    setIsFollowing(!isFollowing);
-    }catch{
-      console.error('Error al seguir al usuario')
+      const data = await seguirUsuario(user._id);
+      console.log("response " + JSON.stringify(data));
+      setIsFollowing(!isFollowing);
+    } catch {
+      console.error("Error al seguir al usuario");
     }
-
   };
 
-  const sendMessage = () => {
-    Alert.alert("Llendo al chat");
+  const sendMessage = async () => {
+    try {
+      const listaDeChats = await getAllMyChats(authUser._id);
+      let chat = listaDeChats.find((item) => item.otro_id === user._id);
+
+      if (chat) {
+        navigation.navigate("ChatRoom", { user, chat });
+      } else {
+        try {
+          const response = await ChatPrivadoByuserID(user._id);
+          chat = response.data;
+          navigation.navigate("ChatRoom", { user, chat });
+        } catch (error) {
+          console.error("No se pudo crear un chat");
+        }
+      }
+    } catch (error) {}
+
   };
 
   useEffect(() => {
@@ -28,25 +52,21 @@ const BoxIconsYourProfile = ({ user }) => {
       try {
         const data = await getValueFromSecureStore("user");
         setAuthUser(JSON.parse(data));
-        console.log('Usuario ID ' + JSON.stringify(authUser))
+        console.log("Usuario ID " + JSON.stringify(authUser));
       } catch (error) {
         console.error("Error al obtener el usuario autenticado:", error);
       }
     };
-    if(!authUser)
-    getAuthUser();
+    if (!authUser) getAuthUser();
 
     const isMyFolloewerNow = async () => {
       try {
-        if(!authUser)
-          return
+        if (!authUser) return;
 
-        const authID = authUser._id
-        console.log('Usuario autenficiado ID ' + JSON.stringify(authUser))
+        const authID = authUser._id;
         const list = await getSeguidores_seguidos(authID, 2);
 
-        if(!list) 
-          return
+        if (!list) return;
         const seguidor = list.some((item) => item._id === user._id);
         if (seguidor) {
           console.log("El usuario autenticado es seguidor de este usuario.");
@@ -60,9 +80,8 @@ const BoxIconsYourProfile = ({ user }) => {
       }
     };
 
-    isMyFolloewerNow(); 
+    isMyFolloewerNow();
   }, [authUser]);
-
 
   return (
     <View style={styles.container}>

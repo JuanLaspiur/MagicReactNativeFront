@@ -18,9 +18,10 @@ const getChatBychatID = async(chatID)=>{
     }
 }
 
-const ChatPrivadoByuserID = async(userID)=>{
+// crea un chat
+const ChatPrivadoByuserID = async(otroUserID)=>{
     try {
-        const response = await api.post('/chat_privado/'+userID); 
+        const response = await api.post('/chat_privado/'+otroUserID); 
         return response 
     } catch (error) {
         console.error(error)
