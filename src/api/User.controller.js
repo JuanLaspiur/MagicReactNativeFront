@@ -5,7 +5,7 @@ const getUserById = async (userID) => {
     const response = await api.get(`/user_by_id/${userID}`);
     return response;
   } catch (error) {
-    console.error('Error fetching user by ID:', error);
+    console.error('Error al obtener el usuario por id:', error);
 }
 };
 
@@ -14,7 +14,7 @@ const getSeguidores_seguidos = async (userID, num) =>{
     const response = await api.get(`/seguidores_seguidos/${num}/${userID}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching user by ID:', error);
+    console.error('Error al obtener segfuidores o seguidos:', error);
 }
 }
 
@@ -23,7 +23,7 @@ const seguidoresYseguidos = async (userID) =>{
     const response = await api.get(`/seguidores_seguidos/${num}/${userID}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching friends by user ID:', error);
+    console.error('Error al obtener segfuidores o seguidos:', error);
 }
 }
 
@@ -32,7 +32,7 @@ const seguidoresQueMeSiguen = async (userID) => {
     const response = await api.get(`/seguidoresQueMeSiguen/${userID}`)
     return response.data
   } catch (error) {
-    console.error('Error fetching friends by user ID:', error);
+    console.error('Error al obtener seguidores y que me siguen:', error);
   }
 }
 
@@ -43,7 +43,17 @@ const todosLosContactos = async (userID) =>{
     const response = await api.get(`/all_user/${userID}`)
     return response.data
   } catch (error) {
-    console.error('Error fetching friends by user ID:', error);
+    console.error('Error al obtener todos los usuarios:', error);
   }
 }
-export {getUserById, getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos}
+
+
+const seguirUsuario = async (seguidoID) => {
+  try {
+    const response = await api.post(`/seguir_user/`,{seguidoID})
+    return response.data
+  } catch (error) {
+    console.error('Error seguir usuario:', error);
+  } 
+}
+export {getUserById, getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario}

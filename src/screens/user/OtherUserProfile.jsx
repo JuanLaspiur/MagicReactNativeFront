@@ -27,7 +27,7 @@ const OtherUserProfile = ({route}) => {
         <YourIconPerfil user={user} />
         <ResumePerfil  user={user} />
         <FollowersBox  user={user} />
-        <BoxIconsYourProfile />
+        <BoxIconsYourProfile user={user} />
         <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
           resizeMode="contain"

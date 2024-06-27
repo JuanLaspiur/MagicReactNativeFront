@@ -1,21 +1,43 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Importar Ionicons desde Expo
+import { Ionicons } from "@expo/vector-icons"; 
+import { getSeguidores_seguidos } from "../../../api/User.controller";
 
-const FollowersBox = () => {
+const FollowersBox = ({user}) => {
   const [currentFollowers, setCurrentFollowers] = useState(0);
   const [currentFollowing, setCurrentFollowing] = useState(0);
-
-  const followersCount = 100;
-  const followingCount = 50;
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0)
+  // const followersCount = 100;
+ // const followingCount = 50;
   const startOffset = 20; // Iniciar la animación desde 20 números antes o desde 0 si es menor a 20
 
   const followersAnimatedValue = useRef(new Animated.Value(0)).current;
   const followingAnimatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    const getMyFollowers = async () => {
+      try {
+        const data = await getSeguidores_seguidos(user._id, 1);
+        console.log('Tienes tantos seguidores: ' + data.length);
+        setFollowersCount(data.length);
+      } catch (error) {
+        console.log('Error al obtener seguidores:', error);
+      }
+    };
+    
+    const getMyFollowing = async () => {
+      try {
+        const data = await getSeguidores_seguidos(user._id, 2);
+        setFollowingCount(data.length);
+      } catch (error) {
+        console.log('Error al obtener seguidos:', error);
+      }
+    };
+    
+
     const animateFollowers = () => {
-      let count = Math.max(0, followersCount - startOffset); // Iniciar desde 20 números antes o desde 0 si es menor a 20
+      let count = Math.max(0, followersCount - startOffset); 
       const interval = setInterval(() => {
         count++;
         setCurrentFollowers(count);
@@ -48,9 +70,11 @@ const FollowersBox = () => {
       }).start();
     };
 
-    animateFollowers();
-    animateFollowing();
-  }, []);
+  //  animateFollowers();
+  //  animateFollowing();
+    getMyFollowers();
+    getMyFollowing();
+  }, [followingCount, followersCount]);
 
   return (
     <View style={styles.container}>
@@ -58,14 +82,14 @@ const FollowersBox = () => {
         <Ionicons name="people-outline" size={32} color="gray" />
         <Text style={styles.label}>Seguidores</Text>
         <Animated.Text style={[styles.number, { fontSize: 24 }]}>
-          {currentFollowers}
+          {followersCount}
         </Animated.Text>
       </View>
       <View style={styles.row}>
         <Ionicons name="person-outline" size={32} color="gray" />
         <Text style={styles.label}>Siguiendo</Text>
         <Animated.Text style={[styles.number, { fontSize: 24 }]}>
-          {currentFollowing}
+          {followingCount}
         </Animated.Text>
       </View>
     </View>

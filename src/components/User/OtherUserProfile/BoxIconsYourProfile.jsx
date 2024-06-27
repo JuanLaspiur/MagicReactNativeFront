@@ -1,36 +1,89 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore";
+import { getSeguidores_seguidos, seguirUsuario } from "../../../api/User.controller";
 
-const BoxIconsYourProfile = () => {
-  const [following, setFollowing] = useState(false); // Estado inicial: no siguiendo
+const BoxIconsYourProfile = ({ user }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
 
-  const toggleFollow = () => {
-    setFollowing(!following); // Cambiar estado de seguimiento
+  const toggleFollow = async() => {
+    try {
+    const data = await seguirUsuario(user._id)
+    console.log('response ' +JSON.stringify(data ))  
+    setIsFollowing(!isFollowing);
+    }catch{
+      console.error('Error al seguir al usuario')
+    }
+
   };
 
   const sendMessage = () => {
-    Alert.alert('Llendo al chat'); // Mostrar alerta al presionar el ícono de mensajes
+    Alert.alert("Llendo al chat");
   };
+
+  useEffect(() => {
+    const getAuthUser = async () => {
+      try {
+        const data = await getValueFromSecureStore("user");
+        setAuthUser(JSON.parse(data));
+        console.log('Usuario ID ' + JSON.stringify(authUser))
+      } catch (error) {
+        console.error("Error al obtener el usuario autenticado:", error);
+      }
+    };
+    if(!authUser)
+    getAuthUser();
+
+    const isMyFolloewerNow = async () => {
+      try {
+        if(!authUser)
+          return
+
+        const authID = authUser._id
+        console.log('Usuario autenficiado ID ' + JSON.stringify(authUser))
+        const list = await getSeguidores_seguidos(authID, 2);
+
+        if(!list) 
+          return
+        const seguidor = list.some((item) => item._id === user._id);
+        if (seguidor) {
+          console.log("El usuario autenticado es seguidor de este usuario.");
+          setIsFollowing(true);
+        } else {
+          console.log("El usuario autenticado no es seguidor de este usuario.");
+          setIsFollowing(false);
+        }
+      } catch (error) {
+        console.error("Error al obtener seguidores de usuario:", error);
+      }
+    };
+
+    isMyFolloewerNow(); 
+  }, [authUser]);
+
 
   return (
     <View style={styles.container}>
-    {/* Botón Seguir */}
-<TouchableOpacity
-  style={styles.box}
-  onPress={toggleFollow}
->
-  <Ionicons name={following ? "dice" : "arrow-undo"} size={40} color={following ? "#AED0F6" : "gray"} />
-  <Text style={[styles.text, { color: following ? "#AED0F6" : "gray" }]}>
-    {following ? "Seguir" : "Dejar de Seguir"}
-  </Text>
-</TouchableOpacity>
+      <TouchableOpacity style={styles.box} onPress={toggleFollow}>
+        <Ionicons
+          name={isFollowing ? "dice" : "arrow-undo"}
+          size={40}
+          color={isFollowing ? "#AED0F6" : "gray"}
+        />
+        <Text
+          style={[styles.text, { color: isFollowing ? "#AED0F6" : "gray" }]}
+        >
+          {isFollowing ? "Seguir" : "Dejar de Seguir"}
+        </Text>
+      </TouchableOpacity>
 
       {/* Botón Mensajes */}
-      {!following && (
+      {!isFollowing && (
         <TouchableOpacity style={styles.box} onPress={sendMessage}>
           <Ionicons name="paper-plane-outline" size={40} color="#AED0F6" />
-          <Text style={[styles.text, { color: '#AED0F6' }]}>Mensaje</Text>
+          <Text style={[styles.text, { color: "#AED0F6" }]}>Mensaje</Text>
         </TouchableOpacity>
       )}
 
@@ -41,25 +94,25 @@ const BoxIconsYourProfile = () => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     height: 90,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
   },
   box: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '30%', // Ajusta el tamaño según sea necesario
+    justifyContent: "center",
+    alignItems: "center",
+    width: "30%", // Ajusta el tamaño según sea necesario
   },
   text: {
     marginTop: 5,
     fontSize: 12,
-    color: 'gray',
+    color: "gray",
   },
 });
 
