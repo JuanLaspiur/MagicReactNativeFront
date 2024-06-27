@@ -5,8 +5,8 @@ import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber
 const CardTextYourAnimal = ({ user }) => {
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
+  const [numero, setNumero] = useState(obtenerNumerosDespuesGuion("../../../assets/Animals/ICONOS A COLOR-00.png"))
   
-  let numero = obtenerNumerosDespuesGuion("../../../assets/Animals/ICONOS A COLOR-00.png")
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
     require("../../../assets/Animals/ICONOS A COLOR-01.png"),
@@ -70,15 +70,14 @@ const CardTextYourAnimal = ({ user }) => {
     };
     getAllAnimals();
   }, []);
-
   useEffect(() => {
     if (animalsList.length > 0 && user.animal) {
       let myAnimalInTheList = animalsList.find((item) => item._id === user.animal);
       setAnimal(myAnimalInTheList);
       if (myAnimalInTheList) {
-       numero = obtenerNumerosDespuesGuion(myAnimalInTheList.img); 
+        setNumero(obtenerNumerosDespuesGuion(myAnimalInTheList.img)); 
       } else if (user.animal_img) {
-        numero = obtenerNumerosDespuesGuion(user.animal_img);
+        setNumero(obtenerNumerosDespuesGuion(user.animal_img));
       }
     }
   }, [animalsList, user]);

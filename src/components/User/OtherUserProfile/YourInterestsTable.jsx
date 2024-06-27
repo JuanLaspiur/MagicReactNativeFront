@@ -1,17 +1,10 @@
 import React, { useState }  from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { capitalizeFirstLetter } from '../../../helpers/CapitalizeFirstLetterString';
 
 
-const YourInterestsTable = () => {
-  const interests = {
-    peliculas: ['Inception', 'The Shawshank Redemption', 'Interstellar'],
-    artistaMusical: 'Queen',
-    estiloMusical: 'Rock',
-    deportes: ['Fútbol', 'Tenis', 'Baloncesto'],
-  };
-
-  // Función para manejar la acción de editar intereses
+const YourInterestsTable = ({user}) => {
 
   return (
     <>
@@ -24,7 +17,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Películas Favoritas</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{interests.peliculas.join(', ')}</Text>
+          <Text style={styles.dataText}>{capitalizeFirstLetter(user.peliculas)}</Text>
         </View>
       </View>
       <View style={styles.row}>
@@ -32,7 +25,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Artista y Estilo Musical Favorito</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{interests.artistaMusical} - {interests.estiloMusical}</Text>
+          <Text style={styles.dataText}>{capitalizeFirstLetter(user.artista)}</Text>
         </View>
       </View>
       <View style={styles.row}>
@@ -40,7 +33,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Deportes Favoritos</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{interests.deportes.join(', ')}</Text>
+          <Text style={styles.dataText}>{capitalizeFirstLetter(user.deportes)}</Text>
         </View>
       </View>
     </View>
