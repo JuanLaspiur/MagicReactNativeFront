@@ -17,7 +17,7 @@ const YourIconPerfil = ({user}) => {
       onPress={() => navigation.navigate('Perfil')}
     >
       <Image source={{ uri: imageUri }} style={styles.image} />
-      <Text style={styles.text}>{user ? `${user?.name} ${user.last_name && user.last_name }` : 'Cargando...'}</Text>
+      <Text style={styles.text}>{user ? `${user?.name} ${user.last_name ? user.last_name : '' }` : 'Cargando...'}</Text>
     </TouchableOpacity>
   );
 };
