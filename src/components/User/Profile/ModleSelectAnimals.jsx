@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Modal, FlatList, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 const animalImages = [
