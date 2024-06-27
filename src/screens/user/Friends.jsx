@@ -15,7 +15,8 @@ import AppHeader from "../../components/User/AppHeader";
 import ItemsFriends from "../../components/User/Friends/ItemsFriends";
 import { Ionicons } from "@expo/vector-icons";
 import { seguidoresQueMeSiguen } from "../../api/User.controller.js";
-import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore.js";
+import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore.js'
+
 
 function Friends() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,11 +44,11 @@ function Friends() {
     }
   };
 
+  useEffect(() => {
   const getAuthUser = async () => {
     const data = await getValueFromSecureStore("user");
     setUser(JSON.parse(data));
   };
-
   const getSeguidoresQueMeSiguen = async () => {
     try {
       const response = await seguidoresQueMeSiguen(user._id);
@@ -56,7 +57,6 @@ function Friends() {
       console.log(err);
     }
   };
-  useEffect(() => {
  if(!user) {
     getAuthUser();}
     getSeguidoresQueMeSiguen();

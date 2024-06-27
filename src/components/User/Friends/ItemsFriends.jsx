@@ -3,8 +3,11 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-na
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getUserById } from '../../../api/User.controller'
+import env from '../../../../env.js'
+
 function ItemsFriends({ name, lastName, age, avatarUrl, userID }) {
   const [user, setUser] = useState([]);
+  const [imageUri, setImageUri] = useState('');
 
  const obtenerUsuario = async() => {
   const response  = await getUserById(userID)
@@ -12,6 +15,7 @@ function ItemsFriends({ name, lastName, age, avatarUrl, userID }) {
 }
 
   useEffect(()=>{
+    setImageUri(env.BACK_URL + '/perfil_img/' + user._id);
     obtenerUsuario()
   },[])
 
@@ -50,7 +54,7 @@ function ItemsFriends({ name, lastName, age, avatarUrl, userID }) {
         style={styles.eclipse3}
       />
         {avatarUrl ? (
-          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+          <Image source={{ uri: imageUri }}  style={styles.avatar} />
         ) : (
           <FontAwesome name="user-circle-o" size={50} color="#AED0F6" />
         )}
