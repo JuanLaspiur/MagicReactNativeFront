@@ -142,7 +142,6 @@ function MessageHeader({user}) {
         </TouchableWithoutFeedback>
       </Modal>
 
-      {/* Modal para enviar encuesta */}
       <ModalSendSurvey visible={modalVisibleSurvey} setModalVisibleSurvey={setModalVisibleSurvey} />
     </View>
   );
