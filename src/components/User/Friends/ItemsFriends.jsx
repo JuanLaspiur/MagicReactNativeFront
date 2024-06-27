@@ -7,12 +7,15 @@ import env from '../../../../env.js'
 
 import { getAnimales } from "../../../api/User.controller.js";
 import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js";
+import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore.js';
+import { getAllMyChats } from '../../../api/Chat.controller.js'
 
 
 function ItemsFriends({ name, lastName, age, avatarUrl, userID }) {
   const [user, setUser] = useState([]);
   const [imageUri, setImageUri] = useState('');
   const navigation = useNavigation();
+  const [authUser, setAuthUser] = useState(null);
 
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
@@ -79,12 +82,38 @@ const handleAvatarPress = () => {
     navigation.navigate('OtherUserProfile')
   };
 
-  const handleMessagePress = () => {
-    Alert.alert('Llendo al chat..');
+  const handleMessagePress = async() => {
+    try {
+      const listaDeChats = await getAllMyChats(authUser._id);
+      let chat = listaDeChats.find((item) => item.otro_id === user._id);
+
+      if (chat) {
+        navigation.navigate("ChatRoom", { user, chat });
+      } else {
+        try {
+          const response = await ChatPrivadoByuserID(user._id);
+          chat = response.data;
+          navigation.navigate("ChatRoom", { user, chat });
+        } catch (error) {
+          console.error("No se pudo crear un chat");
+        }
+      }
+    } catch (error) {}
+
   };
 
 
   useEffect(()=>{
+    const getAuthUser = async () => {
+      try {
+        const data = await getValueFromSecureStore("user");
+        setAuthUser(JSON.parse(data));
+        console.log("Usuario ID " + JSON.stringify(authUser));
+      } catch (error) {
+        console.error("Error al obtener el usuario autenticado:", error);
+      }
+    };
+    if (!authUser) getAuthUser();
     setImageUri(env.BACK_URL + '/perfil_img/' + user._id);
     obtenerUsuario()
     const getAllAnimals = async () => {
@@ -96,7 +125,7 @@ const handleAvatarPress = () => {
       }
     };
     getAllAnimals();
-  },[])
+  },[authUser])
 
   useEffect(() => {
     if (animalsList.length > 0 && user.animal) {

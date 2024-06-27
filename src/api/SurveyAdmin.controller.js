@@ -18,6 +18,16 @@ const getLasterAdminSurvey = async () => {
   }
 };
 
+const sendMySurveyRespose = async (data) => {
+  try {
+    const response = await api.post('opciones_admin123/votar', data)
+    return response
+} catch (error) {
+    console.error('Error al las opciones de la encuesta de admin: ', error);
+    throw error;
+  }
+}
+
 
 const getLasterAdminSurveyOptions = async (surveyID) =>{
     try {
@@ -29,4 +39,4 @@ const getLasterAdminSurveyOptions = async (surveyID) =>{
   }
 }  
 
-export {getLasterAdminSurvey, getLasterAdminSurveyOptions};
+export {getLasterAdminSurvey, getLasterAdminSurveyOptions,sendMySurveyRespose };
