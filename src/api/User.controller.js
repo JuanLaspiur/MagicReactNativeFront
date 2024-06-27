@@ -56,4 +56,15 @@ const seguirUsuario = async (seguidoID) => {
     console.error('Error seguir usuario:', error);
   } 
 }
-export {getUserById, getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario}
+
+// animales
+
+const getAnimales = async () => {
+  try {
+    const response = await api.get(`/animales/`)
+    return response.data
+  } catch (error) {
+    console.error('Error seguir usuario:', error);
+  } 
+}
+export {getUserById, getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario}
