@@ -88,6 +88,7 @@ function Friends() {
           placeholderTextColor="#CCCCCC"
           onChangeText={handleSearch}
         />
+        {/*
         <TouchableOpacity onPress={handleFilterPress}>
           <Ionicons
             name="filter-outline"
@@ -95,7 +96,7 @@ function Friends() {
             color="gray"
             style={styles.iconFilter}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */ } 
       </View>
       <ScrollView
         style={styles.scrollContainer}

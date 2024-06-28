@@ -21,7 +21,8 @@ const ParticipantsCarrucel = ({ quedada }) => {
   const asistentesChunks = chunkArray(asistentes, 4);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height: asistentes.length === 0 ? 52.5 : 'auto' }]}>
+
       <Text style={styles.h1}>Participantes</Text>
       <Swiper
         style={styles.wrapper}
