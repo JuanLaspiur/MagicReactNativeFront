@@ -1,12 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import OtherUserCreatedQuedada from '../QuedadasViewsCards/profile/OtherUserCreatedQuedada'; // Importa el componente adecuadamente
+import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Importa el componente adecuadamente
+import { getQuedadasByUserId } from '../../../api/Quedada.controller'; // Importa la función para obtener quedadas
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const YourQuedadasCarrucell = () => {
-  const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
+const YourQuedadasCarrucell = ({ user }) => {
+  const [filter, setFilter] = useState('todos');
+  const [quedadas, setQuedadas] = useState([]);
+  const [hasQuedadas, setHasQuedadas] = useState(true);
+
+  useEffect(() => {
+    const fetchQuedadas = async () => {
+      try {
+        const data = await getQuedadasByUserId(user._id);
+        setQuedadas(data);
+        setHasQuedadas(data.length > 0);
+      } catch (error) {
+        console.error('Error al obtener quedadas:', error);
+      }
+    };
+    fetchQuedadas();
+  }, [user]);
+
+  const chunkArray = (arr, size) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
+      arr.slice(index * size, index * size + size)
+    );
+  };
+
+  const groupedQuedadas = chunkArray(quedadas, 3);
 
   return (
     <View style={styles.container}>
@@ -32,26 +56,28 @@ const YourQuedadasCarrucell = () => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={styles.wrapper}
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]}
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true}
+        autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}
         activeDotStyle={{ backgroundColor: 'white', width: 8, height: 8, borderRadius: 4 }}
       >
-        <View style={styles.slide}>
-          <OtherUserCreatedQuedada />
-          <OtherUserCreatedQuedada />
-          <OtherUserCreatedQuedada />
-        </View>
-        <View style={styles.slide}>
-          <OtherUserCreatedQuedada />
-          <OtherUserCreatedQuedada />
-          <OtherUserCreatedQuedada />
-        </View>
-        {/* Agrega más vistas según sea necesario */}
+        {groupedQuedadas.length > 0 ? (
+          groupedQuedadas.map((group, index) => (
+            <View key={index} style={styles.slide}>
+              {group.map(quedada => (
+                <QuedadasSimpleCard key={quedada._id} quedada={quedada} />
+              ))}
+            </View>
+          ))
+        ) : (
+          <View style={styles.slide}>
+            <Text style={styles.noDataText}>No hay quedadas para mostrar</Text>
+          </View>
+        )}
       </Swiper>
     </View>
   );
@@ -63,7 +89,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   wrapper: {
-    height: 405, // Ajusta esta altura según sea necesario
+    // La altura inicial se establece basada en si hay quedadas o no
   },
   h1: {
     fontSize: 20,
@@ -95,7 +121,10 @@ const styles = StyleSheet.create({
     width: screenWidth,
     flexDirection: 'column',
   },
+  noDataText: {
+    paddingHorizontal: 14,
+    color: 'gray',
+  },
 });
 
 export default YourQuedadasCarrucell;
-

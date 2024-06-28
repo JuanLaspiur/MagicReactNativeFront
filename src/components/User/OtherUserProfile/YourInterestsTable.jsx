@@ -1,17 +1,30 @@
-import React, { useState }  from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { capitalizeFirstLetter } from '../../../helpers/CapitalizeFirstLetterString';
+import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore';
 
+const YourInterestsTable = () => {
+  const [user, setUser] = useState([]);
 
-const YourInterestsTable = ({user}) => {
+  useEffect(() => {
+    const getAuthUser = async () => {
+      try {
+        const data = await getValueFromSecureStore('user');
+        setUser(JSON.parse(data));
+      } catch (error) {
+        console.error('Error al obtener y parsear el usuario desde SecureStore:', error);
+      }
+    };
+
+    getAuthUser();
+  }, []); 
 
   return (
-    <>
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Sus Intereses</Text>
-         </View>
+      </View>
       <View style={styles.row}>
         <View style={styles.categoryCell}>
           <Text style={styles.categoryText}>Películas Favoritas</Text>
@@ -37,7 +50,6 @@ const YourInterestsTable = ({user}) => {
         </View>
       </View>
     </View>
-      </>
   );
 };
 

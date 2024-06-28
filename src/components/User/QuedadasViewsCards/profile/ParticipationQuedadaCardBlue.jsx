@@ -2,23 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const ParticipationQuedadaCardBlue = () => {
+const ParticipationQuedadaCardBlue = ({quedada}) => {
   const navigation = useNavigation();
-  const [quedada, setQuedada] = useState(null);
 
-  useEffect(() => {
-    const fetchQuedada = async () => {
-      try {
-        const response = await getQuedadaById('6670884ffe2bc567972f31de'); // Llamada a la API para obtener la quedada por ID
-        setQuedada(response); // Actualiza el estado con los datos de la quedada obtenidos
-      } catch (error) {
-        console.error('Error al obtener la quedada:', error);
-        // Manejo de errores aquí
-      }
-    };
-
-    fetchQuedada();
-  }, []); // Se ejecuta cada vez que quedadaId cambia
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail', {quedada});
@@ -27,14 +13,15 @@ const ParticipationQuedadaCardBlue = () => {
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
-        <Image
+      {/*  <Image
           source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
           style={styles.avatar}
-        />
+        /> */} 
         <View style={styles.textContainer}>
-          <Text style={styles.name}>Event Name</Text>
+          <Text style={styles.name}>{quedada}</Text>
           <Text style={styles.description}>
-            Event description. Join for more fun and exclusive activities!
+            {quedada.description
+            }
           </Text>
         </View>
       </View>
@@ -45,7 +32,7 @@ const ParticipationQuedadaCardBlue = () => {
 const styles = StyleSheet.create({
   card: {
     width: '90%',
-    backgroundColor: "#AED0F6", // Light blue background color
+    backgroundColor: "#AED0F6", 
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

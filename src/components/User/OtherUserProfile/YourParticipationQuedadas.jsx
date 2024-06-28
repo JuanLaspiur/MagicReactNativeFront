@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ParticipationQuedadaCardBlue from '../QuedadasViewsCards/profile/ParticipationQuedadaCardBlue'; // Ajusta la ruta según tu estructura de proyecto
+import ParticipationQuedadaCardBlue from '../QuedadasViewsCards/profile/ParticipationQuedadaCardBlue'; 
+import { getQuedadasAsistidasByUserId } from '../../../api/Quedada.controller';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const YourParticipationQuedadas = () => {
+const YourParticipationQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
+  const [quedadas, setQuedadas] = useState([]);
+  const [hasQuedadas, setHasQuedadas] = useState(true);
+  const [isFetchQuedadasFlag, setIsFetchQuedadasFlag] = useState(false);
+
+  useEffect(() => {
+    const fetchParticipationQuedadas = async () => {
+      try {
+        const result = await getQuedadasAsistidasByUserId(user._id);
+        setQuedadas(result);
+        setHasQuedadas(result.length > 0);
+        setIsFetchQuedadasFlag(true);
+      } catch (error) {
+        console.error('Error al obtener quedadas asistidas:', error);
+      }
+    };
+    
+    if (!isFetchQuedadasFlag) {
+      fetchParticipationQuedadas();
+    }
+  }, [user, isFetchQuedadasFlag]);
+
+  const chunkArray = (arr, size) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
+      arr.slice(index * size, index * size + size)
+    );
+  };
+
+  const groupedQuedadas = chunkArray(quedadas, 3);
 
   return (
     <View style={styles.container}>
@@ -32,26 +61,28 @@ const YourParticipationQuedadas = () => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={styles.wrapper}
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} 
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true}
+        autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', width: 8, height: 8, borderRadius: 4 }}
         activeDotStyle={{ backgroundColor: 'white', width: 8, height: 8, borderRadius: 4 }}
       >
-        <View style={styles.slide}>
-          <ParticipationQuedadaCardBlue />
-          <ParticipationQuedadaCardBlue />
-          <ParticipationQuedadaCardBlue />
-        </View>
-        <View style={styles.slide}>
-          <ParticipationQuedadaCardBlue />
-          <ParticipationQuedadaCardBlue />
-          <ParticipationQuedadaCardBlue />
-        </View>
-        {/* Agrega más vistas según sea necesario */}
+        {groupedQuedadas.length > 0 ? (
+          groupedQuedadas.map((group, index) => (
+            <View key={index} style={styles.slide}>
+              {group.map(quedada => (
+                <ParticipationQuedadaCardBlue key={quedada._id} quedada={quedada} />
+              ))}
+            </View>
+          ))
+        ) : (
+          <View style={styles.slide}>
+            <Text style={styles.noDataText}>No hay quedadas para mostrar</Text>
+          </View>
+        )}
       </Swiper>
     </View>
   );
@@ -60,43 +91,45 @@ const YourParticipationQuedadas = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 5, // Menor distancia vertical entre componentes
+    paddingVertical: 20,
   },
   wrapper: {
-    height: 300, // Ajusta esta altura según sea necesario
+    // La altura inicial se establece basada en si hay quedadas o no
   },
   h1: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'gray',
     paddingHorizontal: 20,
-    paddingBottom: 5,
+    paddingBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    paddingBottom: 10, 
+    paddingBottom: 10,
   },
   button: {
-    paddingVertical: 10, // Se ha ajustado el padding vertical
-    paddingHorizontal: 10, // Se ha ajustado el padding horizontal
-    backgroundColor: "#AED0F6",
+    padding: 10,
+    backgroundColor: '#EAEAEA',
     borderRadius: 5,
   },
   activeButton: {
-    backgroundColor: "#C3C3C3",
+    backgroundColor: '#D3D3D3',
   },
   buttonText: {
-    color: '#fff',
+    color: 'gray',
     fontWeight: 'bold',
   },
   slide: {
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: screenWidth,
+    width: '100%',
     flexDirection: 'column',
+  },
+  noDataText: {
+    paddingHorizontal: 14,
+    color: 'gray',
   },
 });
 
 export default YourParticipationQuedadas;
-

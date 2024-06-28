@@ -47,7 +47,7 @@ const Profile = () => {
           style={styles.eclipse}
         />
         <MyStatus />
-        <IconPerfil />
+        <IconPerfil user={user} />
         <ResumePerfil user={user} />
         <FollowersBox user={user} />
         <BoxIconsMyProfile user={user}  />
