@@ -24,10 +24,10 @@ function ItemFriend({ name, lastName, user }) {
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.description}>{lastName}</Text>
         </View>
-        {/* Componente de Mensaje (Ejemplo) */}
+        {/* Componente de Mensaje (Ejemplo)
         <TouchableOpacity style={styles.messageContainer}>
           <FontAwesome name="comment-o" size={24} color="#AED0F6" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </TouchableOpacity>
   );

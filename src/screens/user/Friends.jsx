@@ -15,11 +15,14 @@ import ItemFriend from "../../components/User/Friends/ItemFriend.jsx";
 function Friends() {
   const [allList, setAllList] = useState([]);
   const [itemsToShow, setItemsToShow] = useState(10);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
         const response = await todosLosContactos();
+        console.log('Ejemplo de usuario: ')
+        console.log(response[0])
         setAllList(response);
       } catch (error) {
         console.error('Error al obtener todos los usuarios:', error);
@@ -59,6 +62,16 @@ function Friends() {
     }
   };
 
+  const handleSearch = (text) => {
+    setSearchTerm(text);
+  };
+
+  // Filtrar la lista por nombre y apellido
+  const filteredList = allList.filter((user) => {
+    const fullName = `${user.name} ${user.last_name}`.toLowerCase();
+    return fullName.includes(searchTerm.toLowerCase());
+  });
+
   return (
     <View style={styles.container}>
       <AppHeader title="Amigos" />
@@ -73,6 +86,7 @@ function Friends() {
           style={styles.input}
           placeholder="Buscar amigos..."
           placeholderTextColor="#CCCCCC"
+          onChangeText={handleSearch}
         />
         <TouchableOpacity onPress={handleFilterPress}>
           <Ionicons
@@ -88,7 +102,7 @@ function Friends() {
         onScroll={handleScroll}
         scrollEventThrottle={16} 
       >
-        {allList.slice(0, itemsToShow).map((user) => (
+        {filteredList.slice(0, itemsToShow).map((user) => (
           <ItemFriend
             key={user._id}
             name={user.name}
@@ -101,31 +115,7 @@ function Friends() {
   );
 }
 
-
 const styles = StyleSheet.create({
-  eclipse1: {
-    position: "absolute",
-    top: -10,
-    right: -105,
-    zIndex: -1,
-    opacity: 0.2,
-  },
-  eclipse2: {
-    position: "absolute",
-    height: 500,
-    top: 90,
-    left: -105,
-    zIndex: -1,
-    opacity: 0.2,
-  },
-  eclipse3: {
-    position: "absolute",
-    height: 300,
-    top: 50,
-    left: 0,
-    zIndex: -1,
-    opacity: 0.2,
-  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -159,32 +149,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 10,
   },
-  modalBackground: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalContent: {
-    borderRadius: 10,
-    backgroundColor: "#fff",
-    padding: 10,
-    width: "90%",
-    borderRadius: 20,
-  },
-  option: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#fff",
-    backgroundColor: "#AED0F6",
-    paddingHorizontal: 10,
-    borderRadius: 20,
-    margin: 5,
-  },
-  optionText: {
-    fontSize: 18,
-    color: "#fff",
-  },
 });
 
-export default Friends
+export default Friends;
