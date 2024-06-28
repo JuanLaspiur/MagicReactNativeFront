@@ -1,27 +1,34 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  Text,
-  StyleSheet,
   TextInput,
-  ScrollView,
-  Image,
-  TouchableWithoutFeedback,
   TouchableOpacity,
-  Modal,
+  StyleSheet,
+  ScrollView, // Agrega ScrollView para desplazar la lista si es necesario
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import AppHeader from "../../components/User/AppHeader";
-import ItemsFriends from "../../components/User/Friends/ItemsFriends";
 import { Ionicons } from "@expo/vector-icons";
-import { seguidoresQueMeSiguen } from "../../api/User.controller.js";
-import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore.js'
-
+import AppHeader from "../../components/User/AppHeader";
+import { todosLosContactos } from "../../api/User.controller.js";
+import ItemFriend from "../../components/User/Friends/ItemFriend.jsx"; // Asegúrate de importar correctamente ItemFriend
 
 function Friends() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [friends, setFriends] = useState([]);
-  const [user, setUser] = useState(null);
+  const [allList, setAllList] = useState([]);
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await todosLosContactos();
+        console.log('Lista de usuarios:', response); 
+  
+        setAllList(response);
+      } catch (error) {
+        console.error('Error al obtener todos los usuarios:', error);
+      }
+    };
+
+    fetchAllUsers();
+  }, []);
 
   const handleFilterPress = () => {
     setModalVisible(true);
@@ -43,24 +50,6 @@ function Friends() {
         break;
     }
   };
-
-  useEffect(() => {
-  const getAuthUser = async () => {
-    const data = await getValueFromSecureStore("user");
-    setUser(JSON.parse(data));
-  };
-  const getSeguidoresQueMeSiguen = async () => {
-    try {
-      const response = await seguidoresQueMeSiguen(user._id);
-      setFriends(response)
-    } catch (err) {
-      console.log(err);
-    }
-  };
- if(!user) {
-    getAuthUser();}
-    getSeguidoresQueMeSiguen();
-  }, [user]);
 
   return (
     <View style={styles.container}>
@@ -87,66 +76,15 @@ function Friends() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollContainer}>
-        {friends.length > 0 &&
-          friends.map((friend) => (
-            <ItemsFriends
-              key={friend.seguidor_id}
-              userID ={friend.seguidor_id}
-              avatarUrl={
-                "https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg"
-              }
-            />
-          ))}
+        {allList.map((user) => (
+          <ItemFriend
+            key={user._id}
+            name={user.name}
+            lastName={user.last_name}
+            user={user}
+          />
+        ))}
       </ScrollView>
-      <Image
-        source={require("../../assets/Login/Ellipse 1.png")}
-        style={styles.eclipse1}
-        resizeMode="contain"
-      />
-      <Image
-        source={require("../../assets/Login/Ellipse 1.png")}
-        style={styles.eclipse2}
-        resizeMode="contain"
-      />
-      <Image
-        source={require("../../assets/Login/Ellipse 1.png")}
-        resizeMode="contain"
-        style={styles.eclipse3}
-      />
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={styles.modalBackground}>
-            <View style={styles.modalContent}>
-              <TouchableOpacity
-                style={styles.option}
-                onPress={() => handleOptionPress("Seguidores")}
-              >
-                <Text style={styles.optionText}>Solo mis seguidos</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.option}
-                onPress={() => handleOptionPress("Seguidos")}
-              >
-                <Text style={styles.optionText}>Solo mis seguidores</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.option}
-                onPress={() => handleOptionPress("Mi zona")}
-              >
-                <Text style={styles.optionText}>De mi zona</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
     </View>
   );
 }
@@ -236,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Friends;
+export default Friends

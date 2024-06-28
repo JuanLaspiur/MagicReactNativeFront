@@ -38,9 +38,9 @@ const seguidoresQueMeSiguen = async (userID) => {
 
 // all_user
 
-const todosLosContactos = async (userID) =>{
+const todosLosContactos = async () =>{
   try {
-    const response = await api.get(`/all_user/${userID}`)
+    const response = await api.get(`/all_user/`)
     return response.data
   } catch (error) {
     console.error('Error al obtener todos los usuarios:', error);
