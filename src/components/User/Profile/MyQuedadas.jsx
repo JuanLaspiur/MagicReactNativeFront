@@ -7,20 +7,20 @@ import { getQuedadasByUserId } from '../../../api/Quedada.controller';
 const MyQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos');
   const [quedadas, setQuedadas] = useState([]);
-  const [hasQuedadas, setHasQuedadas] = useState(true); // Estado para verificar si hay quedadas
+  const [hasQuedadas, setHasQuedadas] = useState(true); 
 
   useEffect(() => {
-    const fetchMyQuedadas = async () => {
+        const fetchMyQuedadas = async () => {
       try {
         const data = await getQuedadasByUserId(user._id);
         setQuedadas(data);
-        setHasQuedadas(data.length > 0); // Actualiza el estado basado en si hay quedadas
+        console.log(''+data)
+        setHasQuedadas(data.length > 0); 
       } catch (error) {
         console.error('Error al obtener quedadas:', error);
       }
     };
-
-    fetchMyQuedadas();
+     fetchMyQuedadas();
   }, []);
 
   const chunkArray = (arr, size) => {

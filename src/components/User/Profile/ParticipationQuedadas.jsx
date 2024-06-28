@@ -7,21 +7,25 @@ import { getQuedadasAsistidasByUserId } from '../../../api/Quedada.controller';
 const ParticipationQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos'); 
   const [quedadas, setQuedadas] = useState([]);
-  const [hasQuedadas, setHasQuedadas] = useState(true); // Estado para verificar si hay quedadas
+  const [hasQuedadas, setHasQuedadas] = useState(true);
+  const [isFetchQuedadasFlag, setIsFetchQuedadasFlag ] = useState(false)
 
   useEffect(() => {
     const fetchMyParticipationQuedadas = async () => {
       try {
         const result = await getQuedadasAsistidasByUserId(user._id);
         setQuedadas(result);
-        setHasQuedadas(result.length > 0); // Actualiza el estado basado en si hay quedadas
+        console.log(result)
+        setHasQuedadas(result.length > 0); 
+        setIsFetchQuedadasFlag(true)
       } catch (error) {
         console.error('Error al obtener quedadas asistidas:', error);
       }
     };
-
+   if(!isFetchQuedadasFlag)
     fetchMyParticipationQuedadas();
-  }, []);
+  
+  }, [quedadas]);
 
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
