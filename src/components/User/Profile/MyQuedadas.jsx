@@ -20,8 +20,9 @@ const MyQuedadas = ({ user }) => {
         console.error('Error al obtener quedadas:', error);
       }
     };
+   if(quedadas.length === 0)
      fetchMyQuedadas();
-  }, []);
+  }, [quedadas]);
 
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
@@ -55,7 +56,7 @@ const MyQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} // Ajuste dinámico de altura
+        style={[styles.wrapper, { height: quedadas.length > 0 ? 405 : 50.5 }]} // Ajuste dinámico de altura
         loop={false}
         autoplay={true}
         autoplayTimeout={3}
