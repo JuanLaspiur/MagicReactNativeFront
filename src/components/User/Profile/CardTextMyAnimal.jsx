@@ -12,12 +12,12 @@ import ModleSelectAnimals from "../Profile/ModleSelectAnimals";
 import { getAnimales } from "../../../api/User.controller.js";
 import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js";
 
-const CardTextMyAnimal = ({user}) => {
+const CardTextMyAnimal = ({ user }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
-  const [numero, setNumero] = useState(obtenerNumerosDespuesGuion("../../../assets/Animals/ICONOS A COLOR-00.png"))
-  
+  const [numero, setNumero] = useState(0);
+
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
     require("../../../assets/Animals/ICONOS A COLOR-01.png"),
@@ -80,8 +80,9 @@ const CardTextMyAnimal = ({user}) => {
     };
     getAllAnimals();
   }, []);
+
   useEffect(() => {
-    if (animalsList.length > 0 && user.animal) {
+    if (animalsList.length > 0 && user && user.animal) {
       let myAnimalInTheList = animalsList.find((item) => item._id === user.animal);
       setAnimal(myAnimalInTheList);
       if (myAnimalInTheList) {
@@ -91,9 +92,11 @@ const CardTextMyAnimal = ({user}) => {
       }
     }
   }, [animalsList, user]);
+
   const handleEditPress = () => {
     setModalVisible(true);
   };
+
   return (
     <>
       <View style={styles.card}>
@@ -122,8 +125,8 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // Alineación de los elementos
-    backgroundColor: "#EAEAEA", // Color de fondo gris claro
+    justifyContent: "space-between",
+    backgroundColor: "#EAEAEA",
     borderRadius: 10,
     padding: 10,
     margin: 5,
@@ -131,17 +134,13 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   textContainer: {
-    flex: 1, // Esta línea asegura que el contenedor se expanda para ajustarse al contenido del texto
+    flex: 1,
   },
   headerText: {
     fontSize: 16,
-    fontWeight: "bold", // Texto en negrilla
+    fontWeight: "bold",
     marginBottom: 5,
-    color: "gray", // Color del texto
-  },
-  text: {
-    fontSize: 14,
-    color: "gray", // Color del texto
+    color: "gray",
   },
   icon: {
     width: 70,

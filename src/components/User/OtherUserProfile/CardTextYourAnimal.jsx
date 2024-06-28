@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { getAnimales } from "../../../api/User.controller.js";
 import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js";
+
 const CardTextYourAnimal = ({ user }) => {
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
-  const [numero, setNumero] = useState(obtenerNumerosDespuesGuion("../../../assets/Animals/ICONOS A COLOR-00.png"))
-  
+  const [numero, setNumero] = useState(0);
+
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
     require("../../../assets/Animals/ICONOS A COLOR-01.png"),
@@ -57,7 +58,6 @@ const CardTextYourAnimal = ({ user }) => {
     require("../../../assets/Animals/ICONOS A COLOR-46.png"),
     require("../../../assets/Animals/ICONOS A COLOR-47.png"),
   ];
-   
 
   useEffect(() => {
     const getAllAnimals = async () => {
@@ -70,34 +70,36 @@ const CardTextYourAnimal = ({ user }) => {
     };
     getAllAnimals();
   }, []);
+
   useEffect(() => {
-    if (animalsList.length > 0 && user.animal) {
+    if (animalsList.length > 0 && user && user.animal) {
       let myAnimalInTheList = animalsList.find((item) => item._id === user.animal);
-      setAnimal(myAnimalInTheList);
       if (myAnimalInTheList) {
-        setNumero(obtenerNumerosDespuesGuion(myAnimalInTheList.img)); 
+        setAnimal(myAnimalInTheList);
+        setNumero(obtenerNumerosDespuesGuion(myAnimalInTheList.img));
       } else if (user.animal_img) {
         setNumero(obtenerNumerosDespuesGuion(user.animal_img));
       }
+    } else {
+      setAnimal(null);
+      setNumero(0);
     }
   }, [animalsList, user]);
 
   return (
-    <>
-      <View style={styles.card}>
-        <View style={styles.textContainer}>
-          <Text style={styles.headerText}>
-            ¡Este es su Animal Totem Seleccionado!
-          </Text>
-        </View>
-        {animalImages.length > 0 && (
-          <Image
-            source={animalImages[numero]}
-            style={styles.icon}
-          />
-        )}
+    <View style={styles.card}>
+      <View style={styles.textContainer}>
+        <Text style={styles.headerText}>
+          ¡Este es su Animal Totem Seleccionado!
+        </Text>
       </View>
-    </>
+      {animalImages.length > 0 && animal && (
+        <Image
+          source={animalImages[numero]}
+          style={styles.icon}
+        />
+      )}
+    </View>
   );
 };
 
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between", // Alineación de los elementos
+    justifyContent: "space-between",
     backgroundColor: "#AED0F6",
     borderRadius: 10,
     padding: 10,
@@ -114,26 +116,17 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   textContainer: {
-    flex: 1, // Esta línea asegura que el contenedor se expanda para ajustarse al contenido del texto
+    flex: 1,
   },
   headerText: {
     fontSize: 16,
-    fontWeight: "bold", // Texto en negrilla
+    fontWeight: "bold",
     marginBottom: 5,
-    color: "#fff", // Color del texto
-  },
-  text: {
-    fontSize: 14,
-    color: "gray", // Color del texto
+    color: "#fff",
   },
   icon: {
     width: 70,
     height: 70,
-  },
-  editIcon: {
-    paddingLeft: 10,
-    paddingBottom: 40,
-    borderRadius: 20,
   },
 });
 

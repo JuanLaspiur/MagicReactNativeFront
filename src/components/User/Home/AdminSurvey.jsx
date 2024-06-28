@@ -22,7 +22,6 @@ const AdminSurvey = () => {
         setOpciones(options.data);
       } catch (error) {
         console.error("Error al cargar la encuesta:", error);
-        // Manejo de errores aquí
       }
     };
 
@@ -36,16 +35,16 @@ const AdminSurvey = () => {
   }, []);
 
   const handleOptionPress = (optionId) => {
-    setSelectedOption(optionId); // Actualiza selectedOption con el _id de la opción seleccionada
+    setSelectedOption(optionId); 
   };
 
   const handleEnviarPress = async () => {
     const data = {
-      opcionId: selectedOption, // Usa selectedOption en lugar de option
+      opcionId: selectedOption, 
       usuarioId: authUser._id,
     };
     console.log(JSON.stringify(data));
-    // await sendMySurveyRespose(data);
+    await sendMySurveyRespose(data);
   };
 
   return (
