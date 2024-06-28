@@ -142,7 +142,7 @@ const handleAvatarPress = () => {
 
 
   return (
-    <TouchableOpacity style={styles.card} onPress={handleAvatarPress}>
+    <TouchableOpacity style={styles.avatarContainer}onPress={handleAvatarPress}>
       <View style={styles.avatarContainer}>
       <Image
         source={require("../../../assets/Login/Ellipse 1.png")}

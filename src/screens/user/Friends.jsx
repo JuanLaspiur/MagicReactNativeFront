@@ -76,7 +76,7 @@ function Friends() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollContainer}>
-        {allList.map((user) => (
+        {allList && allList.length > 0 &&  allList.map((user) => (
           <ItemFriend
             key={user._id}
             name={user.name}
