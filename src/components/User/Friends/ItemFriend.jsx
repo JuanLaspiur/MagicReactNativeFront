@@ -1,15 +1,21 @@
-// ItemFriend.jsx
-
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 function ItemFriend({ name, lastName, user }) {
-  return (
-    <View style={styles.container}>
-      <Text>Nombre: {name}</Text>
-      <Text>Apellido: {lastName}</Text>
+  const navigation = useNavigation();  
 
-    </View>
+  const handlePressItemFriend = () => {
+    navigation.navigate('OtherUserProfile', { user });
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePressItemFriend}>
+      <View style={styles.container}>
+        <Text>Nombre: {name}</Text>
+        <Text>Apellido: {lastName}</Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 

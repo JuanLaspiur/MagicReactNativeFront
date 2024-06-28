@@ -4,7 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ScrollView, // Agrega ScrollView para desplazar la lista si es necesario
+  ScrollView,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
