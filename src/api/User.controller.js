@@ -67,4 +67,15 @@ const getAnimales = async () => {
     console.error('Error seguir usuario:', error);
   } 
 }
-export {getUserById, getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario}
+
+const getUserInfo = async() => {
+  try {
+    const response = await api.get(`user_info2`)
+    return response
+  } catch (error) {
+    console.error('Error al obtener informacion del usuario: ', error);
+  } 
+}
+
+
+export {getUserById, getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}

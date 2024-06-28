@@ -2,23 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { capitalizeFirstLetter } from '../../../helpers/CapitalizeFirstLetterString';
-import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore';
+import { getUserById, getUserInfo } from '../../../api/User.controller'
 
-const YourInterestsTable = () => {
-  const [user, setUser] = useState([]);
+const YourInterestsTable = ({user}) => {
+const [perfilUser, setPerfilUser] = useState([]);
 
   useEffect(() => {
-    const getAuthUser = async () => {
+    const getUser = async () => {
       try {
-        const data = await getValueFromSecureStore('user');
-        setUser(JSON.parse(data));
+        console.log(user._id)
+        const response = await getUserById(user._id);
+        setPerfilUser(response.data);
+        console.log(JSON.stringify(perfilUser.peliculas), ' perfil user')
       } catch (error) {
         console.error('Error al obtener y parsear el usuario desde SecureStore:', error);
       }
     };
-
-    getAuthUser();
-  }, []); 
+    getUser();
+  }, []);  
 
   return (
     <View style={styles.container}>
@@ -30,7 +31,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Películas Favoritas</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{capitalizeFirstLetter(user.peliculas)}</Text>
+          <Text style={styles.dataText}>{perfilUser?.peliculas  ? capitalizeFirstLetter(perfilUser.peliculas) : ' - sin info - '}</Text>
         </View>
       </View>
       <View style={styles.row}>
@@ -38,7 +39,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Artista y Estilo Musical Favorito</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{capitalizeFirstLetter(user.artista)}</Text>
+          <Text style={styles.dataText}>{perfilUser?.artista ? capitalizeFirstLetter(perfilUser.artista) : ' - sin info - ' }</Text>
         </View>
       </View>
       <View style={styles.row}>
@@ -46,7 +47,7 @@ const YourInterestsTable = () => {
           <Text style={styles.categoryText}>Deportes Favoritos</Text>
         </View>
         <View style={styles.dataCell}>
-          <Text style={styles.dataText}>{capitalizeFirstLetter(user.deportes)}</Text>
+          <Text style={styles.dataText}>{perfilUser?.deportes ? capitalizeFirstLetter(perfilUser.deportes) : ' - sin info - '}</Text>
         </View>
       </View>
     </View>

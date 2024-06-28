@@ -56,7 +56,7 @@ const YourQuedadasCarrucell = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]}
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 150.5 }]}
         loop={false}
         autoplay={true}
         autoplayTimeout={3}

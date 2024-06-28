@@ -59,7 +59,7 @@ const ParticipationQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} // Ajuste dinámico de altura
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 52.5 }]} // Ajuste dinámico de altura
         loop={false}
         autoplay={true} 
         autoplayTimeout={3}

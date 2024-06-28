@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ParticipationQuedadaCardBlue from '../QuedadasViewsCards/profile/ParticipationQuedadaCardBlue'; 
+import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; 
 import { getQuedadasAsistidasByUserId } from '../../../api/Quedada.controller';
-
-const { width: screenWidth } = Dimensions.get('window');
 
 const YourParticipationQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
@@ -35,7 +33,7 @@ const YourParticipationQuedadas = ({ user }) => {
     );
   };
 
-  const groupedQuedadas = chunkArray(quedadas, 3);
+  const groupedQuedadas = chunkArray(quedadas,3);
 
   return (
     <View style={styles.container}>
@@ -60,10 +58,11 @@ const YourParticipationQuedadas = ({ user }) => {
           <Text style={styles.buttonText}>Todos</Text>
         </TouchableOpacity>
       </View>
+      
       <Swiper
-        style={[styles.wrapper, { height: hasQuedadas ? 405 : 202.5 }]} 
+        style={[styles.wrapper, { height: hasQuedadas ? 405 : 152.5 }]} // Ajuste dinámico de altura
         loop={false}
-        autoplay={true}
+        autoplay={true} 
         autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
@@ -74,7 +73,7 @@ const YourParticipationQuedadas = ({ user }) => {
           groupedQuedadas.map((group, index) => (
             <View key={index} style={styles.slide}>
               {group.map(quedada => (
-                <ParticipationQuedadaCardBlue key={quedada._id} quedada={quedada} />
+                <ParticipationQuedadaCard key={quedada._id} quedada={quedada} />
               ))}
             </View>
           ))

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
 
-const ParticipationQuedadaCard = () => {
+const ParticipationQuedadaCard = ({quedada}) => {
   const navigation = useNavigation();
   const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
@@ -12,10 +12,9 @@ const ParticipationQuedadaCard = () => {
   };
 
   // Datos harcodeados para la participación en la quedada
-  const eventName = "Nombre del Evento";
-  const eventDescription =
-    "Descripción del evento. ¡Únete para más diversión y actividades exclusivas!";
-  const fecha = "15/07/24"; // Fecha harcodeada en formato dd/mm/AA
+  const eventName = quedada.name;
+  const eventDescription = quedada.description;
+  const fecha = quedada.date; // Fecha harcodeada en formato dd/mm/AA
   const confirmados = 30; // Cantidad de confirmados harcodeada
   const maxParticipantes = 50; // Máximo número de participantes harcodeado
   const zona = "Zona Centro"; // Zona harcodeada
@@ -41,13 +40,13 @@ const ParticipationQuedadaCard = () => {
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
-        <Image
+       {/* <Image
           source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
           style={styles.avatar}
-        />
+        /> */}
         <View style={styles.textContainer}>
           <Text style={styles.name}>{eventName}</Text>
-          <Text style={styles.description}>{truncateDescription(eventDescription, 120)}</Text>
+          <Text style={styles.description}>{truncateDescription(eventDescription, 50)}</Text>
         </View>
       </View>
       <View style={styles.infoContainer}>
@@ -106,6 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333333', // Darker text color
     marginBottom: 5,
+    marginRight:10
   },
   description: {
     fontSize: 12, // Adjusted font size for description
