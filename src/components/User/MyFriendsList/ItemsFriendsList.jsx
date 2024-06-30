@@ -3,9 +3,12 @@ import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-na
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { getUserById } from '../../../api/User.controller'
+import env from "../../../../env";
+
 function ItemsFriendsList({ name, lastName, age, avatarUrl, userID }) {
   const navigation = useNavigation();
   const [user , setUser] = useState({})
+  const [imageUri, setImageUri] = useState('');
 
   const handleAvatarPress = () => {
     navigation.navigate('OtherUserProfile')
@@ -18,6 +21,7 @@ function ItemsFriendsList({ name, lastName, age, avatarUrl, userID }) {
   };
 
   useEffect(()=>{
+    setImageUri(env.BACK_URL + '/perfil_img/' + userID);
     handleMessagePress()
 
   },[])
@@ -37,19 +41,13 @@ function ItemsFriendsList({ name, lastName, age, avatarUrl, userID }) {
         resizeMode="contain"
         style={styles.eclipse2}
       />
-        {avatarUrl ? (
-          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-        ) : (
-          <FontAwesome name="user-circle-o" size={50} color="#AED0F6" />
-        )}
+        <Image   source={{ uri: imageUri }} style={styles.avatar} />
+        
         <View style={styles.textContainer}>
           <Text style={styles.name}>{user.name}</Text>
           <Text style={styles.description}>{`${user.last_name} - ${user.age} años`}</Text>
         </View>
-        <View style={styles.avatarAnimalContainer}>
-          <Image source={require('../../../assets/Animals/ICONOS A COLOR-13.png')} style={styles.avatarAnimal} />
         </View>
-      </View>
       <TouchableOpacity onPress={handleMessagePress} style={styles.messageContainer}>
         <Ionicons name="paper-plane-outline" size={22} color="#AED0F6" />
       </TouchableOpacity>

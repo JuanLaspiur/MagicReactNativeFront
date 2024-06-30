@@ -5,10 +5,12 @@ import AppHeader from '../../components/User/AppHeader';
 import ItemsFriendsList from '../../components/User/MyFriendsList/ItemsFriendsList';
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import { seguidoresQueMeSiguen } from '../../api/User.controller';
+import env from '../../../env';
 
 function MyFriendsList() {
   const [authUser, setAuthUser] = useState(null); 
   const [idList, setIdList] = useState([]); 
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +25,8 @@ function MyFriendsList() {
         console.error('Error fetching data:', error);
       }
     };
-
+    
+    
     fetchData(); 
   }, []); 
 
@@ -34,27 +37,25 @@ function MyFriendsList() {
         <FontAwesome name="search" size={24} color="#CCCCCC" style={styles.icon} />
         <TextInput
           style={styles.input}
-          placeholder="Buscar en mis amigos..."
+          placeholder="Buscar en mis amigos ..."
           placeholderTextColor="#CCCCCC"
         />
       </View>
 
       <ScrollView style={styles.scrollContainer}>
-        <Text style={styles.misamigosh4}>Mis Amigos</Text>
-        {/* Renderizar cada elemento de idList como un componente ItemsFriendsList */}
+        <Text style={styles.misamigosh4}>Seguidores que sigués</Text>
         {idList.map((item) => (
           <ItemsFriendsList
-            key={item.seguidor_id} // Asegúrate de usar una clave única para cada elemento en la lista
-            name="Juan" // Ejemplo estático, reemplaza con datos dinámicos si corresponde
+            key={item.seguidor_id} 
+            name="Juan" 
             lastName="Pérez"
             age={25}
             avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'}
-            userID={item.seguidor_id} // Pasa el ID del seguidor como prop userID
+            userID={item.seguidor_id} 
           />
         ))}
       </ScrollView>
 
-      {/* Imágenes de fondo */}
       <Image
         source={require("../../assets/Login/pngwing.com (3).png")}
         style={styles.eclipse1}

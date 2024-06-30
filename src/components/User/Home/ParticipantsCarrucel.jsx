@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ItemParticipantsQuedadaDetail from './ItemParticipantsQuedadaDetail'; // Ajusta la ruta según tu estructura de proyecto
-
+import ItemParticipantsQuedadaDetail from './ItemParticipantsQuedadaDetail'; 
 const { width: screenWidth } = Dimensions.get('window');
 
 const ParticipantsCarrucel = ({ quedada }) => {
   const asistentes = quedada.asistentes;
 
-  // Función para dividir los asistentes en grupos de 4
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -17,7 +15,6 @@ const ParticipantsCarrucel = ({ quedada }) => {
     return chunks;
   };
 
-  // Dividir los asistentes en grupos de 4
   const asistentesChunks = chunkArray(asistentes, 4);
 
   return (
@@ -27,8 +24,8 @@ const ParticipantsCarrucel = ({ quedada }) => {
       <Swiper
         style={styles.wrapper}
         loop={false}
-        autoplay={true} // Cambia a true para que el carrusel se mueva automáticamente
-        autoplayTimeout={3} // Ajusta el tiempo de espera entre slides (en segundos)
+        autoplay={true} 
+        autoplayTimeout={3} 
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{
@@ -64,7 +61,7 @@ const styles = StyleSheet.create({
   wrapper: {
     height:'auto',
     minHeight:400,
-    maxHeight: 600, // Ajusta esta altura según sea necesario
+    maxHeight: 600, 
   },
   h1: {
     fontSize: 20,

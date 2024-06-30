@@ -79,7 +79,6 @@ function CreateQuedada() {
     setShowTimePicker(Platform.OS === "ios");
     setTime(currentTime);
   };
-
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -88,30 +87,22 @@ function CreateQuedada() {
         name: "image.jpg",
         type: "image/jpeg",
       });
-      formData.append(
-        "dat",
-        JSON.stringify({
-          image,
-          description,
-          dateTime: new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()),
-          maxParticipants: parseInt(maxParticipants),
-          zone,
-          location,
-          category: category,
-          privacy,
-          user_id: user._id,
-          asistentes: []
-        })
-      );
-      console.log(formData)
-      //const response = await createQuedadaBack(formData);
-     // console.log("Quedada creada exitosamente:", response.data);
-      // Aquí puedes manejar la respuesta exitosa según tus necesidades (actualizar estado, mostrar mensajes, etc.)
+      formData.append("description", description);
+      formData.append("dateTime", new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()));
+      formData.append("maxParticipants", maxParticipants.toString());
+      formData.append("zone", zone);
+      formData.append("location", location);
+      formData.append("category", category);
+      formData.append("privacy", privacy);
+      formData.append("user_id", user._id);
+  
+      const response = await createQuedadaBack(formData);
+      console.log("Quedada creada exitosamente:", response.data);
     } catch (error) {
       console.error("Error al crear la quedada:", error);
-      // Manejar el error (mostrar mensaje de error, etc.)
     }
   };
+  
 
 
   return (

@@ -1,7 +1,6 @@
-// ItemParticipantsQuedadaDetail.js
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
-import { getUserById } from '../../../api/User.controller'; // Ajusta la ruta según tu estructura de proyecto
+import { getUserById } from '../../../api/User.controller'; 
 import env from '../../../../env'
 const ItemParticipantsQuedadaDetail = ({ asistente }) => {
   const [usuario, setUsuario] = useState(null);
@@ -47,7 +46,7 @@ const ItemParticipantsQuedadaDetail = ({ asistente }) => {
 const styles = StyleSheet.create({
   card: {
     width: "90%",
-    backgroundColor: "#EAEAEA", // Cambiado a gris
+    backgroundColor: "#EAEAEA", 
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -75,12 +74,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 15,
     fontWeight: "bold",
-    color: "#333", // Color de texto cambiado a gris oscuro
+    color: "#333", 
     marginBottom: 5,
   },
   description: {
     fontSize: 14,
-    color: "#333", // Color de texto cambiado a gris oscuro
+    color: "#333", 
   },
   statusContainer: {
     marginTop: 10,

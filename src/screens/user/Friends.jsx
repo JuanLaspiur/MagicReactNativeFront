@@ -66,7 +66,6 @@ function Friends() {
     setSearchTerm(text);
   };
 
-  // Filtrar la lista por nombre y apellido
   const filteredList = allList.filter((user) => {
     const fullName = `${user.name} ${user.last_name}`.toLowerCase();
     return fullName.includes(searchTerm.toLowerCase());
