@@ -13,7 +13,6 @@ const CardsSimpleCarrucel = () => {
     const fetchQuedadas = async () => {
       try {
         const response = await getAllQuedadas(); 
-        alert(' ' + JSON.stringify(response))
         setQuedadas(response); 
       } catch (error) {
         console.error('Error fetching quedadas:', error);

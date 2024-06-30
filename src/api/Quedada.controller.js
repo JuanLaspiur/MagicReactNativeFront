@@ -35,7 +35,7 @@ const getAllQuedadasPremium = async () => {
   const getQuedadasAsistidasByUserId = async (userId) => {
     try {
       const response = await api.get(`/evetos_asistidos/${userId}`);
-      return response.data;
+      return response;
     } catch (error) {
       console.error(`Error al obtener quedadas del usuario con ID ${userId}:`, error);
       throw error;

@@ -15,7 +15,7 @@ const ParticipationQuedadas = ({ user }) => {
       try {
         const result = await getQuedadasAsistidasByUserId(user._id);
         setQuedadas(result);
-        console.log(result)
+        console.log('Quedadas asistidas: '+ JSON.stringify(result))
         setHasQuedadas(result.length > 0); 
         setIsFetchQuedadasFlag(true)
       } catch (error) {
