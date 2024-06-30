@@ -6,6 +6,7 @@ import MessageHeader from "../../components/User/Messages/MessageHeader";
 import * as ImagePicker from 'expo-image-picker'; 
 import { sendMessageBychatID } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
+import { getChatBychatID } from "../../api/Chat.controller";
 
 
 const ChatRoom = ({route}) => {
@@ -15,20 +16,39 @@ const ChatRoom = ({route}) => {
   const [inputText, setInputText] = useState("");
 
   useEffect(() => {
-    (async () => {
+  
+    (async () => { 
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         alert('Se necesita permiso para acceder a la galería de imágenes.');
       }
     })();
     const getAuthUser = async() => {
+      console.log('user ' + user)
       const data = await getValueFromSecureStore('user')
       setAuthUser(JSON.parse(data))
     }
     getAuthUser()
+
+    if(chat.message) {
+    setMessages(chat.messages) 
+  }else {
     setMessages(chat.messages)
+    console.log('Chat '+ JSON.stringify(chat))
+    faundMessagesByChatId(chat._id)
+  }
+
     
   }, []);
+
+  const faundMessagesByChatId = async(id) => {
+    try{
+    const response = await getChatBychatID(id)
+    setMessages(response.data.messages)
+  }catch{
+    console.log('Error al obtener el chat')
+  }
+  }
 
   const handleSend = async() => {
     if (inputText.trim() === "") return;
@@ -83,7 +103,7 @@ const ChatRoom = ({route}) => {
       <AppHeader title="Chat" />
       <MessageHeader user={user} />
       <ScrollView contentContainerStyle={styles.messagesContainer}>
-        {messages.map((message, index) => (
+        {messages && messages.length > 0 && messages.map((message, index) => (
           <View
             key={index}
             style={[

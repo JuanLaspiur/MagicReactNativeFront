@@ -1,53 +1,71 @@
-import React, {useState, useEffect} from "react";
-import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import { getUserById } from '../../../api/User.controller'
+import { getUserById } from '../../../api/User.controller';
 import env from "../../../../env";
+import { getAllMyChats, ChatPrivadoByuserID } from '../../../api/Chat.controller.js';
 
-function ItemsFriendsList({ name, lastName, age, avatarUrl, userID }) {
+function ItemsFriendsList({ name, lastName, age, avatarUrl, userID, authUser }) {
   const navigation = useNavigation();
-  const [user , setUser] = useState({})
+  const [user, setUser] = useState({});
   const [imageUri, setImageUri] = useState('');
 
   const handleAvatarPress = () => {
-    navigation.navigate('OtherUserProfile')
+    navigation.navigate('OtherUserProfile');
   };
 
-  const handleMessagePress = async() => {
-    const response = await getUserById(userID)
-    setUser(response.data)
+  const handleMessagePress = async () => {
+   try {
+      const listaDeChats = await getAllMyChats(authUser._id); 
+   
+   if (listaDeChats && listaDeChats.length > 0) {
+        let chat = listaDeChats.find((item) => item.otro_id === user._id);
+    
+        if (chat) {
+              navigation.navigate("ChatRoom", { user, chat });
+        } else {
+          try {
+            const response = await ChatPrivadoByuserID(user._id);
+            chat = response.data;
+            navigation.navigate("ChatRoom", { user, chat });
+          } catch (error) {
+            console.error("No se pudo crear un chat", error);
+          }
+        }
+      } else {
+        console.error("Lista de chats vacía o indefinida");
+      }
+    } catch (error) {
+      console.error("Error fetching chats", error);
+    } 
+  };
+  
 
+  const getUser = async () => {
+    try {
+      const response = await getUserById(userID);
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user", error);
+    }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setImageUri(env.BACK_URL + '/perfil_img/' + userID);
-    handleMessagePress()
-
-  },[])
-
-
+    getUser();
+  }, []);
 
   return (
     <TouchableOpacity style={styles.card} onPress={handleAvatarPress}>
       <View style={styles.avatarContainer}>
-      <Image
-        source={require("../../../assets/Login/pngwing.com (3).png")}
-        resizeMode="contain"
-        style={styles.eclipse1}
-      />
-            <Image
-       source={require("../../../assets/Login/pngwing.com (3).png")}
-        resizeMode="contain"
-        style={styles.eclipse2}
-      />
-        <Image   source={{ uri: imageUri }} style={styles.avatar} />
-        
+        {/* Your avatar images or placeholders */}
+        <Image source={{ uri: imageUri }} style={styles.avatar} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{user.name}</Text>
-          <Text style={styles.description}>{`${user.last_name} - ${user.age} años`}</Text>
+          <Text style={styles.description}>{`${user.last_name ?? ''} - ${user.age ?? ''} años`}</Text>
         </View>
-        </View>
+      </View>
       <TouchableOpacity onPress={handleMessagePress} style={styles.messageContainer}>
         <Ionicons name="paper-plane-outline" size={22} color="#AED0F6" />
       </TouchableOpacity>

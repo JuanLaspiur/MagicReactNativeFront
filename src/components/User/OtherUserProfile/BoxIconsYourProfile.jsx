@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   box: {
     justifyContent: "center",
     alignItems: "center",
-    width: "30%", // Ajusta el tamaño según sea necesario
+    width: "30%", 
   },
   text: {
     marginTop: 5,

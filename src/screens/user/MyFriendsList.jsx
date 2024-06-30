@@ -33,14 +33,14 @@ function MyFriendsList() {
   return (
     <View style={styles.container}>
       <AppHeader title="Mis Amigos" />
-      <View style={styles.searchContainer}>
+     {/* <View style={styles.searchContainer}>
         <FontAwesome name="search" size={24} color="#CCCCCC" style={styles.icon} />
         <TextInput
           style={styles.input}
           placeholder="Buscar en mis amigos ..."
           placeholderTextColor="#CCCCCC"
         />
-      </View>
+      </View> */}
 
       <ScrollView style={styles.scrollContainer}>
         <Text style={styles.misamigosh4}>Seguidores que sigués</Text>
@@ -52,7 +52,8 @@ function MyFriendsList() {
             age={25}
             avatarUrl={'https://this-person-does-not-exist.com/img/avatar-gen112654a904a47dbfcd8e1db3f820aaf9.jpg'}
             userID={item.seguidor_id} 
-          />
+            authUser={authUser}
+            />
         ))}
       </ScrollView>
 
