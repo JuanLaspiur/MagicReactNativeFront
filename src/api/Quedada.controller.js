@@ -55,13 +55,14 @@ const getQuedadaById = async (id) => {
 
 const createQuedadaBack = async (form) => {
   try {
-    const response = await apiFormData.post('/createQuedadaReactNative', form); 
+    const response = await apiFormData.post('/createQuedadaReactNative', form);
     return response.data;
   } catch (error) {
     console.error('Error al crear quedada:', error);
     throw error;
   }
 };
+
 
 const updateQuedada = async (id, updatedQuedada) => {
   try {

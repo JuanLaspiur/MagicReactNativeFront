@@ -79,30 +79,49 @@ function CreateQuedada() {
     setShowTimePicker(Platform.OS === "ios");
     setTime(currentTime);
   };
+
   const handleSubmit = async () => {
     try {
-      const formData = new FormData();
-      formData.append("file", {
-        uri: image,
-        name: "image.jpg",
-        type: "image/jpeg",
-      });
-      formData.append("description", description);
-      formData.append("dateTime", new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()));
-      formData.append("maxParticipants", maxParticipants.toString());
-      formData.append("zone", zone);
-      formData.append("location", location);
-      formData.append("category", category);
-      formData.append("privacy", privacy);
-      formData.append("user_id", user._id);
+      // Formatear la fecha y hora en formato ISO 8601
+      const formattedDateTime = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        time.getHours(),
+        time.getMinutes()
+      ).toISOString();
   
-      const response = await createQuedadaBack(formData);
-      console.log("Quedada creada exitosamente:", response.data);
+      
+      const formattedDateTimes = `${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })}, ${time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+
+      const dataToSend = {
+        name: quedadaName,
+        description: description,
+        date: formattedDate, // ¡NO MODIFIQUES NADA, SOLO AGREGA ESTO QUE FALTA! se tiene que ver asi --> "2023/08/28 18:32" 
+        dateTime: formattedDateTimes, 
+        limit:  parseInt(maxParticipants), // es un string quiero que sea un numero
+        zone: zone,
+        location: location,
+        category: category,
+        privacy: privacy,
+        user_id: user._id
+      };
+  
+      console.log("Datos del formulario:");
+      console.log(dataToSend);
+  
+      // Realizar la solicitud al backend para crear la quedada
+       const response = await createQuedadaBack(dataToSend);
+  
+      // Verificar la respuesta del backend
+      
     } catch (error) {
-      console.error("Error al crear la quedada:", error);
+      console.error("Error al crear la quedada:", error.message);
+      // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
     }
   };
-  
+
 
 
   return (
@@ -241,12 +260,12 @@ function CreateQuedada() {
             onValueChange={(itemValue) => setPrivacy(itemValue)}
           >
             <Picker.Item label="Selecciona privacidad" value="" />
-            <Picker.Item label="Público" value="public" />
+            <Picker.Item label="Público" value="Público" />
             {user && user.quedadasPriv && (
-              <Picker.Item label="Privado" value="private" />
+              <Picker.Item label="Privado" value="Privado" />
             )}
             {user && user.premium && (
-              <Picker.Item label="Premium" value="premium" />
+              <Picker.Item label="Premium" value="Premium" />
             )}
           </Picker>
         </View>
