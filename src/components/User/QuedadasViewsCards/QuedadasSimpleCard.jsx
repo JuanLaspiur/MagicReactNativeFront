@@ -18,17 +18,18 @@ const QuedadasSimpleCard = ({ quedada }) => {
   };
 // atributes
   const nombreQuedada = quedada.name.charAt(0).toUpperCase() + quedada.name.slice(1).toLowerCase();
-  const asistentes = quedada.asistentes.length; 
+  const asistentes = quedada.asistentes?.length; 
   const zona = "Zona " + quedada.zone; 
   const maxParticipantes = quedada.limit;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const iconColor = 'white'; 
-  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
+ const fecha = quedada.dateTime && !quedada.react  ? formatDate(quedada.dateTime) : '';
   const nombrePersona = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
+  
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
-      <View style={styles.content}>
+ <View style={styles.content}>
         <Image
           source={{ uri: urlImagePerfil }}
           style={styles.avatar}
@@ -39,14 +40,14 @@ const QuedadasSimpleCard = ({ quedada }) => {
             <Text style={styles.edadText}>{nombrePersona}</Text>
           )}
         </View>
-      </View>
+      </View> 
       <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>{fecha}</Text>
-        <Text style={styles.infoText}>{`Confirmados: ${asistentes}`}</Text>
+       <Text style={styles.infoText}>{ fecha}</Text>
+        <Text style={styles.infoText}>{`Confirmados: ${asistentes && asistentes}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {/* Conditional rendering of the icon */}
+  
       <TouchableOpacity
         style={[styles.iconContainer, { backgroundColor: iconColor }]}
         onPress={handleConfirm}

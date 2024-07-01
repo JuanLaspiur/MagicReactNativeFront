@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
 import ParticipantsCarrucel from '../../components/User/Home/ParticipantsCarrucel';
-import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
+import { Ionicons } from '@expo/vector-icons';
 import env from '../../../env';
 const { width: screenWidth } = Dimensions.get('window');
 import { formatDate } from '../../helpers/UpdateQuedadaDay'
 
 const QuedadaDetail = ({ route }) => {
   const { quedada } = route.params;
-  const [asistir, setAsistir] = useState(false); // Estado inicial: no asistiendo
-  const [expanded, setExpanded] = useState(false); // Estado para expandir la descripción
-  const urlImagenQuedada = env.BACK_URL+'/quedada_img/'+quedada._id;
+  const [asistir, setAsistir] = useState(false);
+  const [expanded, setExpanded] = useState(false); 
+  const urlImagenQuedada = !quedada.react ? env.BACK_URL+'/quedada_img/'+quedada._id : env.BACK_URL+'/quedada_img/'+quedada._id+".jpg" ;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const nombreYApellido = quedada.userInfo.name;
   const handleAsistirPress = () => {
@@ -20,7 +20,6 @@ const QuedadaDetail = ({ route }) => {
     } else {
       alert('Asistir a la quedada');
     }
-    // Cambiar el estado opuesto
     setAsistir(!asistir);
   };
 
@@ -29,7 +28,6 @@ const QuedadaDetail = ({ route }) => {
   };
 
  
-  // Función para truncar la descripción si es más larga de 300 caracteres
   const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
@@ -66,7 +64,7 @@ const QuedadaDetail = ({ route }) => {
       </View>
           <Text style={styles.datosText}><Ionicons name="person-remove-outline" size={14} color="white " /> Max: {quedada.limit}</Text>
           <Text style={styles.datosText}><Ionicons name="map-outline" size={14} color="white" /> Zona: {quedada.zone}</Text>
-          <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: {quedada.dateTime && formatDate(quedada.dateTime)}</Text>
+          <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: {quedada.dateTime || !quedada.react && formatDate(quedada.dateTime)}</Text>
           <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: {( quedada.asistentes ? quedada.asistentes.length : 0 )+ ( quedada.solicitudesDeParticipacion ?  quedada.solicitudesDeParticipacion.length : 0)} </Text>
           <Text style={styles.datosText}><Ionicons name="dice-outline" size={14} color="white" /> Confirmados: {quedada.asistentes.length} </Text>
           <TouchableOpacity style={styles.asistenciaStatus} onPress={handleAsistirPress}>

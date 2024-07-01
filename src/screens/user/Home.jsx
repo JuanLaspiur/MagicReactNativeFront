@@ -41,7 +41,7 @@ const Home = () => {
           resizeMode="contain"
           style={styles.eclipse3}
         />
-             <CardsSimpleCarrucel/>
+             <CardsSimpleCarrucel/> 
              <Tabloide/>
       
         </ScrollView>

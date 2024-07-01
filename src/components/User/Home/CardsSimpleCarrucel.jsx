@@ -14,6 +14,7 @@ const CardsSimpleCarrucel = () => {
       try {
         const response = await getAllQuedadas(); 
         setQuedadas(response); 
+        console.log( 'qwerty ' + JSON.stringify(quedadas[0]))
       } catch (error) {
         console.error('Error fetching quedadas:', error);
       }
@@ -40,7 +41,7 @@ const CardsSimpleCarrucel = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.h1}>Planes</Text>
-      <Swiper
+        <Swiper
         style={styles.wrapper}
         loop={false}
         autoplay={true} 
