@@ -12,6 +12,7 @@ const getAllQuedadas = async () => {
   }
 };
 
+
 const getAllQuedadasPremium = async () => {
     try {
       const response = await api.get('/all_quedadas_premium'); 
@@ -84,5 +85,16 @@ const getQuedadaCategories = async () =>{
   }
 }
 
+// asistir/:id
 
-export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId };
+const asistirAQuedada = async (quedadaID) => {
+  try{
+    const response = await api.post('/asistir/'+quedadaID)
+    return response.data
+  }catch (error){
+    console.error(`Error al obtener categorias :`, error);
+    throw error;
+  }
+}
+
+export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };

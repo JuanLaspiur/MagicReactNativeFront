@@ -9,7 +9,7 @@ import { formatDate } from '../../helpers/UpdateQuedadaDay'
 import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
 import { asistirAQuedada } from '../../api/Quedada.controller'
  
-const QuedadaDetail = ({ route }) => {
+const MyQuedadaDetail = ({ route }) => {
   const { quedada } = route.params;
   const [ authUser, setAuthUser ] = useState([]);
   const [asistir, setAsistir] = useState(false);
@@ -23,22 +23,13 @@ const getAuthUser = async() => {
    setAuthUser(JSON.parse(data))
 }
 
- const isAsistir = ()=>{
 
-    if (!quedada || !quedada.asistentes) {
-      setAsistir(false)
-      return;
-    }
-    const asistir = quedada.asistentes.some(asistente => asistente.user_id === authUser._id);
-    setAsistir(asistir);
- }
 
  useEffect(()=>{
   getAuthUser()
-  isAsistir()
  },[])
 
-  const handleAsistirPress = async() => {
+  const handleEditarPress = async() => {
     if (asistir) {
       alert('Cancelar quedada')
       const data =  await asistirAQuedada(quedada._id);
@@ -93,7 +84,7 @@ const getAuthUser = async() => {
           <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: {quedada.dateTime || !quedada.react && formatDate(quedada.dateTime)}</Text>
           <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: {( quedada.asistentes ? quedada.asistentes.length : 0 )+ ( quedada.solicitudesDeParticipacion ?  quedada.solicitudesDeParticipacion.length : 0)} </Text>
           <Text style={styles.datosText}><Ionicons name="dice-outline" size={14} color="white" /> Confirmados: {quedada.asistentes.length} </Text>
-          <TouchableOpacity style={styles.asistenciaStatus} onPress={handleAsistirPress}>
+          <TouchableOpacity style={styles.asistenciaStatus} onPress={handleEditarPress}>
             <View style={styles.circle}>
               <Ionicons name={asistir ? 'flash-outline' : 'flash-off-outline'} size={24} color="white" />
             </View>
@@ -253,4 +244,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuedadaDetail;
+export default MyQuedadaDetail;
