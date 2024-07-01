@@ -19,6 +19,7 @@ import {
 } from "../../api/Quedada.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import * as FileSystem from "expo-file-system";
+import { useNavigation } from "@react-navigation/native";
 
 const defaultImage = "https://via.placeholder.com/200";
 
@@ -37,6 +38,9 @@ function CreateQuedada() {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [user, setUser] = useState({});
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const navigation = useNavigation();
   
   useEffect(() => {
     fetchGetCategories();
@@ -114,14 +118,21 @@ function CreateQuedada() {
         category: category,
         privacy: privacy,
         user_id: user._id,
-        image: imageData, 
+        image: imageData,
+        react:true 
       };
-
-      console.log("Datos del formulario:");
-      console.log(dataToSend);
-
+      
+      try{
       const response = await createQuedadaBack(dataToSend);
+      setShowSuccessMessage(true);
 
+      setTimeout(() => {
+        navigation.navigate("Index");
+      }, 1000);
+
+      } catch {
+        alert('Error al crear la quedada')
+      }  
       
     } catch (error) {
       console.error("Error al crear la quedada:", error.message);
@@ -275,7 +286,13 @@ function CreateQuedada() {
               <Picker.Item label="Premium" value="Premium" />
             )}
           </Picker>
+
+          {showSuccessMessage && (
+  <Text style={styles.successMessage}>Quedada creada con éxito</Text>
+)}   
+
         </View>
+
 
         <TouchableOpacity
           style={[styles.submitButton, { backgroundColor: "#AED0F6" }]}
@@ -337,6 +354,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginTop: 5,
+  },  successMessage: {
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    padding: 10,
+    textAlign: 'center',
+    marginTop: 10,
   },
   dateButton: {
     borderWidth: 1,
