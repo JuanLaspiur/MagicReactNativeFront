@@ -18,7 +18,6 @@ import {
   createQuedadaBack,
 } from "../../api/Quedada.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
-import { apiFormData } from "../../api/configure";
 
 const defaultImage = "https://via.placeholder.com/200";
 
@@ -65,7 +64,9 @@ function CreateQuedada() {
       quality: 1,
     });
 
-    setImage(result.assets[0].uri);
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -82,7 +83,6 @@ function CreateQuedada() {
 
   const handleSubmit = async () => {
     try {
-      // Formatear la fecha y hora en formato ISO 8601
       const formattedDateTime = new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -90,39 +90,38 @@ function CreateQuedada() {
         time.getHours(),
         time.getMinutes()
       ).toISOString();
-  
-      
-      const formattedDateTimes = `${date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' })}, ${time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')} ${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
+
+      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")} ${time
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
 
       const dataToSend = {
         name: quedadaName,
         description: description,
-        date: formattedDate, // ¡NO MODIFIQUES NADA, SOLO AGREGA ESTO QUE FALTA! se tiene que ver asi --> "2023/08/28 18:32" 
-        dateTime: formattedDateTimes, 
-        limit:  parseInt(maxParticipants), // es un string quiero que sea un numero
+        date: formattedDate,
+        dateTime: formattedDateTime,
+        limit: parseInt(maxParticipants), 
         zone: zone,
         location: location,
         category: category,
         privacy: privacy,
-        user_id: user._id
+        user_id: user._id,
+        image: image, 
       };
-  
+
       console.log("Datos del formulario:");
       console.log(dataToSend);
-  
-      // Realizar la solicitud al backend para crear la quedada
-       const response = await createQuedadaBack(dataToSend);
-  
-      // Verificar la respuesta del backend
+
+      const response = await createQuedadaBack(dataToSend);
+
       
     } catch (error) {
       console.error("Error al crear la quedada:", error.message);
-      // Aquí puedes manejar el error, por ejemplo, mostrando un mensaje al usuario
     }
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -171,7 +170,10 @@ function CreateQuedada() {
             activeOpacity={0.7}
           >
             <Text style={styles.dateButtonText}>
-              {`${date.toLocaleDateString()} ${time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+              {`${date.toLocaleDateString()} ${time.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}`}
             </Text>
           </TouchableOpacity>
           {showDatePicker && (

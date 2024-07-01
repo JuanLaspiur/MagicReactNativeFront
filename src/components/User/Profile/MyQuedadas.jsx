@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import Swiper from 'react-native-swiper';
-import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard';
-import { getQuedadasByUserId } from '../../../api/Quedada.controller';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import Swiper from "react-native-swiper";
+import QuedadasSimpleCard from "../QuedadasViewsCards/QuedadasSimpleCard";
+import { getQuedadasByUserId } from "../../../api/Quedada.controller";
 
 const MyQuedadas = ({ user }) => {
-  const [filter, setFilter] = useState('todos');
+  const [filter, setFilter] = useState("todos");
   const [quedadas, setQuedadas] = useState([]);
-  const [hasQuedadas, setHasQuedadas] = useState(true); 
+  const [hasQuedadas, setHasQuedadas] = useState(true);
 
   useEffect(() => {
-        const fetchMyQuedadas = async () => {
+    const fetchMyQuedadas = async () => {
       try {
         const data = await getQuedadasByUserId(user._id);
         setQuedadas(data);
-        console.log(''+data)
-        setHasQuedadas(data.length > 0); 
+        setHasQuedadas(false);
       } catch (error) {
-        console.error('Error al obtener quedadas:', error);
+        console.error("Error al obtener quedadas:", error);
       }
     };
-   if(quedadas.length === 0)
-     fetchMyQuedadas();
+    if (quedadas.length == []) fetchMyQuedadas();
   }, [quedadas]);
 
   const chunkArray = (arr, size) => {
@@ -37,20 +35,23 @@ const MyQuedadas = ({ user }) => {
       <Text style={styles.h1}>Mis planes organizados</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.button, filter === 'terminados' && styles.activeButton]}
-          onPress={() => setFilter('terminados')}
+          style={[
+            styles.button,
+            filter === "terminados" && styles.activeButton,
+          ]}
+          onPress={() => setFilter("terminados")}
         >
           <Text style={styles.buttonText}>Planes Terminados</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filter === 'activos' && styles.activeButton]}
-          onPress={() => setFilter('activos')}
+          style={[styles.button, filter === "activos" && styles.activeButton]}
+          onPress={() => setFilter("activos")}
         >
           <Text style={styles.buttonText}>Activos</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, filter === 'todos' && styles.activeButton]}
-          onPress={() => setFilter('todos')}
+          style={[styles.button, filter === "todos" && styles.activeButton]}
+          onPress={() => setFilter("todos")}
         >
           <Text style={styles.buttonText}>Todos</Text>
         </TouchableOpacity>
@@ -63,13 +64,13 @@ const MyQuedadas = ({ user }) => {
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}
         dotStyle={{
-          backgroundColor: 'rgba(255, 255, 255, 0.3)',
+          backgroundColor: "rgba(255, 255, 255, 0.3)",
           width: 8,
           height: 8,
           borderRadius: 4,
         }}
         activeDotStyle={{
-          backgroundColor: 'white',
+          backgroundColor: "white",
           width: 8,
           height: 8,
           borderRadius: 4,
@@ -78,7 +79,7 @@ const MyQuedadas = ({ user }) => {
         {groupedQuedadas.length > 0 ? (
           groupedQuedadas.map((group, index) => (
             <View key={index} style={styles.slide}>
-              {group.map(quedada => (
+              {group.map((quedada) => (
                 <QuedadasSimpleCard key={quedada._id} quedada={quedada} />
               ))}
             </View>
@@ -103,37 +104,37 @@ const styles = StyleSheet.create({
   },
   h1: {
     fontSize: 20,
-    color: 'gray',
+    color: "gray",
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
     paddingBottom: 10,
   },
   button: {
     padding: 10,
-    backgroundColor: '#EAEAEA',
+    backgroundColor: "#EAEAEA",
     borderRadius: 5,
   },
   activeButton: {
-    backgroundColor: '#D3D3D3',
+    backgroundColor: "#D3D3D3",
   },
   buttonText: {
-    color: 'gray',
-    fontWeight: 'bold',
+    color: "gray",
+    fontWeight: "bold",
   },
   slide: {
     flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    width: '100%',
-    flexDirection: 'column',
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
+    flexDirection: "column",
   },
   noDataText: {
     paddingHorizontal: 14,
-    color: 'gray',
+    color: "gray",
   },
 });
 
