@@ -18,6 +18,7 @@ import {
   createQuedadaBack,
 } from "../../api/Quedada.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import * as FileSystem from "expo-file-system";
 
 const defaultImage = "https://via.placeholder.com/200";
 
@@ -64,8 +65,8 @@ function CreateQuedada() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setImage(result.uri);
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
   };
 
@@ -83,6 +84,10 @@ function CreateQuedada() {
 
   const handleSubmit = async () => {
     try {
+         const imageData = await FileSystem.readAsStringAsync(image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
       const formattedDateTime = new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -109,7 +114,7 @@ function CreateQuedada() {
         category: category,
         privacy: privacy,
         user_id: user._id,
-        image: image, 
+        image: imageData, 
       };
 
       console.log("Datos del formulario:");
