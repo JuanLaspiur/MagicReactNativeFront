@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,29 @@ const Register = () => {
   const navigation = useNavigation();
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+
+  const handleRegister = () => {
+    if (!email || !password || !repeatPassword) {
+      Alert.alert('Error', 'Por favor completa todos los campos.');
+      return;
+    }
+
+    if (!isChecked1) {
+      Alert.alert('Error', 'Debes aceptar los términos y condiciones.');
+      return;
+    }
+
+    if (password !== repeatPassword) {
+      Alert.alert('Error', 'Las contraseñas no coinciden.');
+      return;
+    }
+
+    // Si pasa todas las validaciones, navega a la siguiente pantalla
+    navigation.navigate('RegisterDos');
+  };
 
   return (
     <View style={styles.container}>
@@ -20,9 +43,26 @@ const Register = () => {
       />
       
       <Text style={styles.label}>Datos de Cuenta</Text>
-      <TextInput style={styles.input} placeholder="Correo Electrónico" />
-      <TextInput style={styles.input} placeholder="Contraseña" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Repetir contraseña" secureTextEntry />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo Electrónico"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Repetir contraseña"
+        secureTextEntry
+        value={repeatPassword}
+        onChangeText={setRepeatPassword}
+      />
       <View style={styles.checkRealContainer}>
         <CheckBox
           title="Al registrarme en la presente aplicación, acepto el aviso legal, los términos y condiciones y la política de privacidad."
@@ -39,12 +79,13 @@ const Register = () => {
           textStyle={styles.checkboxText}
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegisterDos')}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

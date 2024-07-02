@@ -21,7 +21,7 @@ function RegisterDos() {
     });
 
     if (!result.canceled) {
-      setProfileImage(result.uri);
+      setProfileImage(result.assets[0].uri);
     }
   };
 
