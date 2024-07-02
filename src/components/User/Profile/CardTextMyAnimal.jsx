@@ -80,7 +80,7 @@ const CardTextMyAnimal = ({ user }) => {
       }
     };
     getAllAnimals();
-  }, []);
+  }, [actualizarComponente]);
 
   useEffect(() => {
     if (animalsList.length > 0 && user && user.animal) {
