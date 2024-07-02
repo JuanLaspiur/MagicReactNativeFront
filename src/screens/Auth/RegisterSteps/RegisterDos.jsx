@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
-import * as ImagePicker from 'expo-image-picker';  // Necesario para la selección de imágenes
-import DateTimePicker from '@react-native-community/datetimepicker'; // Importa DateTimePicker
+import * as ImagePicker from 'expo-image-picker'; 
+import DateTimePicker from '@react-native-community/datetimepicker'; 
 import { useNavigation } from '@react-navigation/native';
 function RegisterDos({onDataChange}) {
   const navigation = useNavigation();
@@ -23,6 +23,42 @@ function RegisterDos({onDataChange}) {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
+  }
+  const handleRegister = async () => {
+    if (!profileImage) {
+      alert('Por favor selecciona una imagen de perfil.');
+      return;
+    }
+
+    if (!firstName || !lastName || !gender || !dateOfBirth) {
+      alert('Por favor completa todos los campos.');
+      return;
+    }
+
+    try {
+      // Convertir la imagen de perfil a base64
+      let base64Image = await imageToBase64(profileImage);
+
+      const data = {
+        profileImage: base64Image,
+        firstName: firstName,
+        lastName: lastName,
+        gender: gender,
+        dateOfBirth: dateOfBirth.toLocaleDateString(),
+      };
+
+      onDataChange(data);
+    } catch (error) {
+      console.error('Error al convertir la imagen a base64:', error);
+      alert('Ha ocurrido un error al procesar la imagen.');
+    }
+  };
+
+  const imageToBase64 = async (uri) => {
+    const base64 = await FileSystem.readAsStringAsync(uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    return base64;
   };
 
   return (
@@ -82,7 +118,7 @@ function RegisterDos({onDataChange}) {
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RegisterTres')}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Siguiente</Text>
       </TouchableOpacity></View>
     </View>
