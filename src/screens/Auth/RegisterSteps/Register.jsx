@@ -4,7 +4,7 @@ import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const Register = () => {
+const Register = ({ onDataChange }) => {
   const navigation = useNavigation();
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
@@ -18,7 +18,6 @@ const Register = () => {
   };
 
   const validatePassword = (password) => {
-    // Password must be at least 8 characters long and contain at least one uppercase and one lowercase letter
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     return passwordRegex.test(password);
   };
@@ -49,9 +48,16 @@ const Register = () => {
       return;
     }
 
-    navigation.navigate('RegisterDos');
-  };
+    // Creación del objeto data con la información a enviar al padre
+    const data = {
+      isChecked1: isChecked1,
+      isChecked2: isChecked2,
+      email: email,
+      password: password,
+    };
 
+    onDataChange(data); // Envío de los datos al padre
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Login')}>

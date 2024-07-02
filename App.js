@@ -7,7 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 // Components
 import Login from "./src/screens/Auth/Login.jsx";
 // ..... register
-import Register from "./src/screens/Auth/RegisterSteps/Register.jsx";
+import IndexRegister from "./src/screens/Auth/RegisterSteps/IndexRegister.jsx";
 import RegisterDos from "./src/screens/Auth/RegisterSteps/RegisterDos.jsx";
 import RegisterTres from "./src/screens/Auth/RegisterSteps/RegisterTres.jsx";
 import RegisterCuatro from "./src/screens/Auth/RegisterSteps/RegisterCuatro.jsx";
@@ -73,8 +73,8 @@ export default function App() {
           />
           {/* User Register */}
           <Stack.Screen
-            name="Register"
-            component={Register}
+            name="IndexRegister"
+            component={IndexRegister}
             options={{ headerShown: false }}
           />
           <Stack.Screen

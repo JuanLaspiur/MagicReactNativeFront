@@ -100,7 +100,7 @@ const Login = () => {
               ¿No tienes cuenta aún?{"    "}
             </Text>
             <TouchableOpacity>
-              <Text style={{ color: "#007AFF", fontWeight: 700, fontSize: 13 }} onPress={() => navigation.navigate('Register')}>
+              <Text style={{ color: "#007AFF", fontWeight: 700, fontSize: 13 }} onPress={() => navigation.navigate('IndexRegister')}>
                 Crea una cuenta
               </Text>
             </TouchableOpacity>
