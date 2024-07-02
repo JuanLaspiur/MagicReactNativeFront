@@ -116,6 +116,7 @@ const CardTextMyAnimal = ({ user }) => {
       <ModleSelectAnimals
         setModalVisible={setModalVisible}
         modalVisible={modalVisible}
+        user={user}
       />
     </>
   );

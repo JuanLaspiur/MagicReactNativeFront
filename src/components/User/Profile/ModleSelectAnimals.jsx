@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Modal, FlatList, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { getAnimales } from '../../../api/User.controller'
+import { getAnimales, updateUserAnimal } from '../../../api/User.controller'
 
 
 const animalImages = [
@@ -53,7 +53,7 @@ const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-47.png"),
 ];
 
-const ModleSelectAnimals = ({modalVisible, setModalVisible}) => {
+const ModleSelectAnimals = ({modalVisible, setModalVisible, user}) => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [ list, setList ] = useState([])
 
@@ -61,7 +61,7 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible}) => {
     const response =  await getAnimales()
     setList(response)
   } 
-  const handleAnimalSelect = (imageIndex) => {
+  const handleAnimalSelect = async(imageIndex) => {
     const animalId = imageIndex -27; 
     
     const selectedAnimal = list.find(animal => animal.id === animalId);
@@ -72,7 +72,13 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible}) => {
     } else {
       console.warn('Animal no encontrado en la lista');
     }
+    try {
+        const response = await updateUserAnimal(selectedAnimal._id, user._id);
+    } catch (error) {
+      console.log('Estratosferico ')
+    }
   
+
     // setModalVisible(false);
   };
 
