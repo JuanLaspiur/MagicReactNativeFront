@@ -20,7 +20,7 @@ const BoxIconsMyProfile = ({user}) => {
     navigation.navigate('MyFriendsList', {user});
   };
   const askPremium = () => {
-    alert('Solicitando plan premium..')
+    alert('Aun no disponible.. Proximamente')
   }  
 
   return (

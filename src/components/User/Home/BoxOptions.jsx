@@ -25,7 +25,7 @@ navigation.navigate('MyFriendsList')
   };
 
 const askPremium = () => {
-  alert('Solicitando plan premium..')
+  alert('Aun no disponible.. Proximamente')
 }  
 
   return (
