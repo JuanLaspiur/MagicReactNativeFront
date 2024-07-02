@@ -44,8 +44,9 @@ const AdminSurvey = () => {
       usuarioId: authUser._id,
     };
     console.log(JSON.stringify(data));
+    //  LOG  {"opcionId":"6650befa84073205af4a5fc5","usuarioId":"65f991ef7bce022d620d26df"}
     try {
-      const data = await sendMySurveyRespose(data);
+       const data = await sendMySurveyRespose(pregunta._id, selectedOption, authUser._id);
       console.log(JSON.parse(data));
     } catch {
       console.error("Error al enviar la respuesta de la encuesta");

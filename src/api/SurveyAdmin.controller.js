@@ -18,9 +18,9 @@ const getLasterAdminSurvey = async () => {
   }
 };
 
-const sendMySurveyRespose = async (data) => {
+const sendMySurveyRespose = async (encuestaID , opcionID, userID) => {
   try {
-    const response = await api.post('opciones_admin123/votar', data)
+    const response = await api.post(`/encuestas/${encuestaID}/opcion/${opcionID}/usuario/${userID}`)
     return response
 } catch (error) {
     console.error('Error al las opciones de la encuesta de admin: ', error);
