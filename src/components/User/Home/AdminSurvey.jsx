@@ -44,7 +44,13 @@ const AdminSurvey = () => {
       usuarioId: authUser._id,
     };
     console.log(JSON.stringify(data));
-    await sendMySurveyRespose(data);
+   try{
+    const data =  await sendMySurveyRespose(data);
+    console.log(JSON.parse(data))
+  } catch{
+    console.error('Error al enviar la respuesta de la encuesta')
+   }
+   
   };
 
   return (
@@ -61,12 +67,12 @@ const AdminSurvey = () => {
             key={index}
             style={[
               styles.option,
-              selectedOption === option._id && styles.selectedOption, // Comparación con option._id en lugar de option.texto
+              selectedOption === option._id && styles.selectedOption, 
               index === opciones.length - 1 &&
                 !selectedOption &&
                 styles.bottomBorder,
             ]}
-            onPress={() => handleOptionPress(option._id)} // Pasa option._id como argumento
+            onPress={() => handleOptionPress(option._id)} 
           >
             <Text
               style={[
