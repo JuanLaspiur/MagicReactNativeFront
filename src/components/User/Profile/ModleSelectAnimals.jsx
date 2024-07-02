@@ -53,7 +53,7 @@ const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-47.png"),
 ];
 
-const ModleSelectAnimals = ({modalVisible, setModalVisible, user}) => {
+const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComponente,setActualizarComponente}) => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [ list, setList ] = useState([])
 
@@ -79,6 +79,7 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible, user}) => {
         const response = await updateUserInfo(data, user._id);
         console.log('Respuesta del servidor: ')
         console.log(JSON.stringify(response))
+        setActualizarComponente(!actualizarComponente)
     } catch (error) {
       console.error('Error al modificar la mascota')
     }

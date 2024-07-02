@@ -17,6 +17,7 @@ const CardTextMyAnimal = ({ user }) => {
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
   const [numero, setNumero] = useState(0);
+  const [actualizarComponente, setActualizarComponente] = useState(false)
 
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
@@ -91,7 +92,7 @@ const CardTextMyAnimal = ({ user }) => {
         setNumero(obtenerNumerosDespuesGuion(user.animal_img));
       }
     }
-  }, [animalsList, user]);
+  }, [animalsList, user, actualizarComponente]);
 
   const handleEditPress = () => {
     setModalVisible(true);
@@ -117,6 +118,8 @@ const CardTextMyAnimal = ({ user }) => {
         setModalVisible={setModalVisible}
         modalVisible={modalVisible}
         user={user}
+        setActualizarComponente={setActualizarComponente}
+        actualizarComponente={actualizarComponente}
       />
     </>
   );
