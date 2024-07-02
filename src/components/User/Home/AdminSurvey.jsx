@@ -35,22 +35,21 @@ const AdminSurvey = () => {
   }, []);
 
   const handleOptionPress = (optionId) => {
-    setSelectedOption(optionId); 
+    setSelectedOption(optionId);
   };
 
   const handleEnviarPress = async () => {
     const data = {
-      opcionId: selectedOption, 
+      opcionId: selectedOption,
       usuarioId: authUser._id,
     };
     console.log(JSON.stringify(data));
-   try{
-    const data =  await sendMySurveyRespose(data);
-    console.log(JSON.parse(data))
-  } catch{
-    console.error('Error al enviar la respuesta de la encuesta')
-   }
-   
+    try {
+      const data = await sendMySurveyRespose(data);
+      console.log(JSON.parse(data));
+    } catch {
+      console.error("Error al enviar la respuesta de la encuesta");
+    }
   };
 
   return (
@@ -67,12 +66,12 @@ const AdminSurvey = () => {
             key={index}
             style={[
               styles.option,
-              selectedOption === option._id && styles.selectedOption, 
+              selectedOption === option._id && styles.selectedOption,
               index === opciones.length - 1 &&
                 !selectedOption &&
                 styles.bottomBorder,
             ]}
-            onPress={() => handleOptionPress(option._id)} 
+            onPress={() => handleOptionPress(option._id)}
           >
             <Text
               style={[
