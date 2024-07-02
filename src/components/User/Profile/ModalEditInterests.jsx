@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
+import { updateUserInfo } from '../../../api/User.controller'
 
-const ModalEditInterests = ({ setOpenModal, openModal }) => {
+const ModalEditInterests = ({ setOpenModal, openModal, user }) => {
   const [peliculasFavoritas, setPeliculasFavoritas] = useState('');
   const [artistaEstiloMusicalFavorito, setArtistaEstiloMusicalFavorito] = useState('');
   const [deportesFavoritos, setDeportesFavoritos] = useState('');
 
-  const handleGuardarCambios = () => {
-    alert('Guardando cambios ')
-    setOpenModal(false);
+  const handleGuardarCambios = async() => {
+    const data = {
+      peliculas:peliculasFavoritas,
+      deportes: deportesFavoritos,
+      artista: artistaEstiloMusicalFavorito
+    }
+    try{
+      const response = await updateUserInfo(data, user._id);
+      console.log('response ' + JSON.stringify(response));
+      setOpenModal(false);
+      alert('Actualizado con exito')
+    }catch (err) {
+       console.error('Guardar cambios ')
+    }
   };
 
   return (
     <Modal
-    isVisible={openModal} // Use openModal state for visibility
+    isVisible={openModal} 
     animationIn="slideInUp"
     animationOut="slideOutDown"
     backdropOpacity={0.5}
     style={styles.modal}
-    onBackdropPress={setOpenModal} // Close modal on backdrop press
+    onBackdropPress={setOpenModal} 
   >
      <Image
           source={require("../../../assets/Login/Ellipse 1.png")}

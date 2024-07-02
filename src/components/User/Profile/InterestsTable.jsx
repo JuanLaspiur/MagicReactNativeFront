@@ -13,10 +13,8 @@ const InterestsTable = ({user}) => {
     deportes: ['Fútbol', 'Tenis', 'Baloncesto'],
   };
 
-  // Función para manejar la acción de editar intereses
   const handleEditInterests = () => {
     setOpenModal(true)
-    // Aquí puedes implementar la lógica para abrir un modal de edición o cualquier otra acción
   };
 
   return (
@@ -56,7 +54,7 @@ const InterestsTable = ({user}) => {
           <Text style={styles.dataText}>{user && user.deportes && capitalizeFirstLetter(user.deportes)}</Text>
         </View>
       </View>
-      <ModalEditInterests setOpenModal={setOpenModal} openModal={openModal}/>
+      <ModalEditInterests user={user} setOpenModal={setOpenModal} openModal={openModal}/>
     </View>
       </>
   );
