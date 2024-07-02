@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Modal, FlatList, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { getAnimales } from '../../../api/User.controller'
+
 
 const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-01.png"),
@@ -53,11 +55,30 @@ const animalImages = [
 
 const ModleSelectAnimals = ({modalVisible, setModalVisible}) => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
+  const [ list, setList ] = useState([])
 
-  const handleAnimalSelect = (image) => {
-    setSelectedAnimal(image);
-    setModalVisible(false);
+  const fetchAnimalsList = async() => {
+    const response =  await getAnimales()
+    setList(response)
+  } 
+  const handleAnimalSelect = (imageIndex) => {
+    const animalId = imageIndex -27; 
+    
+    const selectedAnimal = list.find(animal => animal.id === animalId);
+    
+    if (selectedAnimal) {
+      console.log('ID Animal seleccionado:', selectedAnimal._id);
+      setSelectedAnimal(selectedAnimal._id);
+    } else {
+      console.warn('Animal no encontrado en la lista');
+    }
+  
+    // setModalVisible(false);
   };
+
+  useEffect(()=>{
+    fetchAnimalsList()
+  },[])
 
   return (
     <View style={styles.container}>
@@ -88,14 +109,7 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible}) => {
           </View>
         </View>
       </Modal>
-
-      {selectedAnimal && (
-        <View style={styles.selectedAnimalContainer}>
-          <Text style={styles.selectedAnimalText}>Animal Seleccionado:</Text>
-          <Image source={selectedAnimal} style={styles.selectedAnimalImage} />
-        </View>
-      )}
-    </View>
+   </View>
   );
 };
 

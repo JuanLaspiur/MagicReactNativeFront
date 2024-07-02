@@ -168,6 +168,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // Puedes ajustar el color de fondo según tus preferencias
   },
 });
