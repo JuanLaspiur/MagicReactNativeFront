@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Modal, FlatList, Image, StyleSheet, TouchableOpacity, Text } from "react-native";
-import { getAnimales, updateUserAnimal } from '../../../api/User.controller'
+import { getAnimales, updateUserInfo } from '../../../api/User.controller'
 
 
 const animalImages = [
@@ -73,13 +73,16 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible, user}) => {
       console.warn('Animal no encontrado en la lista');
     }
     try {
-        const response = await updateUserAnimal(selectedAnimal._id, user._id);
+        const data = {
+          animal:selectedAnimal._id
+        }
+        const response = await updateUserInfo(data, user._id);
+        console.log('Respuesta del servidor: ')
+        console.log(JSON.stringify(response))
     } catch (error) {
-      console.log('Estratosferico ')
+      console.error('Error al modificar la mascota')
     }
-  
-
-    // setModalVisible(false);
+    setModalVisible(false);
   };
 
   useEffect(()=>{

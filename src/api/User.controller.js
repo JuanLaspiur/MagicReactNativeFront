@@ -78,12 +78,13 @@ const getUserInfo = async() => {
 }
 
 
-const updateUserAnimal = async (animalID, userID) => {
+const updateUserInfo = async (data, userID) => {
   try {
-    const response = await api.put('update_user_info/'+userID)
+    const response = await api.put('update_user_info/'+userID, data)
+    return response
   } catch (error) {
     console.log('Error')
   }
 }
 
-export {getUserById,updateUserAnimal,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {getUserById,updateUserInfo,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
