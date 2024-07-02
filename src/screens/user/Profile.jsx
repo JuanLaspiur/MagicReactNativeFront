@@ -78,7 +78,7 @@ const Profile = () => {
           style={styles.eclipse6}
         />
         <InterestsTable user={user} />
-        <MyQuedadas user={user}/> 
+        <MyQuedadas user={user} /> 
         {/* ParticipationQuedadas */}
         <ParticipationQuedadas user={user}/> 
       </ScrollView>

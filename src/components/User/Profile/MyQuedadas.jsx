@@ -9,7 +9,7 @@ const MyQuedadas = ({ user }) => {
   const [quedadas, setQuedadas] = useState([]);
   const [hasQuedadas, setHasQuedadas] = useState(true);
 
-  useEffect(() => {
+
     const fetchMyQuedadas = async () => {
       try {
         const data = await getQuedadasByUserId(user._id);
@@ -19,8 +19,9 @@ const MyQuedadas = ({ user }) => {
         console.error("Error al obtener quedadas:", error);
       }
     };
-    if (quedadas.length == []) fetchMyQuedadas();
-  }, [quedadas]);
+
+    if (quedadas.length === 0) fetchMyQuedadas();
+
 
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
@@ -57,7 +58,7 @@ const MyQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={[styles.wrapper, { height: quedadas.length > 0 ? 405 : 50.5 }]} // Ajuste dinámico de altura
+        style={[styles.wrapper, { height: quedadas.length > 0 ? 405 : 50.5 }]} 
         loop={false}
         autoplay={true}
         autoplayTimeout={3}
@@ -94,13 +95,13 @@ const MyQuedadas = ({ user }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 20,
   },
   wrapper: {
-    // La altura inicial se establece basada en si hay quedadas o no
   },
   h1: {
     fontSize: 20,
