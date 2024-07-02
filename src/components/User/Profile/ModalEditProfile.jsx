@@ -2,28 +2,28 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
+import { updateUserInfo } from '../../../api/User.controller';
 
-const ModalEditProfile = ({ isVisible, onClose }) => {
-  // Estado local para almacenar los datos editables del perfil
-  const [perfilEditable, setPerfilEditable] = useState({
-    nombre: 'John',
-    apellido: 'Doe',
-    sexo: '',
-    intereses: ['Viajar', 'Leer', 'Cocinar'],
-    hobbies: ['Deportes', 'Pintura', 'Jardinería'],
-  });
+const ModalEditProfile = ({ isVisible, onClose, user }) => {
+  const [nombre, setNombre] = useState('John');
+  const [apellido, setApellido] = useState('Doe');
+  const [sexo, setSexo] = useState('');
+  const [hobbies, setHobbies] = useState(['Deportes', 'Pintura', 'Jardinería']);
 
-  // Función para actualizar el estado cuando se edita un campo
-  const handleChange = (key, value) => {
-    setPerfilEditable({
-      ...perfilEditable,
-      [key]: value,
-    });
-  };
-
-  // Función para guardar los cambios en el perfil
-  const guardarCambios = () => {
-    onClose(); 
+  const guardarCambios = async () => {
+    const data = {
+      name: nombre,
+      last_name: apellido,
+      gender: sexo,
+    };
+    try {
+      const response = await updateUserInfo(data, user._id);
+      onClose();
+      alert('Actualizado con éxito');
+    } catch (err) {
+      console.error('Error al guardar cambios', err);
+    }
+    onClose();
   };
 
   return (
@@ -49,24 +49,24 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
         <Text style={styles.label}>Nombre:</Text>
         <TextInput
           style={styles.input}
-          value={perfilEditable.nombre}
-          onChangeText={(text) => handleChange('nombre', text)}
+          value={nombre}
+          onChangeText={(text) => setNombre(text)}
           placeholderTextColor="gray"
         />
 
         <Text style={styles.label}>Apellido:</Text>
         <TextInput
           style={styles.input}
-          value={perfilEditable.apellido}
-          onChangeText={(text) => handleChange('apellido', text)}
+          value={apellido}
+          onChangeText={(text) => setApellido(text)}
           placeholderTextColor="gray"
         />
 
         <Text style={styles.label}>Sexo:</Text>
         <Picker
-          selectedValue={perfilEditable.sexo}
+          selectedValue={sexo}
           style={styles.input}
-          onValueChange={(itemValue) => handleChange('sexo', itemValue)}
+          onValueChange={(itemValue) => setSexo(itemValue)}
         >
           <Picker.Item label="Selecciona Género" value="" />
           <Picker.Item label="Hombre" value="Hombre" />
@@ -74,15 +74,15 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
           <Picker.Item label="No binario" value="No binario" />
           <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
         </Picker>
-
+      {/*
         <Text style={styles.label}>Hobbies:</Text>
         <TextInput
           style={styles.input}
-          value={perfilEditable.hobbies.join(', ')}
-          onChangeText={(text) => handleChange('hobbies', text.split(', '))}
+          value={hobbies.join(', ')}
+          onChangeText={(text) => setHobbies(text.split(', '))}
           placeholderTextColor="gray"
         />
-
+      */}
         <TouchableOpacity style={styles.button} onPress={guardarCambios}>
           <Text style={styles.buttonText}>Guardar Cambios</Text>
         </TouchableOpacity>
@@ -90,6 +90,7 @@ const ModalEditProfile = ({ isVisible, onClose }) => {
     </Modal>
   );
 };
+
 
 const styles = StyleSheet.create({
   modal: {

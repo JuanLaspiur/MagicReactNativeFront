@@ -2,25 +2,22 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalEditProfile from './ModalEditProfile';
-import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
+import { useNavigation } from '@react-navigation/native'; 
 
-const BoxIconsMyProfile = () => {
+const BoxIconsMyProfile = ({user}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const navigation = useNavigation(); // Obtiene el objeto de navegación
+  const navigation = useNavigation();
 
-  // Función para abrir el modal de edición de perfil
   const handleEditProfile = () => {
     setIsModalVisible(true);
   };
 
-  // Función para cerrar el modal de edición de perfil
   const handleCloseModal = () => {
     setIsModalVisible(false);
   };
 
-  // Función para navegar a la pantalla MyFriendsList
   const handleMyFriends = () => {
-    navigation.navigate('MyFriendsList', {user}); // Reemplaza 'MyFriendsList' con el nombre de tu pantalla de amigos
+    navigation.navigate('MyFriendsList', {user});
   };
   const askPremium = () => {
     alert('Solicitando plan premium..')
@@ -28,7 +25,6 @@ const BoxIconsMyProfile = () => {
 
   return (
     <View style={styles.container}>
-      {/* Botón para abrir el modal de edición de perfil */}
       <TouchableOpacity style={styles.box} onPress={handleEditProfile}>
         <Ionicons name="create-outline" size={40} color="gray" />
         <Text style={styles.text}>Editar perfil</Text>
@@ -49,8 +45,7 @@ const BoxIconsMyProfile = () => {
         <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Premium</Text>
       </TouchableOpacity>
 
-      {/* Modal de edición de perfil */}
-      <ModalEditProfile isVisible={isModalVisible} onClose={handleCloseModal} />
+      <ModalEditProfile user={user} isVisible={isModalVisible} onClose={handleCloseModal} />
     </View>
   );
 };

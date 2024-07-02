@@ -16,11 +16,10 @@ const ModalEditInterests = ({ setOpenModal, openModal, user }) => {
     }
     try{
       const response = await updateUserInfo(data, user._id);
-      console.log('response ' + JSON.stringify(response));
       setOpenModal(false);
       alert('Actualizado con exito')
     }catch (err) {
-       console.error('Guardar cambios ')
+       console.error(' Guardar cambios ')
     }
   };
 
