@@ -12,9 +12,25 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Password must be at least 8 characters long and contain at least one uppercase and one lowercase letter
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleRegister = () => {
     if (!email || !password || !repeatPassword) {
       Alert.alert('Error', 'Por favor completa todos los campos.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Por favor ingresa un correo electrónico válido.');
       return;
     }
 
@@ -23,12 +39,16 @@ const Register = () => {
       return;
     }
 
+    if (!validatePassword(password)) {
+      Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula y una minúscula.');
+      return;
+    }
+
     if (password !== repeatPassword) {
       Alert.alert('Error', 'Las contraseñas no coinciden.');
       return;
     }
 
-    // Si pasa todas las validaciones, navega a la siguiente pantalla
     navigation.navigate('RegisterDos');
   };
 
@@ -85,8 +105,6 @@ const Register = () => {
     </View>
   );
 };
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
