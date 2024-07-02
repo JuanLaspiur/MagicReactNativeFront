@@ -9,12 +9,18 @@ import {
   TextInput,
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { login } from "../../api/Login.controller";
 const { height } = Dimensions.get("window");
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
-  const handleLogin = () => {
+
+
+  const handleLogin = async() => {
+    const credentials = { email, password };
+   // const response = await login(credentials);
+    console.log(credentials)
     navigation.navigate('Index')
   };
 

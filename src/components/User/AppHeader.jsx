@@ -17,6 +17,9 @@ const AppHeader = ({ title }) => {
         navigation.navigate("Index");
     }
   };
+  const handlePressBack = () => {
+    navigation.navigate("Login");
+  }
   return (
     <View style={styles.headerContainer}>
       <Image
@@ -48,7 +51,7 @@ const AppHeader = ({ title }) => {
         style={styles.logoHeader}
       />
       {/*   <Text style={styles.headerTitle}>{title}</Text> */}
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity style={styles.iconContainer} onPress={handlePressBack}>
         <Ionicons name="log-out-outline" size={24} color="gray" />
       </TouchableOpacity>
     </View>
