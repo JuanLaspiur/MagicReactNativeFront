@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalEditProfile from './ModalEditProfile';
 import { useNavigation } from '@react-navigation/native'; 
+import { deleteMyUser } from '../../../api/User.controller'
 
 const BoxIconsMyProfile = ({user}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -23,6 +24,17 @@ const BoxIconsMyProfile = ({user}) => {
     alert('Aun no disponible.. Proximamente')
   }  
 
+  const handleDeleteMyUser = async()=>{
+    try{
+      console.log(user._id)
+      const response =  await deleteMyUser(user._id)
+      alert('Usuario dado de baja con éxito. ')
+      navigation.navigate('Login');
+    } catch {
+      console.error('Error al eliminar mi usuario')
+    }
+}
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.box} onPress={handleEditProfile}>
@@ -30,7 +42,7 @@ const BoxIconsMyProfile = ({user}) => {
         <Text style={styles.text}>Editar perfil</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity style={styles.box} onPress={handleDeleteMyUser} >
         <Ionicons name="arrow-down" size={40} color="gray" />
         <Text style={styles.text}>Eliminar</Text>
       </TouchableOpacity>

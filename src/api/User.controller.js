@@ -87,4 +87,16 @@ const updateUserInfo = async (data, userID) => {
   }
 }
 
-export {getUserById,updateUserInfo,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+
+const deleteMyUser = async (userID) => {
+  try {
+    const response = await api.put('deleteSimbolic/'+userID, { deleted: true})
+    return response
+  } catch (error) {
+    console.log('Error')
+  }
+}
+
+
+
+export {getUserById, updateUserInfo, deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
