@@ -12,6 +12,7 @@ const AdminSurvey = () => {
   const [opciones, setOpciones] = useState([]);
   const [pregunta, setPregunta] = useState("");
   const [authUser, setAuthUser] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     const fetchLastSurvey = async () => {
@@ -46,7 +47,11 @@ const AdminSurvey = () => {
     console.log(JSON.stringify(data));
     //  LOG  {"opcionId":"6650befa84073205af4a5fc5","usuarioId":"65f991ef7bce022d620d26df"}
     try {
-       const data = await sendMySurveyRespose(pregunta._id, selectedOption, authUser._id);
+       const data = await sendMySurveyRespose(data);
+       setShowSuccessMessage(true)
+       setTimeout(() => {
+        setShowSuccessMessage(false)
+      }, 1000);
       console.log(JSON.parse(data));
     } catch {
       console.error("Error al enviar la respuesta de la encuesta");
@@ -54,6 +59,7 @@ const AdminSurvey = () => {
   };
 
   return (
+    <>
     <View style={styles.card}>
       <Image
         source={require("../../../assets/Login/ic2.png")}
@@ -88,6 +94,10 @@ const AdminSurvey = () => {
         <Text style={styles.sendButtonText}>Enviar</Text>
       </TouchableOpacity>
     </View>
+    {showSuccessMessage && (
+  <Text style={styles.successMessage}>Quedada creada con éxito</Text>
+)}   
+    </>
   );
 };
 
