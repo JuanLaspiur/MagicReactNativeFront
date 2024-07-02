@@ -48,7 +48,6 @@ const Register = ({ onDataChange }) => {
       return;
     }
 
-    // Creación del objeto data con la información a enviar al padre
     const data = {
       isChecked1: isChecked1,
       isChecked2: isChecked2,
@@ -56,7 +55,7 @@ const Register = ({ onDataChange }) => {
       password: password,
     };
 
-    onDataChange(data); // Envío de los datos al padre
+    onDataChange(data); 
   };
   return (
     <View style={styles.container}>

@@ -11,17 +11,19 @@ function IndexRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [currentStep, setCurrentStep] = useState(1); 
-  // Función para recibir datos del hijo y actualizar el estado en el componente padre
+  
   const handleDataFromChild = (dataFromChild) => {
-    console.log('Datos recibidos del hijo:', dataFromChild);
-
     setIsChecked1(dataFromChild.isChecked1);
     setIsChecked2(dataFromChild.isChecked2);
     setEmail(dataFromChild.email);
     setPassword(dataFromChild.password);
-    // Avanzar al siguiente paso
     setCurrentStep(currentStep + 1);
   };
+
+ const handleDataFromChildTwo = (dataFromChild)  =>{
+  console.log(dataFromChild)
+  setCurrentStep(currentStep + 1);
+ }
 
   return (
     <>
@@ -29,7 +31,7 @@ function IndexRegister() {
         <Register onDataChange={handleDataFromChild} />
       )}
       {currentStep === 2 && (
-        <RegisterDos />
+        <RegisterDos onDataChange={handleDataFromChildTwo} />
       )}
       {currentStep === 3 && (
         <RegisterTres />

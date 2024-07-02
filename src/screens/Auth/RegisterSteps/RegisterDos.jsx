@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';  // Necesario para la selección de imágenes
 import DateTimePicker from '@react-native-community/datetimepicker'; // Importa DateTimePicker
 import { useNavigation } from '@react-navigation/native';
-function RegisterDos() {
+function RegisterDos({onDataChange}) {
   const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
