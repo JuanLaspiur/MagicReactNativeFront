@@ -13,15 +13,22 @@ import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
 import TermsAndConditionsModal from "../../../components/Register/TermsAndConditionsModal";
 import { useNavigation } from '@react-navigation/native';
-import { getCities } from "../../../api/User.controller";
+import { getCities, getCommunities } from "../../../api/User.controller";
 
 function RegisterCuatro() {
-  const [city, setCity] = useState("");
-  const [bornCiry, setBornCity] = useState("")
-  const [bornCitiesList, setBornCitiesList] = useEffect([])
-  const [isSpanish, setIsSpanish] = useState(false);
+  const [country, setCountry] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profession, setProfession] = useState("");
+  const [favoriteMovie, setFavoriteMovie] = useState("");
+  const [favoriteSports, setFavoriteSports] = useState("");
+  const [hobbies, setHobbies] = useState("");
+  const [selectedCommunity, setSelectedCommunity] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
   const [madridZone, setMadridZone] = useState("");
+  const [isSpanish, setIsSpanish] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false); 
+  const [communitiesList, setCommunitiesList] = useState([]);
+  const [citiesList, setCitiesList] = useState([]);
   const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
@@ -32,14 +39,36 @@ function RegisterCuatro() {
     setShowTermsModal(false); 
   };
 
-  const fetchCities = async() => {
-    const response = await getCities()
-    console.log('respuesta del servidor ' + response)
-  }
+  const fetchBornCommunities = async() => {
+    try {
+      const response = await getCommunities();
+      if (Array.isArray(response)) {
+        setCommunitiesList(response);
+      } else {
+        console.error("Expected an array for communities");
+      }
+    } catch (error) {
+      console.log('Error al obtener las comunidades ');
+    }
+  };
 
-  useEffect(()=> {
-    fetchCities()
-  }, [])
+  const fetchCities = async () => {
+    try {
+      const response = await getCities();
+      if (Array.isArray(response)) {
+        setCitiesList(response);
+      } else {
+        console.error("Expected an array for cities");
+      }
+    } catch (error) {
+      console.log('Error al obtener las ciudades ');
+    }
+  };
+
+  useEffect(() => {
+    fetchBornCommunities();
+    fetchCities();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -60,7 +89,7 @@ function RegisterCuatro() {
       />
       <TouchableOpacity
         style={styles.closeButton}
-      onPress={() => navigation.navigate('RegisterTres')}
+        onPress={() => navigation.navigate('RegisterTres')}
       >
         <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>
@@ -71,16 +100,43 @@ function RegisterCuatro() {
         </Text>
       </View>
       <ScrollView style={styles.inputsConainer}>
-        <TextInput style={styles.input} placeholder="País de Nacimiento" />
+        <TextInput
+          style={styles.input}
+          placeholder="País de Nacimiento"
+          value={country}
+          onChangeText={setCountry}
+        />
         <TextInput
           style={styles.input}
           placeholder="Teléfono de contacto"
           keyboardType="numeric"
+          value={phone}
+          onChangeText={setPhone}
         />
-        <TextInput style={styles.input} placeholder="Cargo o profesión" />
-        <TextInput style={styles.input} placeholder="Película favorita" />
-        <TextInput style={styles.input} placeholder="Deportes favoritos" />
-        <TextInput style={styles.input} placeholder="Hobbies" />
+        <TextInput
+          style={styles.input}
+          placeholder="Cargo o profesión"
+          value={profession}
+          onChangeText={setProfession}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Película favorita"
+          value={favoriteMovie}
+          onChangeText={setFavoriteMovie}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Deportes favoritos"
+          value={favoriteSports}
+          onChangeText={setFavoriteSports}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Hobbies"
+          value={hobbies}
+          onChangeText={setHobbies}
+        />
         <Text style={styles.h6bis}>Información geográfica</Text>
         <CheckBox
           title="He nacido en España (No obligatorio)."
@@ -94,10 +150,10 @@ function RegisterCuatro() {
           <>
             <Text style={styles.h6}>Comunidad Autónoma Natal</Text>
             <Picker
-              selectedValue={city}
+              selectedValue={selectedCommunity}
               style={[styles.pickerSelect]}
               onValueChange={(itemValue, itemIndex) => {
-                setCity(itemValue);
+                setSelectedCommunity(itemValue);
               }}
             >
               <Picker.Item
@@ -105,21 +161,24 @@ function RegisterCuatro() {
                 label="Comunidad Autónoma Natal"
                 value=""
               />
-              <Picker.Item
-                style={styles.pickerItem}
-                label="Madrid"
-                value="Madrid"
-              />
+              {communitiesList.map((community, index) => (
+                <Picker.Item
+                  key={index}
+                  style={styles.pickerItem}
+                  label={community.name}
+                  value={community.name}
+                />
+              ))}
             </Picker>
           </>
         )}
         <Text style={styles.h6}>Ciudad Actual</Text>
         <Picker
-          selectedValue={city}
+          selectedValue={selectedCity}
           style={styles.pickerSelect}
           onValueChange={(itemValue, itemIndex) => {
             if (itemValue !== "") {
-              setCity(itemValue);
+              setSelectedCity(itemValue);
             }
           }}
         >
@@ -128,7 +187,14 @@ function RegisterCuatro() {
             label="Ciudad Actual"
             value=""
           />
-          <Picker.Item style={styles.pickerItem} label="Madrid" value="Madrid" />
+          {citiesList.map((city, index) => (
+            <Picker.Item
+              key={index}
+              style={styles.pickerItem}
+              label={city.name}
+              value={city.name}
+            />
+          ))}
         </Picker>
         <Text style={styles.h6}>Zona de Madrid</Text>
         <Picker
@@ -143,27 +209,22 @@ function RegisterCuatro() {
           />
           <Picker.Item style={styles.pickerItem} label="Norte" value="Norte" />
           <Picker.Item style={styles.pickerItem} label="Sur" value="Sur" />
-          <Picker.Item
-            style={styles.pickerItem}
-            label="Centro"
-            value="Centro"
-          />
+          <Picker.Item style={styles.pickerItem} label="Centro" value="Centro" />
           <Picker.Item style={styles.pickerItem} label="Este" value="Este" />
           <Picker.Item style={styles.pickerItem} label="Oeste" value="Oeste" />
         </Picker>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
-            onPress={handleFinishRegistration} // Llamar a la función al hacer clic
+            onPress={handleFinishRegistration} 
           >
             <Text style={styles.buttonText}>¡Finalizar registro!</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Modal de términos y condiciones */}
         <TermsAndConditionsModal
           isVisible={showTermsModal}
-          onClose={handleCloseModal} // Pasar la función para cerrar el modal
+          onClose={handleCloseModal} 
         />
       </ScrollView>
     </View>

@@ -71,10 +71,20 @@ const getAnimales = async () => {
 
 const getCities = async() => {
   try {
-    const response = await api.get('cities')
-    return response
+    const response = await api.get('/cities/')
+    return response.data
   } catch (error) {
-    console.error('Error seguir usuario:', error);
+    console.error('Error al conseguir las ciudades: ', error);
+  }
+}
+
+const getCommunities = async () => {
+  try {
+    const response = await api.get('/communities/')
+    return response.data
+  } catch (error) {
+    console.error('Error al obtener las comunidades ', error);
+  
   }
 }
 
@@ -109,4 +119,4 @@ const deleteMyUser = async (userID) => {
 
 
 
-export {getUserById,getCities,updateUserInfo, deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
