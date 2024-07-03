@@ -35,10 +35,6 @@ const Stack = createStackNavigator();
 // env
 
 export default function App() {
-  useEffect(() => {
-    saveAuthTokenToSecureStore();
-    saveLoginUser();
-  }, []);
 
   const saveAuthTokenToSecureStore = async () => {
     try {

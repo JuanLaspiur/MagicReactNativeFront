@@ -1,26 +1,21 @@
 
 import api, { setAuthToken } from './configure';
+import { saveToSecureStore } from '../helpers/ExpoSecureStore';
+import { getUserById } from './User.controller';
 
 const login = async (email, password ) => {
   try {
      const response = await api.post('/loginReact', {email, password});
-    // const { token } = response.data; 
-    // setAuthToken(token);
-    console.log(response) 
-   //return response;
+         console.log(response.data)
+         await saveToSecureStore("token", response.data.token); 
+         let user = await getUserById(response.data.user_id);
+         user = user.data
+         await saveToSecureStore("user", JSON.stringify(user));
+        return response.data.token;
   } catch (error) {
-    console.error('Error al iniciar sesión:', error);
+    alert('Error al ingresar sesión revise su contraseña o su correo')
   }
 };
-
-const verifyUser = async ( email, password ) => {
-  try {
-     const response = await api.post('/verificar_user', {email, password});
-     return response
-  } catch (error) {
-    console.error('Error al verificar usuario: ', error);
-  }
-}
 
 
 export { login };

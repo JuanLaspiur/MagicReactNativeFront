@@ -19,9 +19,13 @@ const Login = () => {
 
   const handleLogin = async() => {
     //const credentials = { email, password };
+    try{
     const response = await login(email, password);
-   // console.log(credentials)
-   // navigation.navigate('Index')
+    if(response)
+    navigation.navigate('Index')
+    } catch  {
+     console.log('Error al ingresar sessión')
+    }
   };
 
   return (
