@@ -55,7 +55,6 @@ function RegisterDos({ onDataChange }) {
     }
 
     try {
-      // Convertir la imagen de perfil a base64
       let base64Image = await imageToBase64(profileImage);
 
       const data = {
