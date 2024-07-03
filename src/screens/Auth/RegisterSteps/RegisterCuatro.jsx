@@ -15,34 +15,37 @@ import TermsAndConditionsModal from "../../../components/Register/TermsAndCondit
 import { useNavigation } from '@react-navigation/native';
 import { getCities, getCommunities } from "../../../api/User.controller";
 
-function RegisterCuatro({onDataChange}) {
-  // list
+function RegisterCuatro({ onDataChange }) {
   const [communitiesList, setCommunitiesList] = useState([]);
   const [citiesList, setCitiesList] = useState([]);
 
-// atributs
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState("");
   const [profession, setProfession] = useState("");
   const [favoriteMovie, setFavoriteMovie] = useState("");
   const [favoriteSports, setFavoriteSports] = useState("");
   const [hobbies, setHobbies] = useState("");
-  const [selectedCommunity, setSelectedCommunity] = useState(communitiesList[0]);
-  const [selectedCity, setSelectedCity] = useState(citiesList[0] ? citiesList[0] : 'Madrid');
+  const [selectedCommunity, setSelectedCommunity] = useState(null); // Cambiado a null inicialmente
+  const [selectedCity, setSelectedCity] = useState('Madrid'); // Cambiado a 'Madrid' como valor por defecto
   const [madridZone, setMadridZone] = useState("");
-//
   const [isSpanish, setIsSpanish] = useState(false);
-  const [showTermsModal, setShowTermsModal] = useState(false); 
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
-    if (!isSpanish) {
-      const selectedCommunity = communitiesList.find(community => community.id === 1);
-      setSelectedCommunity(selectedCommunity);
+    // Validar campos requeridos
+    if (!country || !phone || !profession || !favoriteMovie || !favoriteSports || !hobbies) {
+      alert('Por favor complete todos los campos obligatorios.');
+      return;
     }
-    
-      
+
+    // Si no es español, seleccionar la comunidad por defecto (id === 1)
+    if (isSpanish) {
+      const defaultCommunity = communitiesList.find(community => community.id === 1);
+      setSelectedCommunity(defaultCommunity);
+    }
+
     const data = {
       country,
       phone,
@@ -53,43 +56,42 @@ function RegisterCuatro({onDataChange}) {
       selectedCommunity,
       selectedCity,
       madridZone
-    }
-    onDataChange(data)
+    };
+    onDataChange(data);
     setShowTermsModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowTermsModal(false); 
+    setShowTermsModal(false);
   };
 
- 
-
   useEffect(() => {
-    const fetchBornCommunities = async() => {
+    const fetchBornCommunities = async () => {
       try {
         const response = await getCommunities();
         if (Array.isArray(response)) {
           setCommunitiesList(response);
         } else {
-          console.error("Expected an array for communities");
+          console.error("Se esperaba un array para las comunidades.");
         }
       } catch (error) {
-        console.log('Error al obtener las comunidades ');
+        console.log('Error al obtener las comunidades ', error);
       }
     };
-  
+
     const fetchCities = async () => {
       try {
         const response = await getCities();
         if (Array.isArray(response)) {
           setCitiesList(response);
         } else {
-          console.error("Expected an array for cities");
+          console.error("Se esperaba un array para las ciudades.");
         }
       } catch (error) {
-        console.log('Error al obtener las ciudades ');
+        console.log('Error al obtener las ciudades ', error);
       }
     };
+
     fetchBornCommunities();
     fetchCities();
   }, []);
