@@ -39,6 +39,21 @@ function RegisterDos({ onDataChange }) {
       return;
     }
 
+    // Calcular la edad del usuario
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    if (age < 18) {
+      alert('Debes tener al menos 18 años para registrarte.');
+      return;
+    }
+
     try {
       // Convertir la imagen de perfil a base64
       let base64Image = await imageToBase64(profileImage);
