@@ -86,6 +86,19 @@ const returnGoback  = () => {
 
 const signUpUser = () => {
 try {
+  const data = {
+    email,
+    password,
+    name,
+    last_name,
+    gender,
+    birthdate:birthDay,
+    bornCountry:country,
+    phone,
+    city:selectedCity,
+    zone: madridZone,
+    animal:animalID,    
+  }
   
 } catch (error) {
   
