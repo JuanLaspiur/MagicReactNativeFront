@@ -128,8 +128,8 @@ const signUpUser = async () => {
     };
 
     // registerUser() metodo ya conectado a axios
-    await registerUser(requestBody);
-    console.log('User (despues del post): ' + JSON.stringify(data));
+   const response = await registerUser(requestBody);
+    
   } catch (error) {
     console.error('Error durante user registration:', error);
   }
