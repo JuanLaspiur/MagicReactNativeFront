@@ -31,6 +31,8 @@ function RegisterCuatro({ onDataChange }) {
   const [isSpanish, setIsSpanish] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
 
+  const [allData, setAllData] = useState([])
+
   const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
@@ -38,12 +40,10 @@ function RegisterCuatro({ onDataChange }) {
       alert('Por favor complete todos los campos obligatorios.');
       return;
     }
-
     if (isSpanish) {
       const defaultCommunity = communitiesList.find(community => community.id === 1);
       setSelectedCommunity(defaultCommunity);
     }
-
     const data = {
       country,
       phone,
@@ -55,7 +55,7 @@ function RegisterCuatro({ onDataChange }) {
       selectedCity,
       madridZone
     };
-    onDataChange(data);
+    setAllData(data)
     setShowTermsModal(true);
   };
 
@@ -249,6 +249,8 @@ function RegisterCuatro({ onDataChange }) {
         <TermsAndConditionsModal
           isVisible={showTermsModal}
           onClose={handleCloseModal} 
+          onDataChange={onDataChange}
+          allData={allData}
         />
       </ScrollView>
     </View>

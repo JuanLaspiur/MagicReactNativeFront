@@ -43,10 +43,41 @@ function IndexRegister() {
     setAnimalID(dataFromChild)
     setCurrentStep(currentStep + 1);
  }
+const [ country, setCountry] = useState('')
+const [ phone, setPhone] = useState(null)
+const [ profession, setProfession ] = useState('')
+const [favoriteMovie, setFavoriteMovie] = useState('')
+const [ favoriteSports, setFavoriteSports ] = useState('')
+const [ hobbies, setHobbies ] = useState('')
+const [ selectedCommunity, setSelectedCommunity ] = useState('')
+const [ selectedCity, setSelectedCity ] = useState('')
+const [ madridZone, setMadridZone] = useState('')
 
- const handleDataFromChildFour = (dataFromChild) => { 
-  console.log('Datos obtenidos ' + JSON.stringify(dataFromChild))
- }
+const handleDataFromChildFour = (dataFromChild) => {
+  const {
+    country,
+    phone,
+    profession,
+    favoriteMovie,
+    favoriteSports,
+    hobbies,
+    selectedCommunity,
+    selectedCity,
+    madridZone
+  } = dataFromChild;
+
+  setCountry(country);
+  setPhone(phone);
+  setProfession(profession);
+  setFavoriteMovie(favoriteMovie);
+  setFavoriteSports(favoriteSports);
+  setHobbies(hobbies);
+  setSelectedCommunity(selectedCommunity);
+  setSelectedCity(selectedCity);
+  setMadridZone(madridZone);
+
+};
+
 
   return (
     <>

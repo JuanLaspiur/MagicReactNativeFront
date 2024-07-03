@@ -112,8 +112,7 @@ function RegisterTres({onDataChange}) {
           <Text style={styles.buttonText}>Animal</Text>
         </TouchableOpacity>
       </View>
-      {/* Modal select animal */}
-      <Modal
+       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}

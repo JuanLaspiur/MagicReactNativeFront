@@ -14,7 +14,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
 
-function TermsAndConditionsModal({ isVisible, onClose }) {
+function TermsAndConditionsModal({ isVisible, onClose, onDataChange, allData }) {
+
+  const handleAcept = () => {
+    onDataChange(allData)
+  }
+
   return (
     <Modal
       visible={isVisible}
@@ -32,6 +37,7 @@ function TermsAndConditionsModal({ isVisible, onClose }) {
             velit eget ligula consectetur condimentum.
           </Text>
         </ScrollView>
+        <Button title="Acepto" onPress={handleAcept} />
         <Button title="Cerrar" onPress={() => onClose(false)} />
       </View>
     </Modal>
