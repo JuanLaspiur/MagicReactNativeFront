@@ -5,10 +5,14 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker'; 
 import DateTimePicker from '@react-native-community/datetimepicker'; 
 import { useNavigation } from '@react-navigation/native';
-function RegisterDos({onDataChange}) {
+import * as FileSystem from 'expo-file-system';
+
+function RegisterDos({ onDataChange }) {
   const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
+  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [gender, setGender] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
 
@@ -23,14 +27,14 @@ function RegisterDos({onDataChange}) {
     if (!result.canceled) {
       setProfileImage(result.assets[0].uri);
     }
-  }
+  };
+
   const handleRegister = async () => {
     if (!profileImage) {
       alert('Por favor selecciona una imagen de perfil.');
       return;
     }
-
-    if (!firstName || !lastName || !gender || !dateOfBirth) {
+    if (!name || !lastName || !gender || !dateOfBirth) {
       alert('Por favor completa todos los campos.');
       return;
     }
@@ -41,7 +45,7 @@ function RegisterDos({onDataChange}) {
 
       const data = {
         profileImage: base64Image,
-        firstName: firstName,
+        name: name,
         lastName: lastName,
         gender: gender,
         dateOfBirth: dateOfBirth.toLocaleDateString(),
@@ -64,7 +68,7 @@ function RegisterDos({onDataChange}) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Register')}>
-      <Ionicons name="arrow-back" size={20} color="gray" />
+        <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>
       <Image
         source={require("../../../assets/Login/Ellipse 1.png")}
@@ -87,9 +91,19 @@ function RegisterDos({onDataChange}) {
       </View>
       <View style={styles.userInfo}>
         <Text style={styles.h4}>Datos del Usuario</Text>
-        <TextInput style={styles.input} placeholder="Nombre" />
-        <TextInput style={styles.input} placeholder="Apellido" />
-       {/* Componente DateTimePicker para seleccionar fecha de nacimiento */}
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre"
+          value={name}
+          onChangeText={setName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Apellido"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+        {/* Componente DateTimePicker para seleccionar fecha de nacimiento */}
         <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
           <Text style={styles.selectBornDate}>{dateOfBirth.toLocaleDateString()}</Text>
         </TouchableOpacity>
@@ -105,7 +119,7 @@ function RegisterDos({onDataChange}) {
             }}
           />
         )}
-                <Picker
+        <Picker
           selectedValue={gender}
           style={styles.inputTextColor}
           onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
@@ -113,14 +127,15 @@ function RegisterDos({onDataChange}) {
           <Picker.Item label="Selecciona Género" value="" />
           <Picker.Item label="Hombre" value="Hombre" />
           <Picker.Item label="Mujer" value="Mujer" />
-          <Picker.Item label='No binario' value="No binario"/>
-          <Picker.Item label='Prefiero no decirlo' value="Prefiero no decirlo"/>
+          <Picker.Item label="No binario" value="No binario" />
+          <Picker.Item label="Prefiero no decirlo" value="Prefiero no decirlo" />
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Siguiente</Text>
-      </TouchableOpacity></View>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Siguiente</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
