@@ -24,6 +24,7 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
   const [profession, setProfession] = useState("");
   const [favoriteMovie, setFavoriteMovie] = useState("");
   const [favoriteSports, setFavoriteSports] = useState("");
+  const [favoriteArtist, setFavoriteArtist ] = useState("")
   const [hobbies, setHobbies] = useState("");
   const [selectedCommunity, setSelectedCommunity] = useState(null); 
   const [selectedCity, setSelectedCity] = useState('Madrid'); 
@@ -41,7 +42,6 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
       return;
     }
     if (!isSpanish) {
-      console.log('Entre a no soy español')
       const defaultCommunity = communitiesList.find(community => community.id == 1);
       setSelectedCommunity(defaultCommunity);
     }
@@ -51,6 +51,7 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
       profession,
       favoriteMovie,
       favoriteSports,
+      favoriteArtist,
       hobbies,
       selectedCommunity,
       selectedCity,
@@ -93,7 +94,7 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
 
     fetchBornCommunities();
     fetchCities();
-  }, []);
+  }, [communitiesList]);
 
   return (
     <View style={styles.container}>
@@ -149,6 +150,12 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
           placeholder="Película favorita"
           value={favoriteMovie}
           onChangeText={setFavoriteMovie}
+        />
+          <TextInput
+          style={styles.input}
+          placeholder="Artista favorito"
+          value={favoriteArtist}
+          onChangeText={setFavoriteArtist}
         />
         <TextInput
           style={styles.input}

@@ -1,5 +1,14 @@
 import api from './configure';
 
+const registerUser =  async(requestBody) => {
+  try {
+    const response = await api.post('/registerWithReactNative', requestBody)
+    return response
+  } catch (error) {
+    console.log('Error al crear usuario '+error)
+  }
+}
+
 const getUserById = async (userID) => {
   try {
     const response = await api.get(`/user_by_id/${userID}`);
@@ -119,4 +128,4 @@ const deleteMyUser = async (userID) => {
 
 
 
-export {getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {registerUser, getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import { registerUser } from '../../../api/User.controller'
 import Register from './Register';
 import RegisterDos from './RegisterDos';
 import RegisterTres from './RegisterTres';
@@ -48,6 +49,7 @@ const [ phone, setPhone] = useState(null)
 const [ profession, setProfession ] = useState('')
 const [favoriteMovie, setFavoriteMovie] = useState('')
 const [ favoriteSports, setFavoriteSports ] = useState('')
+const [favoriteArtist, setFavoriteArtist ] = useState("")
 const [ hobbies, setHobbies ] = useState('')
 const [ selectedCommunity, setSelectedCommunity ] = useState('')
 const [ selectedCity, setSelectedCity ] = useState('')
@@ -61,6 +63,7 @@ const handleDataFromChildFour = (dataFromChild) => {
     profession,
     favoriteMovie,
     favoriteSports,
+    favoriteArtist,
     hobbies,
     selectedCommunity,
     selectedCity,
@@ -72,6 +75,7 @@ const handleDataFromChildFour = (dataFromChild) => {
   setProfession(profession);
   setFavoriteMovie(favoriteMovie);
   setFavoriteSports(favoriteSports);
+  setFavoriteArtist(favoriteArtist);
   setHobbies(hobbies);
   setSelectedCommunity(selectedCommunity);
   setSelectedCity(selectedCity);
@@ -84,26 +88,55 @@ const returnGoback  = () => {
   setCurrentStep(currentStep - 1); 
 }
 
-const signUpUser = () => {
-try {
-  const data = {
-    email,
-    password,
-    name,
-    last_name,
-    gender,
-    birthdate:birthDay,
-    bornCountry:country,
-    phone,
-    city:selectedCity,
-    zone: madridZone,
-    animal:animalID,    
+const signUpUser = async () => {
+  try {
+    // Asegúrate de que el mes y el día tengan dos dígitos
+    const formatDate = (date) => {
+      const [day, month, year] = date.split('/');
+      const formattedDay = day.padStart(2, '0');
+      const formattedMonth = month.padStart(2, '0');
+      return `${year}/${formattedMonth}/${formattedDay}`;
+    };
+
+    const formattedBirthdate = formatDate(birthDay);
+
+    const data = {
+      email,
+      password,
+      name,
+      last_name,
+      gender,
+      birthdate: formattedBirthdate,
+      bornCountry: country,
+      phone: parseInt(phone, 10),
+      city: "63226600f5dfcb0b768e02c3", // modificarlo
+      zone: madridZone,
+      animal: animalID,
+      peliculas: favoriteMovie,
+      deportes: favoriteSports,
+      artista: favoriteArtist,
+      cargo: profession,
+      description: hobbies,
+      community: selectedCommunity._id
+    };
+
+    console.log('Data antes del post: ' + JSON.stringify(data));
+    const img = imageProfile; // base 64
+    const requestBody = {
+      data,
+      img
+    };
+
+    // registerUser() metodo ya conectado a axios
+    await registerUser(requestBody);
+    console.log('User (despues del post): ' + JSON.stringify(data));
+  } catch (error) {
+    console.error('Error durante user registration:', error);
   }
-  
-} catch (error) {
-  
-}
-}
+};
+
+
+
 
   return (
     <>
