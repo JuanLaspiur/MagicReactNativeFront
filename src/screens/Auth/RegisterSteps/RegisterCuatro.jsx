@@ -15,23 +15,46 @@ import TermsAndConditionsModal from "../../../components/Register/TermsAndCondit
 import { useNavigation } from '@react-navigation/native';
 import { getCities, getCommunities } from "../../../api/User.controller";
 
-function RegisterCuatro() {
+function RegisterCuatro({onDataChange}) {
+  // list
+  const [communitiesList, setCommunitiesList] = useState([]);
+  const [citiesList, setCitiesList] = useState([]);
+
+// atributs
   const [country, setCountry] = useState("");
   const [phone, setPhone] = useState("");
   const [profession, setProfession] = useState("");
   const [favoriteMovie, setFavoriteMovie] = useState("");
   const [favoriteSports, setFavoriteSports] = useState("");
   const [hobbies, setHobbies] = useState("");
-  const [selectedCommunity, setSelectedCommunity] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCommunity, setSelectedCommunity] = useState(communitiesList[0]);
+  const [selectedCity, setSelectedCity] = useState(citiesList[0] ? citiesList[0] : 'Madrid');
   const [madridZone, setMadridZone] = useState("");
+//
   const [isSpanish, setIsSpanish] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false); 
-  const [communitiesList, setCommunitiesList] = useState([]);
-  const [citiesList, setCitiesList] = useState([]);
+
   const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
+    if (!isSpanish) {
+      const selectedCommunity = communitiesList.find(community => community.id === 1);
+      setSelectedCommunity(selectedCommunity);
+    }
+    
+      
+    const data = {
+      country,
+      phone,
+      profession,
+      favoriteMovie,
+      favoriteSports,
+      hobbies,
+      selectedCommunity,
+      selectedCity,
+      madridZone
+    }
+    onDataChange(data)
     setShowTermsModal(true);
   };
 
@@ -39,33 +62,34 @@ function RegisterCuatro() {
     setShowTermsModal(false); 
   };
 
-  const fetchBornCommunities = async() => {
-    try {
-      const response = await getCommunities();
-      if (Array.isArray(response)) {
-        setCommunitiesList(response);
-      } else {
-        console.error("Expected an array for communities");
-      }
-    } catch (error) {
-      console.log('Error al obtener las comunidades ');
-    }
-  };
-
-  const fetchCities = async () => {
-    try {
-      const response = await getCities();
-      if (Array.isArray(response)) {
-        setCitiesList(response);
-      } else {
-        console.error("Expected an array for cities");
-      }
-    } catch (error) {
-      console.log('Error al obtener las ciudades ');
-    }
-  };
+ 
 
   useEffect(() => {
+    const fetchBornCommunities = async() => {
+      try {
+        const response = await getCommunities();
+        if (Array.isArray(response)) {
+          setCommunitiesList(response);
+        } else {
+          console.error("Expected an array for communities");
+        }
+      } catch (error) {
+        console.log('Error al obtener las comunidades ');
+      }
+    };
+  
+    const fetchCities = async () => {
+      try {
+        const response = await getCities();
+        if (Array.isArray(response)) {
+          setCitiesList(response);
+        } else {
+          console.error("Expected an array for cities");
+        }
+      } catch (error) {
+        console.log('Error al obtener las ciudades ');
+      }
+    };
     fetchBornCommunities();
     fetchCities();
   }, []);

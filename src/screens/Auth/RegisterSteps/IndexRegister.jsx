@@ -43,6 +43,11 @@ function IndexRegister() {
     setAnimalID(dataFromChild)
     setCurrentStep(currentStep + 1);
  }
+
+ const handleDataFromChildFour = (dataFromChild) => { 
+  console.log('Datos obtenidos ' + JSON.stringify(dataFromChild))
+ }
+
   return (
     <>
       {currentStep === 1 && (
@@ -55,7 +60,7 @@ function IndexRegister() {
         <RegisterTres onDataChange={handleDataFromChildThree} />
       )}
       {currentStep === 4 && (
-        <RegisterCuatro />
+        <RegisterCuatro onDataChange={handleDataFromChildFour}/>
       )}
     </>
   );
