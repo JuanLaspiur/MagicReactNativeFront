@@ -77,10 +77,19 @@ const handleDataFromChildFour = (dataFromChild) => {
   setSelectedCity(selectedCity);
   setMadridZone(madridZone);
 
+  signUpUser()
 };
 
 const returnGoback  = () => {
   setCurrentStep(currentStep - 1); 
+}
+
+const signUpUser = () => {
+try {
+  
+} catch (error) {
+  
+}
 }
 
   return (
