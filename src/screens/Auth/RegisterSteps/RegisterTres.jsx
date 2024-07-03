@@ -56,7 +56,7 @@ const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-47.png"),
 ];
 
-function RegisterTres({onDataChange}) {
+function RegisterTres({onDataChange, returnGoback}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnimal, setSelectedAnimal] = useState(animalImages[0]);
   const [animalId, setAnimalId] = useState(null);
@@ -99,7 +99,7 @@ function RegisterTres({onDataChange}) {
   return (
     <View style={styles.container}>
       <CabeceraAnimals />
-      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('RegisterDos')}>
+      <TouchableOpacity style={styles.closeButton} onPress={returnGoback}>
         <Ionicons name="arrow-back" size={20} color="white" />
       </TouchableOpacity>
       <View style={styles.containerInputs}>

@@ -15,7 +15,7 @@ import TermsAndConditionsModal from "../../../components/Register/TermsAndCondit
 import { useNavigation } from '@react-navigation/native';
 import { getCities, getCommunities } from "../../../api/User.controller";
 
-function RegisterCuatro({ onDataChange }) {
+function RegisterCuatro({ onDataChange, returnGoback }) {
   const [communitiesList, setCommunitiesList] = useState([]);
   const [citiesList, setCitiesList] = useState([]);
 
@@ -114,7 +114,7 @@ function RegisterCuatro({ onDataChange }) {
       />
       <TouchableOpacity
         style={styles.closeButton}
-        onPress={() => navigation.navigate('RegisterTres')}
+        onPress={returnGoback}
       >
         <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>

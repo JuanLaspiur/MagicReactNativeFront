@@ -7,7 +7,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 
-function RegisterDos({ onDataChange }) {
+function RegisterDos({ onDataChange, returnGoback }) {
   const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
@@ -81,7 +81,7 @@ function RegisterDos({ onDataChange }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.closeButton} onPress={() => navigation.navigate('Register')}>
+      <TouchableOpacity style={styles.closeButton} onPress={returnGoback}>
         <Ionicons name="arrow-back" size={20} color="gray" />
       </TouchableOpacity>
       <Image

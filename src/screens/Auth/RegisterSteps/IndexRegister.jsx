@@ -79,6 +79,9 @@ const handleDataFromChildFour = (dataFromChild) => {
 
 };
 
+const returnGoback  = () => {
+  setCurrentStep(currentStep - 1); 
+}
 
   return (
     <>
@@ -86,13 +89,13 @@ const handleDataFromChildFour = (dataFromChild) => {
         <Register onDataChange={handleDataFromChild} />
       )}
       {currentStep === 2 && (
-        <RegisterDos onDataChange={handleDataFromChildTwo} />
+        <RegisterDos onDataChange={handleDataFromChildTwo} returnGoback={returnGoback}/>
       )}
       {currentStep === 3 && (
-        <RegisterTres onDataChange={handleDataFromChildThree} />
+        <RegisterTres onDataChange={handleDataFromChildThree}  returnGoback={returnGoback} />
       )}
       {currentStep === 4 && (
-        <RegisterCuatro onDataChange={handleDataFromChildFour}/>
+        <RegisterCuatro onDataChange={handleDataFromChildFour} returnGoback={returnGoback}/>
       )}
     </>
   );
