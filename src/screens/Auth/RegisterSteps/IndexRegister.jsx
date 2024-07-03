@@ -54,6 +54,7 @@ const [ selectedCity, setSelectedCity ] = useState('')
 const [ madridZone, setMadridZone] = useState('')
 
 const handleDataFromChildFour = (dataFromChild) => {
+  console.log(JSON.stringify(dataFromChild))
   const {
     country,
     phone,

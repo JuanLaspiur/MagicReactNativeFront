@@ -40,8 +40,9 @@ function RegisterCuatro({ onDataChange }) {
       alert('Por favor complete todos los campos obligatorios.');
       return;
     }
-    if (isSpanish) {
-      const defaultCommunity = communitiesList.find(community => community.id === 1);
+    if (!isSpanish) {
+      console.log('Entre a no soy español')
+      const defaultCommunity = communitiesList.find(community => community.id == 1);
       setSelectedCommunity(defaultCommunity);
     }
     const data = {
