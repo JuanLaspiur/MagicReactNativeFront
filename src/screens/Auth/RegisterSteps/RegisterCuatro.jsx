@@ -25,8 +25,8 @@ function RegisterCuatro({ onDataChange }) {
   const [favoriteMovie, setFavoriteMovie] = useState("");
   const [favoriteSports, setFavoriteSports] = useState("");
   const [hobbies, setHobbies] = useState("");
-  const [selectedCommunity, setSelectedCommunity] = useState(null); // Cambiado a null inicialmente
-  const [selectedCity, setSelectedCity] = useState('Madrid'); // Cambiado a 'Madrid' como valor por defecto
+  const [selectedCommunity, setSelectedCommunity] = useState(null); 
+  const [selectedCity, setSelectedCity] = useState('Madrid'); 
   const [madridZone, setMadridZone] = useState("");
   const [isSpanish, setIsSpanish] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -34,13 +34,11 @@ function RegisterCuatro({ onDataChange }) {
   const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
-    // Validar campos requeridos
     if (!country || !phone || !profession || !favoriteMovie || !favoriteSports || !hobbies) {
       alert('Por favor complete todos los campos obligatorios.');
       return;
     }
 
-    // Si no es español, seleccionar la comunidad por defecto (id === 1)
     if (isSpanish) {
       const defaultCommunity = communitiesList.find(community => community.id === 1);
       setSelectedCommunity(defaultCommunity);
