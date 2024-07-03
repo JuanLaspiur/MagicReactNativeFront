@@ -68,6 +68,16 @@ const getAnimales = async () => {
   } 
 }
 
+
+const getCities = async() => {
+  try {
+    const response = await api.get('cities')
+    return response
+  } catch (error) {
+    console.error('Error seguir usuario:', error);
+  }
+}
+
 const getUserInfo = async() => {
   try {
     const response = await api.get(`user_info2`)
@@ -99,4 +109,4 @@ const deleteMyUser = async (userID) => {
 
 
 
-export {getUserById, updateUserInfo, deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {getUserById,getCities,updateUserInfo, deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}

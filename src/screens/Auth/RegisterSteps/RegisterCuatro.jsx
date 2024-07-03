@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -13,9 +13,12 @@ import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
 import TermsAndConditionsModal from "../../../components/Register/TermsAndConditionsModal";
 import { useNavigation } from '@react-navigation/native';
+import { getCities } from "../../../api/User.controller";
 
 function RegisterCuatro() {
   const [city, setCity] = useState("");
+  const [bornCiry, setBornCity] = useState("")
+  const [bornCitiesList, setBornCitiesList] = useEffect([])
   const [isSpanish, setIsSpanish] = useState(false);
   const [madridZone, setMadridZone] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false); 
@@ -28,6 +31,15 @@ function RegisterCuatro() {
   const handleCloseModal = () => {
     setShowTermsModal(false); 
   };
+
+  const fetchCities = async() => {
+    const response = await getCities()
+    console.log('respuesta del servidor ' + response)
+  }
+
+  useEffect(()=> {
+    fetchCities()
+  }, [])
 
   return (
     <View style={styles.container}>

@@ -64,6 +64,10 @@ function RegisterTres({onDataChange}) {
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+    fetchAnimalsList();
+  }, []);
+
   const fetchAnimalsList = async () => {
     try {
       const response = await getAnimales();
@@ -79,23 +83,18 @@ function RegisterTres({onDataChange}) {
 
     if (selectedAnimalId) {
       setAnimalId(selectedAnimalId);
-
+   
+      console.warn('Animal no encontrado en la lista');
     }
 
     setModalVisible(false);
   };
 
   const handleContinue = ()=> {
-    if(animalId) {
-    onDataChange(animalId)
-  }else {
-    alert('Debe seleccionar un animal')
-  }
+   onDataChange(animalId)
   }
 
-  useEffect(() => {
-    fetchAnimalsList();
-  }, []);
+
 
   return (
     <View style={styles.container}>
