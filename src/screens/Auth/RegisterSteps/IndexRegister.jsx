@@ -20,11 +20,29 @@ function IndexRegister() {
     setCurrentStep(currentStep + 1);
   };
 
+  const [ imageProfile, setImageProfile ] = useState('')
+  const [ name, setName ] = useState('')
+  const [ last_name, setLastName ] = useState('')
+  const [ gender, setGender ] = useState('')
+  const [ birthDay, setBirthDay ] = useState('')
+
  const handleDataFromChildTwo = (dataFromChild)  =>{
-  console.log(dataFromChild)
+
+  setImageProfile(dataFromChild.profileImage)
+  setName(dataFromChild.name)
+  setLastName(dataFromChild.lastName)
+  setGender(dataFromChild.gender)
+  setBirthDay(dataFromChild.dateOfBirth)
+
   setCurrentStep(currentStep + 1);
  }
 
+
+ const handleDataFromChildThree = (dataFromChild) => {
+    console.log(dataFromChild)
+
+    setCurrentStep(currentStep + 1);
+ }
   return (
     <>
       {currentStep === 1 && (
@@ -34,7 +52,7 @@ function IndexRegister() {
         <RegisterDos onDataChange={handleDataFromChildTwo} />
       )}
       {currentStep === 3 && (
-        <RegisterTres />
+        <RegisterTres onDataChange={handleDataFromChildThree} />
       )}
       {currentStep === 4 && (
         <RegisterCuatro />
