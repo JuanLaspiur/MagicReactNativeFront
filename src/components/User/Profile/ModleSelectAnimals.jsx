@@ -58,8 +58,13 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComp
   const [ list, setList ] = useState([])
 
   const fetchAnimalsList = async() => {
-    const response =  await getAnimales()
-    setList(response)
+    try {
+      const response =  await getAnimales()
+      setList(response)
+    } catch (error) {
+      console.error('Animal list');
+    }
+
   } 
   const handleAnimalSelect = async(imageIndex) => {
     const animalId = imageIndex -27; 

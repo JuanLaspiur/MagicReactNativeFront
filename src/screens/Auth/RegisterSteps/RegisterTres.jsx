@@ -4,6 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
 import CabeceraAnimals from "../../../components/Register/CabeceraAnimals";
 import { useNavigation } from '@react-navigation/native';
+import { getAnimales, updateUserInfo } from '../../../api/User.controller';
+
 const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-01.png"),
   require("../../../assets/Animals/ICONOS A COLOR-02.png"),
@@ -57,13 +59,37 @@ const animalImages = [
 function RegisterTres() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnimal, setSelectedAnimal] = useState(animalImages[0]);
+  const [animalId, setAnimalId] = useState(null);
+  const [list, setList] = useState([]);
 
   const navigation = useNavigation();
 
-  const handleAnimalSelect = (image) => {
-    setSelectedAnimal(image);
+  const fetchAnimalsList = async () => {
+    try {
+      const response = await getAnimales();
+      setList(response);
+    } catch (error) {
+      console.error('Animal list error:', error);
+    }
+  };
+
+  const handleAnimalSelect = (imageIndex) => {
+    setSelectedAnimal(animalImages[imageIndex]);
+    const selectedAnimalId = list[imageIndex]?._id;
+
+    if (selectedAnimalId) {
+      console.log('ID Animal seleccionado:', selectedAnimalId);
+      setAnimalId(selectedAnimalId);
+    } else {
+      console.warn('Animal no encontrado en la lista');
+    }
+
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    fetchAnimalsList();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -81,7 +107,7 @@ function RegisterTres() {
           <Text style={styles.buttonText}>Animal</Text>
         </TouchableOpacity>
       </View>
-       {/*Modal select animal */}
+      {/* Modal select animal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -93,8 +119,8 @@ function RegisterTres() {
             <FlatList
               data={animalImages}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleAnimalSelect(item)}>
+              renderItem={({ item, index }) => (
+                <TouchableOpacity onPress={() => handleAnimalSelect(index)}>
                   <Image source={item} style={styles.animalImage} />
                 </TouchableOpacity>
               )}
@@ -110,11 +136,10 @@ function RegisterTres() {
         </View>
       </Modal>
 
-
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.buttonSiguiente} onPress={() => navigation.navigate('RegisterCuatro')}>
-        <Text style={styles.buttonText}>Siguiente</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonSiguiente} onPress={() => navigation.navigate('RegisterCuatro')}>
+          <Text style={styles.buttonText}>Siguiente</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
