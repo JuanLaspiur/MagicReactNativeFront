@@ -18,10 +18,10 @@ const Login = () => {
 
 
   const handleLogin = async() => {
-    const credentials = { email, password };
-   // const response = await login(credentials);
-    console.log(credentials)
-    navigation.navigate('Index')
+    //const credentials = { email, password };
+    const response = await login(email, password);
+   // console.log(credentials)
+   // navigation.navigate('Index')
   };
 
   return (

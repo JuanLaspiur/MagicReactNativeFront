@@ -1,5 +1,7 @@
 import api from './configure';
 
+
+
 const registerUser =  async(requestBody) => {
   try {
     const response = await api.post('/registerWithReactNative', requestBody)

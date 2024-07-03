@@ -9,3 +9,7 @@ logoCelesteIntermedio=#568DD8
 
 
 Primary: #AED0F6
+
+
+La ciudad por defecto en IndexRegister es Madrid, en caso de querer agregar una ciudad 
+modificarlo

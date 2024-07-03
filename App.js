@@ -52,7 +52,7 @@ export default function App() {
 
   const saveLoginUser = async () => {
     try{ 
-    const id = "65f991ef7bce022d620d26df"
+    const id = "6685b6661f5682419e56b16f"
       let user = await getUserById(id);
       user = user.data
       await saveToSecureStore("user", JSON.stringify(user));
