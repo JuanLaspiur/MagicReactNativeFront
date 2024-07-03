@@ -56,7 +56,7 @@ const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-47.png"),
 ];
 
-function RegisterTres() {
+function RegisterTres({onDataChange}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAnimal, setSelectedAnimal] = useState(animalImages[0]);
   const [animalId, setAnimalId] = useState(null);
@@ -78,14 +78,20 @@ function RegisterTres() {
     const selectedAnimalId = list[imageIndex]?._id;
 
     if (selectedAnimalId) {
-      console.log('ID Animal seleccionado:', selectedAnimalId);
       setAnimalId(selectedAnimalId);
-    } else {
-      console.warn('Animal no encontrado en la lista');
+
     }
 
     setModalVisible(false);
   };
+
+  const handleContinue = ()=> {
+    if(animalId) {
+    onDataChange(animalId)
+  }else {
+    alert('Debe seleccionar un animal')
+  }
+  }
 
   useEffect(() => {
     fetchAnimalsList();
@@ -137,7 +143,7 @@ function RegisterTres() {
       </Modal>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonSiguiente} onPress={() => navigation.navigate('RegisterCuatro')}>
+        <TouchableOpacity style={styles.buttonSiguiente} onPress={handleContinue}>
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
       </View>

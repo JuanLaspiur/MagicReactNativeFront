@@ -37,10 +37,11 @@ function IndexRegister() {
   setCurrentStep(currentStep + 1);
  }
 
+ const [animalID, setAnimalID] = useState('')
 
  const handleDataFromChildThree = (dataFromChild) => {
-    console.log(dataFromChild)
-
+  console.log('ID Animal seleccionado:', dataFromChild);
+    setAnimalID(dataFromChild)
     setCurrentStep(currentStep + 1);
  }
   return (
