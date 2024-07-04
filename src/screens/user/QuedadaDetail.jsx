@@ -8,7 +8,9 @@ const { width: screenWidth } = Dimensions.get('window');
 import { formatDate } from '../../helpers/UpdateQuedadaDay'
 import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
 import { asistirAQuedada } from '../../api/Quedada.controller'
+import { useNavigation } from '@react-navigation/native';
  
+
 const QuedadaDetail = ({ route }) => {
   const { quedada } = route.params;
   const [ authUser, setAuthUser ] = useState([]);
@@ -18,13 +20,14 @@ const QuedadaDetail = ({ route }) => {
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const nombreYApellido = quedada.userInfo.name;
 
+  const navigation = useNavigation();
+
 const getAuthUser = async() => {
    const data = await getValueFromSecureStore('user')
    setAuthUser(JSON.parse(data))
 }
 
  const isAsistir = ()=>{
-
     if (!quedada || !quedada.asistentes) {
       setAsistir(false)
       return;
@@ -48,6 +51,10 @@ const getAuthUser = async() => {
     }
     setAsistir(!asistir);
   };
+
+  const handleEditPress = async()=> {
+    navigation.navigate("EditQuedada", {quedada});
+  }
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -93,6 +100,10 @@ const getAuthUser = async() => {
           <Text style={styles.datosText}><Ionicons name="calendar-outline" size={14} color="white" /> Fecha: {quedada.dateTime || !quedada.react && formatDate(quedada.dateTime)}</Text>
           <Text style={styles.datosText}><Ionicons name="flash-outline" size={14} color="white" /> Asistentes: {( quedada.asistentes ? quedada.asistentes.length : 0 )+ ( quedada.solicitudesDeParticipacion ?  quedada.solicitudesDeParticipacion.length : 0)} </Text>
           <Text style={styles.datosText}><Ionicons name="dice-outline" size={14} color="white" /> Confirmados: {quedada.asistentes.length} </Text>
+       
+       
+          {/* if authUser._id != quedada.user_id*/}
+          {authUser && quedada && authUser._id != quedada.user_id &&
           <TouchableOpacity style={styles.asistenciaStatus} onPress={handleAsistirPress}>
             <View style={styles.circle}>
               <Ionicons name={asistir ? 'flash-outline' : 'flash-off-outline'} size={24} color="white" />
@@ -100,7 +111,21 @@ const getAuthUser = async() => {
             <Text style={styles.statusText}>
               {asistir ? 'Asistes' : 'No asistes'}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> 
+        }
+      
+          {/* if authUser._id != quedada.user_id*/}
+          {authUser && quedada && authUser._id === quedada.user_id &&
+          <TouchableOpacity style={styles.asistenciaStatus} onPress={handleEditPress}>
+            <View>
+            <Ionicons name="create-outline" size={24} color="white" />
+             </View>
+            <Text style={styles.statusText}>
+              Editar
+            </Text>
+          </TouchableOpacity> 
+        }
+
         </View>
       </View>
           <Image

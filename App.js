@@ -16,6 +16,7 @@ import Index from "./src/screens/user/Index.jsx";
 import Home from "./src/screens/user/Home.jsx";
 import QuedadaDetail from "./src/screens/user/QuedadaDetail.jsx";
 import CreateQuedada from "./src/screens/user/CreateQuedada.jsx";
+import EditQuedada from "./src/screens/user/EditQuedada.jsx";
 import MyFriendsList from "./src/screens/user/MyFriendsList.jsx";
 import FilterPlans from "./src/screens/user/FilterPlans.jsx";
 // ..... home  ... filterplans
@@ -80,6 +81,11 @@ export default function App() {
           <Stack.Screen
             name="CreateQuedada"
             component={CreateQuedada}
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen
+            name="EditQuedada"
+            component={EditQuedada}
             options={{ headerShown: false }}
           />
           <Stack.Screen

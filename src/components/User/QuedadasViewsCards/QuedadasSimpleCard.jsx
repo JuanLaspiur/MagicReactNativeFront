@@ -23,7 +23,7 @@ const QuedadasSimpleCard = ({ quedada }) => {
   const maxParticipantes = quedada.limit;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const iconColor = 'white'; 
- const fecha = quedada.dateTime && !quedada.react  ? formatDate(quedada.dateTime) : '';
+ const fecha =  '' // quedada.dateTime && !quedada.react  ? formatDate(quedada.dateTime) : '';
   const nombrePersona = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
   
 
