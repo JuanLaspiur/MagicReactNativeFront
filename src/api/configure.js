@@ -1,5 +1,6 @@
 import axios from 'axios';
 import env from '../../env.js';
+
 let authToken = env.auth_token;
 
 // Configuración base para API con JSON

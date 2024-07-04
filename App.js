@@ -36,28 +36,6 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  const saveAuthTokenToSecureStore = async () => {
-    try {
-      const authToken = env.auth_token;
-      await saveToSecureStore("token", authToken);
-      console.log("Token guardado en SecureStore correctamente.");
-    } catch (error) {
-      console.error("Error al guardar el token en SecureStore:", error);
-    }
-  };
-
-  const saveLoginUser = async () => {
-    try{ 
-    const id = "6685b6661f5682419e56b16f"
-      let user = await getUserById(id);
-      user = user.data
-      await saveToSecureStore("user", JSON.stringify(user));
-      } catch (error) {
-        console.log("Error al guardar user harcode ");
-      }
-
-  };
-
   return (
     <View style={styles.container}>
       <NavigationContainer>
