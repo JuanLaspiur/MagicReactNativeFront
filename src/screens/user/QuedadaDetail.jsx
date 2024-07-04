@@ -16,7 +16,9 @@ const QuedadaDetail = ({ route }) => {
   const [ authUser, setAuthUser ] = useState([]);
   const [asistir, setAsistir] = useState(false);
   const [expanded, setExpanded] = useState(false); 
-  const urlImagenQuedada = !quedada.react ? env.BACK_URL+'/quedada_img/'+quedada._id : env.BACK_URL+'/quedada_img/'+quedada._id+".jpg" ;
+  const urlImagenQuedada = quedada.react ? env.BACK_URL+'/quedada_img/'+quedada._id+".jpg" : env.BACK_URL+'/quedada_img/'+quedada._id ;
+
+  console.log('Quedada react ' + quedada.react)
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   const nombreYApellido = quedada.userInfo.name;
 

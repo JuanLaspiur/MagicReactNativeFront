@@ -16,7 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import {
   getQuedadaCategories,
   createQuedadaBack,
-  updateQuedadaBack,
+  updateQuedada,
   getQuedadaById,
 } from "../../api/Quedada.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
@@ -114,11 +114,7 @@ function EditQuedada({ route }) {
 
   const handleSubmit = async () => {
     try {
-      const imageData = await FileSystem.readAsStringAsync(image, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      const formattedDateTime = new Date(
+        const formattedDateTime = new Date(
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),
@@ -133,7 +129,8 @@ function EditQuedada({ route }) {
         .toString()
         .padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
 
-      const dataToSend = {
+      let dataToSend = {
+        quedadaId :quedada._id,
         name: quedadaName,
         description: description,
         date: formattedDate,
@@ -144,17 +141,25 @@ function EditQuedada({ route }) {
         category: category,
         privacy: privacy,
         user_id: user._id,
-        image: imageData,
         react: true,
       };
 
-      try {
-        const response = await updateQuedadaBack(quedadaId, dataToSend);
-        setShowSuccessMessage(true);
+      if(image) {
+        const imageData = await FileSystem.readAsStringAsync(image, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        dataToSend.image = imageData
+        console.log(dataToSend.image)
+      }
 
-        setTimeout(() => {
-          navigation.navigate("Index");
-        }, 1000);
+      try {
+
+      const response = await updateQuedada(dataToSend);
+       setShowSuccessMessage(true);
+
+     //  setTimeout(() => {
+       //   navigation.navigate("Index");
+       // }, 1000);
       } catch (error) {
         console.error("Error updating quedada:", error);
         alert("Error al actualizar la quedada");
@@ -165,7 +170,7 @@ function EditQuedada({ route }) {
   };
 
   const handleDelete = async () => {
-    
+
   }
 
   return (

@@ -65,9 +65,9 @@ const createQuedadaBack = async (form) => {
 };
 
 
-const updateQuedada = async (id, updatedQuedada) => {
+const updateQuedada = async (updatedQuedada) => {
   try {
-    const response = await api.put(`/edit_quedada/${id}`, updatedQuedada);
+    const response = await api.put(`/editQuedadaReactNative`, updatedQuedada);
     return response.data;
   } catch (error) {
     console.error(`Error al actualizar quedada con ID ${id}:`, error);
