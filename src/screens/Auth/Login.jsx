@@ -10,11 +10,22 @@ import {
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { login } from "../../api/Login.controller";
+import ModalForgotPassword  from './ModalForgotPassword'
+
 const { height } = Dimensions.get("window");
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const openModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
 
 
   const handleLogin = async() => {
@@ -85,7 +96,7 @@ const Login = () => {
             <Text style={{ color: "gray", fontSize: 11, marginBottom: 7 }}>
               ¿Olvidaste tu contraseña?{"    "}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={openModal}>
               <Text
                 style={{
                   color: "#007AFF",
@@ -114,6 +125,7 @@ const Login = () => {
           </Text>
         </View>
       </View>
+      <ModalForgotPassword visible={isModalVisible} onClose={closeModal} />
     </View>
   );
 };
