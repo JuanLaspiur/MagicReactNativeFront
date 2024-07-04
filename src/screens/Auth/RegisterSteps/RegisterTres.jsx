@@ -3,7 +3,6 @@ import { Image, StyleSheet, View, Text, TouchableOpacity, Modal, FlatList } from
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Ionicons } from '@expo/vector-icons';
 import CabeceraAnimals from "../../../components/Register/CabeceraAnimals";
-import { useNavigation } from '@react-navigation/native';
 import { getAnimales, updateUserInfo } from '../../../api/User.controller';
 
 const animalImages = [
@@ -62,7 +61,6 @@ function RegisterTres({onDataChange, returnGoback}) {
   const [animalId, setAnimalId] = useState(null);
   const [list, setList] = useState([]);
 
-  const navigation = useNavigation();
 
   useEffect(() => {
     fetchAnimalsList();

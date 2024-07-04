@@ -4,11 +4,9 @@ import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons'; 
 import * as ImagePicker from 'expo-image-picker'; 
 import DateTimePicker from '@react-native-community/datetimepicker'; 
-import { useNavigation } from '@react-navigation/native';
 import * as FileSystem from 'expo-file-system';
 
 function RegisterDos({ onDataChange, returnGoback }) {
-  const navigation = useNavigation();
   const [profileImage, setProfileImage] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [lastName, setLastName] = useState('');

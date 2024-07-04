@@ -12,7 +12,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { CheckBox } from "react-native-elements";
 import TermsAndConditionsModal from "../../../components/Register/TermsAndConditionsModal";
-import { useNavigation } from '@react-navigation/native';
 import { getCities, getCommunities } from "../../../api/User.controller";
 
 function RegisterCuatro({ onDataChange, returnGoback }) {
@@ -34,7 +33,6 @@ function RegisterCuatro({ onDataChange, returnGoback }) {
 
   const [allData, setAllData] = useState([])
 
-  const navigation = useNavigation();
 
   const handleFinishRegistration = () => {
     if (!country || !phone || !profession || !favoriteMovie || !favoriteSports || !hobbies) {

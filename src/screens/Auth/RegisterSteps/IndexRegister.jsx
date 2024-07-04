@@ -5,6 +5,7 @@ import Register from './Register';
 import RegisterDos from './RegisterDos';
 import RegisterTres from './RegisterTres';
 import RegisterCuatro from './RegisterCuatro';
+import { useNavigation } from '@react-navigation/native';
 
 function IndexRegister() {
   const [isChecked1, setIsChecked1] = useState(false);
@@ -12,6 +13,8 @@ function IndexRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [currentStep, setCurrentStep] = useState(1); 
+
+  const navigation = useNavigation();
   
   const handleDataFromChild = (dataFromChild) => {
     setIsChecked1(dataFromChild.isChecked1);
@@ -123,8 +126,20 @@ const signUpUser = async () => {
       data,
       img
     };
+try {
+     const response = await registerUser(requestBody);
+     if (response.status === 201) {
+      alert('Usuario registrado con éxito');
+      setTimeout(() => { 
+        navigation.navigate('Login')
+      }, 1000);
+    } else {
+      alert('Error al registrar el usuario:', response.status);
+    }
+} catch (error) {
+  console.log(error)
+}
 
-   const response = await registerUser(requestBody);
     
   } catch (error) {
     console.error('Error durante user registration:', error);

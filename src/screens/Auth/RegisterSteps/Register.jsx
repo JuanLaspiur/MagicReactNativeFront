@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
 const Register = ({ onDataChange }) => {
-  const navigation = useNavigation();
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
   const [email, setEmail] = useState('');
