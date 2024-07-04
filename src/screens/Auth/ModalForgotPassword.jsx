@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button,TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-
+import { handlePasswordRecovery } from "../../api/User.controller";
 const ModalForgotPassword = ({ visible, onClose }) => {
   const [email, setEmail] = useState('');
 
-  const handlePasswordRecovery = () => {
-    console.log(`Recovering password for email: ${email}`);
+  const handlePasswordRecovery = async() => {
+    const response =  await handlePasswordRecovery(email)
+    console.log('response ' + response)
     onClose();
   };
 
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
-  },  loginButton: {
+  }, 
+   loginButton: {
     display:'flex',
     backgroundColor: "#007AFF", // Azul
     padding: 10,

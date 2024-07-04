@@ -127,7 +127,16 @@ const deleteMyUser = async (userID) => {
     console.log('Error')
   }
 }
+// Route.get("email_send_app/:email", "UserController.recuperacionapp");
+const handlePasswordRecover = async(email)=> {
+  try {
+    const response = await api.get('/email_send_app'+email)
+    return response
+  } catch (error) {
+    console.log('Error')
+  }
+}
 
 
 
-export {registerUser, getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {registerUser,handlePasswordRecover,getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
