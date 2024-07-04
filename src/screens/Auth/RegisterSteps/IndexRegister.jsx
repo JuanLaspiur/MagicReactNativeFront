@@ -90,7 +90,6 @@ const returnGoback  = () => {
 
 const signUpUser = async () => {
   try {
-    // Asegúrate de que el mes y el día tengan dos dígitos
     const formatDate = (date) => {
       const [day, month, year] = date.split('/');
       const formattedDay = day.padStart(2, '0');
@@ -109,7 +108,7 @@ const signUpUser = async () => {
       birthdate: formattedBirthdate,
       bornCountry: country,
       phone: parseInt(phone, 10),
-      city: "63226600f5dfcb0b768e02c3", // modificarlo
+      city: "63226600f5dfcb0b768e02c3",
       zone: madridZone,
       animal: animalID,
       peliculas: favoriteMovie,
@@ -119,15 +118,12 @@ const signUpUser = async () => {
       description: hobbies,
       community: selectedCommunity._id
     };
-
-    console.log('Data antes del post: ' + JSON.stringify(data));
-    const img = imageProfile; // base 64
+    const img = imageProfile; 
     const requestBody = {
       data,
       img
     };
 
-    // registerUser() metodo ya conectado a axios
    const response = await registerUser(requestBody);
     
   } catch (error) {

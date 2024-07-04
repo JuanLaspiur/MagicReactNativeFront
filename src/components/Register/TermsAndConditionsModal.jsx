@@ -29,7 +29,6 @@ function TermsAndConditionsModal({ isVisible, onClose, onDataChange, allData }) 
       <View style={styles.modalContainer}>
         <Text style={styles.modalTitle}>Términos y Condiciones</Text>
         <ScrollView style={styles.modalContent}>
-          {/* Aquí colocarías el contenido de tus términos y condiciones */}
           <Text style={styles.modalText}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
             fringilla massa nec dui scelerisque, et malesuada augue cursus. Sed
@@ -37,8 +36,8 @@ function TermsAndConditionsModal({ isVisible, onClose, onDataChange, allData }) 
             velit eget ligula consectetur condimentum.
           </Text>
         </ScrollView>
-        <Button title="Acepto" onPress={handleAcept} />
-        <Button title="Cerrar" onPress={() => onClose(false)} />
+        <Button title="Acepto" onPress={handleAcept} style={styles.padding}/>
+        <Button title="Cerrar" onPress={() => onClose(false)} style={styles.padding} />
       </View>
     </Modal>
   );
@@ -92,4 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
   },
+  padding:{
+    paddingVertical:10
+  }
 });
