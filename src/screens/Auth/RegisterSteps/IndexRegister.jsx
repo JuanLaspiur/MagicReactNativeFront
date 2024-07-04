@@ -59,30 +59,17 @@ const [ selectedCity, setSelectedCity ] = useState('')
 const [ madridZone, setMadridZone] = useState('')
 
 const handleDataFromChildFour = (dataFromChild) => {
-  console.log(JSON.stringify(dataFromChild))
-  const {
-    country,
-    phone,
-    profession,
-    favoriteMovie,
-    favoriteSports,
-    favoriteArtist,
-    hobbies,
-    selectedCommunity,
-    selectedCity,
-    madridZone
-  } = dataFromChild;
-
-  setCountry(country);
-  setPhone(phone);
-  setProfession(profession);
-  setFavoriteMovie(favoriteMovie);
-  setFavoriteSports(favoriteSports);
-  setFavoriteArtist(favoriteArtist);
-  setHobbies(hobbies);
-  setSelectedCommunity(selectedCommunity);
-  setSelectedCity(selectedCity);
-  setMadridZone(madridZone);
+  console.log('Información obtenida del four '+JSON.stringify(dataFromChild))
+  setCountry(dataFromChild.country);
+  setPhone(dataFromChild.phone);
+  setProfession(dataFromChild.profession);
+  setFavoriteMovie(dataFromChild.favoriteMovie);
+  setFavoriteSports(dataFromChild.favoriteSports);
+  setFavoriteArtist(dataFromChild.favoriteArtist);
+  setHobbies(dataFromChild.hobbies);
+  setSelectedCommunity(dataFromChild.selectedCommunity);
+  setSelectedCity(dataFromChild.selectedCity);
+  setMadridZone(dataFromChild.madridZone);
 
   signUpUser()
 };
@@ -130,9 +117,9 @@ try {
      const response = await registerUser(requestBody);
      if (response.status === 201) {
       alert('Usuario registrado con éxito');
-      setTimeout(() => { 
+    setTimeout(() => { 
         navigation.navigate('Login')
-      }, 1000);
+      }, 1000); 
     } else {
       alert('Error al registrar el usuario:', response.status);
     }

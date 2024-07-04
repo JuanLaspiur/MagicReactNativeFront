@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button,TouchableOpacity, StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import { handlePasswordRecovery } from "../../api/User.controller";
+import { handlePasswordRecover } from "../../api/User.controller";
 const ModalForgotPassword = ({ visible, onClose }) => {
   const [email, setEmail] = useState('');
 
   const handlePasswordRecovery = async() => {
-    const response =  await handlePasswordRecovery(email)
+    const response =  await handlePasswordRecover(email)
     console.log('response ' + response)
     onClose();
   };
