@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TextInput, View, Text, TouchableOpacity, Alert } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Register = ({ onDataChange }) => {
   const [isChecked1, setIsChecked1] = useState(false);
@@ -9,6 +10,9 @@ const Register = ({ onDataChange }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+
+
+  const navigation = useNavigation();
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
