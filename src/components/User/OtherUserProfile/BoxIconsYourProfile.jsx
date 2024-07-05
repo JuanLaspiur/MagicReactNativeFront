@@ -94,12 +94,12 @@ const BoxIconsYourProfile = ({ user }) => {
         <Text
           style={[styles.text, { color: isFollowing ? "#AED0F6" : "gray" }]}
         >
-          {isFollowing ? "Seguir" : "Dejar de Seguir"}
+          {!isFollowing ? "Seguir" : "Dejar de Seguir"}
         </Text>
       </TouchableOpacity>
 
       {/* Botón Mensajes */}
-      {!isFollowing && (
+      {isFollowing && (
         <TouchableOpacity style={styles.box} onPress={sendMessage}>
           <Ionicons name="paper-plane-outline" size={40} color="#AED0F6" />
           <Text style={[styles.text, { color: "#AED0F6" }]}>Mensaje</Text>
