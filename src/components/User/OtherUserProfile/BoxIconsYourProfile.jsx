@@ -87,14 +87,14 @@ const BoxIconsYourProfile = ({ user }) => {
     <View style={styles.container}>
       <TouchableOpacity style={styles.box} onPress={toggleFollow}>
         <Ionicons
-          name={isFollowing ? "dice" : "arrow-undo"}
+          name={isFollowing ? "arrow-undo" :"dice" }
           size={40}
-          color={isFollowing ? "#AED0F6" : "gray"}
+          color={isFollowing ? "gray" : "#AED0F6"}
         />
         <Text
-          style={[styles.text, { color: isFollowing ? "#AED0F6" : "gray" }]}
+          style={[styles.text, { color: isFollowing ? "gray": "#AED0F6" }]}
         >
-          {!isFollowing ? "Seguir" : "Dejar de Seguir"}
+          {isFollowing ? "Dejar de Seguir" :"Seguir" }
         </Text>
       </TouchableOpacity>
 
