@@ -53,7 +53,7 @@ const animalImages = [
   require("../../../assets/Animals/ICONOS A COLOR-47.png"),
 ];
 
-const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComponente,setActualizarComponente}) => {
+const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComponente, changeStatus}) => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [ list, setList ] = useState([])
 
@@ -84,7 +84,6 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComp
         const response = await updateUserInfo(data, user._id);
         console.log('Respuesta del servidor: ')
         console.log(JSON.stringify(response))
-        setActualizarComponente(!actualizarComponente)
     } catch (error) {
       console.error('Error al modificar la mascota')
     }
@@ -117,7 +116,7 @@ const ModleSelectAnimals = ({modalVisible, setModalVisible, user, actualizarComp
             />
             <TouchableOpacity
               style={styles.closeModalButton}
-              onPress={() => setModalVisible(false)}
+              onPress={() => {setModalVisible(false); changeStatus()}}
             >
               <Text style={styles.closeModalButtonText}>Cerrar</Text>
             </TouchableOpacity>

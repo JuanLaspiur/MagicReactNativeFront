@@ -5,10 +5,10 @@ import Modal from 'react-native-modal';
 import { updateUserInfo } from '../../../api/User.controller';
 
 const ModalEditProfile = ({ isVisible, onClose, user }) => {
-  const [nombre, setNombre] = useState('John');
-  const [apellido, setApellido] = useState('Doe');
-  const [sexo, setSexo] = useState('');
-  const [hobbies, setHobbies] = useState(['Deportes', 'Pintura', 'Jardinería']);
+  const [nombre, setNombre] = useState(user.name);
+  const [apellido, setApellido] = useState(user.last_name);
+  const [sexo, setSexo] = useState(user.gender);
+  // const [hobbies, setHobbies] = useState(['Deportes', 'Pintura', 'Jardinería']);
 
   const guardarCambios = async () => {
     const data = {

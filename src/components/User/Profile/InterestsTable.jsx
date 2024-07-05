@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import ModalEditInterests from './ModalEditInterests';
 import { capitalizeFirstLetter } from '../../../helpers/CapitalizeFirstLetterString';
 
-const InterestsTable = ({user}) => {
+const InterestsTable = ({user, setUser}) => {
   const [openModal, setOpenModal] = useState(false);
   const interests = {
     peliculas: ['Inception', 'The Shawshank Redemption', 'Interstellar'],
@@ -54,7 +54,7 @@ const InterestsTable = ({user}) => {
           <Text style={styles.dataText}>{user && user.deportes && capitalizeFirstLetter(user.deportes)}</Text>
         </View>
       </View>
-      <ModalEditInterests user={user} setOpenModal={setOpenModal} openModal={openModal}/>
+      <ModalEditInterests user={user} setOpenModal={setOpenModal} openModal={openModal} setUser={setUser}/>
     </View>
       </>
   );

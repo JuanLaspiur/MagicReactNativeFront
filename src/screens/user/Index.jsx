@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons"; // Importa los iconos que necesites
+import { Ionicons } from "@expo/vector-icons"; 
 import { useNavigation } from "@react-navigation/native";
 
 import Home from "./Home";
@@ -20,7 +20,6 @@ const Index = () => {
   };
 
   const handleGoToMyPlans = () => {
-    // Navegar al componente MyPlansGestion
     navigation.navigate('Exit');
   };
 
@@ -28,7 +27,7 @@ const Index = () => {
     <View style={styles.container}>
       <Tab.Navigator
         tabBarOptions={{
-          activeTintColor: "#AED0F6", // Color de la opción seleccionada
+          activeTintColor: "#AED0F6", 
         }}
       >
         <Tab.Screen

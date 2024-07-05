@@ -19,6 +19,7 @@ import MyQuedadas from "../../components/User/Profile/MyQuedadas";
 import ParticipationQuedadas from "../../components/User/Profile/ParticipationQuedadas";
 import MyStatus from "../../components/User/Profile/MyStatus";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import { getUserById } from "../../api/User.controller";
 const Profile = () => {
   const [user, setUser] = useState(null);
 
@@ -27,13 +28,14 @@ const Profile = () => {
       try {
         const userData = await getValueFromSecureStore('user');
         const userDataJSON = JSON.parse(userData);
-        setUser(userDataJSON);
+        const response = await getUserById (userDataJSON._id)
+        setUser(response.data);
       } catch (error) {
         console.error('Error al obtener el usuario desde SecureStore:', error);
       }
     };
     fetchUser(); 
-  }, []);
+  }, [user]);
 
 
 
@@ -56,7 +58,7 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse2}
         />
-        <CardTextMyAnimal user={user} />
+        <CardTextMyAnimal authUser={user} setAuthUser={setUser} />
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}
           resizeMode="contain"
@@ -77,7 +79,7 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
-        <InterestsTable user={user} />
+        <InterestsTable user={user} setUser={setUser} />
         <MyQuedadas user={user} /> 
         {/* ParticipationQuedadas */}
         <ParticipationQuedadas user={user}/> 

@@ -11,13 +11,20 @@ import {
 import ModleSelectAnimals from "../Profile/ModleSelectAnimals";
 import { getAnimales } from "../../../api/User.controller.js";
 import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js";
+import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore.js";
+import { getUserById } from "../../../api/User.controller.js";
 
-const CardTextMyAnimal = ({ user }) => {
+const CardTextMyAnimal = ({authUser, setAuthUser}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
   const [numero, setNumero] = useState(0);
   const [actualizarComponente, setActualizarComponente] = useState(false)
+  const [user, setUser] = useState(null);
+
+  const changeStatus = ()=> {
+    setActualizarComponente(!actualizarComponente)
+  }
 
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
@@ -83,6 +90,16 @@ const CardTextMyAnimal = ({ user }) => {
   }, [actualizarComponente]);
 
   useEffect(() => {
+    const updateAuthUser = async () => {
+      try {
+         const response = await getUserById(authUser._id);
+         setUser(response.data)
+        
+      } catch (error) {
+        console.error('Error al obtener el usuario desde SecureStore:', error);
+      }
+    }
+    updateAuthUser()
     if (animalsList.length > 0 && user && user.animal) {
       let myAnimalInTheList = animalsList.find((item) => item._id === user.animal);
       setAnimal(myAnimalInTheList);
@@ -92,7 +109,7 @@ const CardTextMyAnimal = ({ user }) => {
         setNumero(obtenerNumerosDespuesGuion(user.animal_img));
       }
     }
-  }, [animalsList, user, actualizarComponente]);
+  }, [animalsList, user, actualizarComponente, modalVisible]);
 
   const handleEditPress = () => {
     setModalVisible(true);
@@ -119,7 +136,7 @@ const CardTextMyAnimal = ({ user }) => {
         modalVisible={modalVisible}
         user={user}
         setActualizarComponente={setActualizarComponente}
-        actualizarComponente={actualizarComponente}
+        changeStatus={changeStatus}
       />
     </>
   );

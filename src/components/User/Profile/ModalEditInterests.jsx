@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, TextInput, Button, Image, TouchableOpacity } fr
 import Modal from 'react-native-modal';
 import { updateUserInfo } from '../../../api/User.controller'
 
-const ModalEditInterests = ({ setOpenModal, openModal, user }) => {
-  const [peliculasFavoritas, setPeliculasFavoritas] = useState('');
-  const [artistaEstiloMusicalFavorito, setArtistaEstiloMusicalFavorito] = useState('');
-  const [deportesFavoritos, setDeportesFavoritos] = useState('');
+const ModalEditInterests = ({ setOpenModal, openModal, user, setUser }) => {
+  const [peliculasFavoritas, setPeliculasFavoritas] = useState(user.peliculas);
+  const [artistaEstiloMusicalFavorito, setArtistaEstiloMusicalFavorito] = useState(user.artista);
+  const [deportesFavoritos, setDeportesFavoritos] = useState(user.deportes);
 
   const handleGuardarCambios = async() => {
     const data = {
@@ -16,7 +16,7 @@ const ModalEditInterests = ({ setOpenModal, openModal, user }) => {
     }
     try{
       const response = await updateUserInfo(data, user._id);
-      setOpenModal(false);
+         setOpenModal(false);
       alert('Actualizado con exito')
     }catch (err) {
        console.error(' Guardar cambios ')
