@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { login } from "../../api/Login.controller";
+import { login} from '../../api/Login.controller'
 import ModalForgotPassword  from './ModalForgotPassword'
 
 

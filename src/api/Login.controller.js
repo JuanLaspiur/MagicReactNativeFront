@@ -1,21 +1,33 @@
-
-import api, { setAuthToken } from './configure';
+import api from './configure';
 import { saveToSecureStore } from '../helpers/ExpoSecureStore';
-import { getUserById } from './User.controller';
+import { setTokenString } from './AuthToken';
+import axios from 'axios';
+import env from '../../env';
 
-const login = async (email, password ) => {
+const login = async (email, password) => {
   try {
-     const response = await api.post('/loginReact', {email, password});
-         await saveToSecureStore("token", response.data.token); 
-         console.log('Este es el token obtenido ' + response.data.token)
-         let user = await getUserById(response.data.user_id);
-         user = user.data
-         await saveToSecureStore("user", JSON.stringify(user));
-        return response.data.token;
+    const response = await api.post('/loginReact', { email, password });
+
+    await saveToSecureStore("token", response.data.token);
+
+    setTokenString(response.data.token);
+
+    const userResponse = await axios.get(`${env.BACK_URL}/user_by_id/${response.data.user_id}`, {
+      headers: {
+        Authorization: `Bearer ${response.data.token}`
+      }
+    });
+
+    await saveToSecureStore("user", JSON.stringify(userResponse.data));
+
+    return response.data.token;
   } catch (error) {
-    alert('Error al ingresar sesión revise su contraseña o su correo')
+    console.error('Error al iniciar sesión:', error);
+    alert('Error al iniciar sesión. Revise su contraseña o su correo.');
+    throw error; 
   }
 };
 
-
 export { login };
+
+

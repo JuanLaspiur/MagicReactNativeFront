@@ -1,46 +1,24 @@
 import axios from 'axios';
 import env from '../../env.js';
-import { getValueFromSecureStore } from '../helpers/ExpoSecureStore'
+import { tokenString, setTokenString } from './AuthToken'; 
 
-var authToken; 
-const getTokenFromLocalStorage = async()=> {
-  authToken = await getValueFromSecureStore('token');
-}
-await getTokenFromLocalStorage()
-if(!authToken)
-authToken = env.auth_token;
-
-// Configuración base para API con JSON
 const api = axios.create({
   baseURL: env.BACK_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': authToken ? `Bearer ${authToken}` : null,
+    'Authorization': tokenString ? `Bearer ${tokenString}` : null,
   },
 });
 
-// Configuración para API con FormData
 const apiFormData = axios.create({
   baseURL: env.BACK_URL,
   timeout: 10000,
   headers: {
     'Content-Type': undefined,
-    'Authorization': authToken ? `Bearer ${authToken}` : null,
+    'Authorization': tokenString ? `Bearer ${tokenString}` : env.auth_token,
   },
 });
-
-// Función para establecer el token de autorización (Bearer token)
-export const setAuthToken = (token) => {
-  authToken = token;
-  if (token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    apiFormData.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  } else {
-    delete api.defaults.headers.common['Authorization'];
-    delete apiFormData.defaults.headers.common['Authorization'];
-  }
-};
 
 export { api, apiFormData };
 export default api;
