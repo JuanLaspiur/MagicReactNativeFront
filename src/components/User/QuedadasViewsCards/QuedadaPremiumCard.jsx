@@ -70,15 +70,18 @@ const QuedadaPremiumCard = ({ quedada }) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      <TouchableOpacity
-        style={[styles.iconContainer, { backgroundColor: iconColor }]}
-        onPress={handleAsistirPress}
-      >
-        <Ionicons name={asistir ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
-      </TouchableOpacity>
+      {authUser && quedada && (quedada.user_id !== authUser._id )&& (
+        <TouchableOpacity
+          style={[styles.iconContainer, { backgroundColor: iconColor }]}
+          onPress={handleAsistirPress}
+        >
+          <Ionicons name={asistir ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
+        </TouchableOpacity>
+      )}
     </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   card: {
