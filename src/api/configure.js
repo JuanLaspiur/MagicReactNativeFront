@@ -1,7 +1,14 @@
 import axios from 'axios';
 import env from '../../env.js';
+import { getValueFromSecureStore } from '../helpers/ExpoSecureStore'
 
-let authToken = env.auth_token;
+var authToken; 
+const getTokenFromLocalStorage = async()=> {
+  authToken = await getValueFromSecureStore('token');
+}
+await getTokenFromLocalStorage()
+if(!authToken)
+authToken = env.auth_token;
 
 // Configuración base para API con JSON
 const api = axios.create({
