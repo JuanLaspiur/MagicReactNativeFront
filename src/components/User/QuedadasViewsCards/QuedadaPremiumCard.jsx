@@ -39,6 +39,7 @@ const QuedadaPremiumCard = ({ quedada }) => {
     } else {
       checkAsistencia();
     }
+
   }, [quedada, authUser]);
 
   const handlePress = () => {
@@ -70,7 +71,7 @@ const QuedadaPremiumCard = ({ quedada }) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {authUser && quedada && (quedada.user_id !== authUser._id )&& (
+      {authUser && quedada && (quedada.user_id !== authUser._id )&& (quedada.status != 3)&&(
         <TouchableOpacity
           style={[styles.iconContainer, { backgroundColor: iconColor }]}
           onPress={handleAsistirPress}

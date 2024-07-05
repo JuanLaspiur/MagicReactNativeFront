@@ -1,25 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
+import { Ionicons } from '@expo/vector-icons'; 
+import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore.js";
+import { asistirAQuedada } from "../../../api/Quedada.controller.js";
 
 const ParticipationQuedadaCard = ({quedada}) => {
   const navigation = useNavigation();
-  const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
+  const [authUser, setAuthUser] = useState(null);
+  const [asistir, setAsistir] = useState(false);
+
+  useEffect(() => {
+    const getAuthUser = async () => {
+      const data = await getValueFromSecureStore('user');
+      setAuthUser(JSON.parse(data));
+    };
+    getAuthUser();
+  }, []);
+  useEffect(() => {
+    if (authUser) {
+      const isAsistir = quedada.asistentes.some(asistente => asistente.user_id === authUser._id);
+      setAsistir(isAsistir);
+    }
+  }, [authUser, quedada.asistentes]);
 
   const handlePress = () => {
     navigation.navigate('QuedadaDetail',{quedada});
   };
 
-  // Datos harcodeados para la participación en la quedada
+  const handleAsistirPress = async () => {
+    try {
+      const data = await asistirAQuedada(quedada._id);
+      if (asistir) {
+        alert('Cancelar quedada');
+      } else {
+        alert('Asistir a la quedada');
+      }
+      setAsistir(!asistir);
+      console.log('Asistir quedada: ', data);
+    } catch (error) {
+      console.error("Error updating asistir status:", error);
+    }
+  };
+
   const eventName = quedada.name;
   const eventDescription = quedada.description;
-  const fecha = quedada.date; // Fecha harcodeada en formato dd/mm/AA
-  const confirmados = 30; // Cantidad de confirmados harcodeada
-  const maxParticipantes = 50; // Máximo número de participantes harcodeado
-  const zona = "Zona Centro"; // Zona harcodeada
+  const fecha = quedada.date;
+  const confirmados = 30;
+  const maxParticipantes = 50; 
+  const zona = "Zona Centro"; 
 
-  // Función para truncar la descripción si supera los 120 caracteres
   const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength - 3) + "...";
@@ -28,14 +58,9 @@ const ParticipationQuedadaCard = ({quedada}) => {
     }
   };
 
-  // Determinar el color del icono basado en el color del texto de la descripción
-  const iconColor = styles.description.color || '#666666'; // Color del texto de la descripción
+  const iconColor = styles.description.color || '#666666'; 
 
-  // Función para manejar la confirmación del usuario
-  const handleConfirm = () => {
-    setConfirmado(true); // Cambia el estado a confirmado
-    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
-  };
+
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
@@ -56,17 +81,19 @@ const ParticipationQuedadaCard = ({quedada}) => {
         <Text style={styles.infoText}>{zona}</Text>
       </View>
       {/* Renderizado condicional del icono */}
-      {confirmado ? (
-        <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
-          <Ionicons name="flash-outline" size={24} color="white" />
-        </View>
-      ) : (
-        <TouchableOpacity
-          style={[styles.iconContainer, { backgroundColor: iconColor }]}
-          onPress={handleConfirm}
-        >
-          <Ionicons name="flash-off-outline" size={24} color="white" />
-        </TouchableOpacity>
+      {authUser && quedada && (quedada.user_id !== authUser._id) && (quedada.status != 3) &&(
+        asistir ? (
+          <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
+            <Ionicons name="flash-outline" size={24} color="white" />
+          </View>
+        ) : (
+          <TouchableOpacity
+            style={[styles.iconContainer, { backgroundColor: iconColor }]}
+            onPress={handleAsistirPress}
+          >
+            <Ionicons name="flash-off-outline" size={24} color="white" />
+          </TouchableOpacity>
+        )
       )}
     </TouchableOpacity>
   );
@@ -75,8 +102,7 @@ const ParticipationQuedadaCard = ({quedada}) => {
 const styles = StyleSheet.create({
   card: {
     width: '90%',
-    backgroundColor: '#F2F2F2', // Light gray background color
-    borderRadius: 10,
+    backgroundColor: '#F2F2F2',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

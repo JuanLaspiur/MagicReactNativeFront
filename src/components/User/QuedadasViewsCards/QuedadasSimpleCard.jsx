@@ -69,12 +69,13 @@ const QuedadasSimpleCard = ({ quedada }) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
+      {authUser && quedada && (quedada.user_id !== authUser._id ) && (quedada.status != 3) && (
       <TouchableOpacity
         style={[styles.iconContainer, { backgroundColor: iconColor }]}
         onPress={handleAsistirPress}
       >
         <Ionicons name={asistir ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
-      </TouchableOpacity>
+      </TouchableOpacity>) }
     </TouchableOpacity>
   );
 };
