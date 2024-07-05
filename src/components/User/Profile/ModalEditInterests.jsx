@@ -4,9 +4,9 @@ import Modal from 'react-native-modal';
 import { updateUserInfo } from '../../../api/User.controller'
 
 const ModalEditInterests = ({ setOpenModal, openModal, user, setUser }) => {
-  const [peliculasFavoritas, setPeliculasFavoritas] = useState(user.peliculas);
-  const [artistaEstiloMusicalFavorito, setArtistaEstiloMusicalFavorito] = useState(user.artista);
-  const [deportesFavoritos, setDeportesFavoritos] = useState(user.deportes);
+  const [peliculasFavoritas, setPeliculasFavoritas] = useState(user ? user.peliculas :'');
+  const [artistaEstiloMusicalFavorito, setArtistaEstiloMusicalFavorito] = useState(user ? user.artista: '');
+  const [deportesFavoritos, setDeportesFavoritos] = useState(user ? user.deportes : '');
 
   const handleGuardarCambios = async() => {
     const data = {

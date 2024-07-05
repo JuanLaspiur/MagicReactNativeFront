@@ -28,8 +28,8 @@ const Profile = () => {
       try {
         const userData = await getValueFromSecureStore('user');
         const userDataJSON = JSON.parse(userData);
-        const response = await getUserById (userDataJSON._id)
-        setUser(response.data);
+       // const response = await getUserById (userDataJSON._id)
+        setUser(userDataJSON);
       } catch (error) {
         console.error('Error al obtener el usuario desde SecureStore:', error);
       }

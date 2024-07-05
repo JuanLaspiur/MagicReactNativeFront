@@ -57,7 +57,7 @@ const BoxIconsMyProfile = ({user}) => {
         <Text style={{ marginBottom: -9, fontSize: 12, color: '#AED0F6' }}>Premium</Text>
       </TouchableOpacity>
 
-      <ModalEditProfile user={user} isVisible={isModalVisible} onClose={handleCloseModal} />
+     <ModalEditProfile user={user} isVisible={isModalVisible} onClose={handleCloseModal} /> 
     </View>
   );
 };
