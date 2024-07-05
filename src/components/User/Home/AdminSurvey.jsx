@@ -39,15 +39,45 @@ const AdminSurvey = () => {
     setSelectedOption(optionId);
   };
 
+  const isRespondioTrue = async()=> {
+    if (!opciones || !authUser || !authUser._id) {
+      return false 
+     } 
+     const usuarioId = authUser._id
+     for (const option of opciones) {
+      if (option.usuario_ids) {
+        const usuarioIds = option.usuario_ids
+          .replace(/["[\]]/g, '') 
+          .split(',') 
+          .map(id => id.trim()) 
+        console.error('Id de los usuarios sin [Ñ[]] ni ""   ' + usuarioIds)
+        if (usuarioIds.includes(usuarioId)) {
+          console.log('Respuesta es true')
+          return true 
+        }
+      }
+    }
+    return false
+  }
+  
+
+
   const handleEnviarPress = async () => {
-    const data = {
+
+    if (isRespondioTrue()) {
+       alert('Ya has respondido esta encuesta. Solo es posible resonder una vez.')
+      return
+    }
+
+    try {
+    const info = {
       opcionId: selectedOption,
       usuarioId: authUser._id,
     };
-    console.log(JSON.stringify(data));
-    //  LOG  {"opcionId":"6650befa84073205af4a5fc5","usuarioId":"65f991ef7bce022d620d26df"}
-    try {
-       const data = await sendMySurveyRespose(data);
+     console.log(JSON.stringify(data));
+
+       const data = await sendMySurveyRespose(info);
+
        setShowSuccessMessage(true)
        setTimeout(() => {
         setShowSuccessMessage(false)

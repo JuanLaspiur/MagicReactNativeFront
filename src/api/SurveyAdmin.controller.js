@@ -20,6 +20,8 @@ const getLasterAdminSurvey = async () => {
 
 const sendMySurveyRespose = async (data) => {
   try {
+    console.log('En el axios antes de enviar')
+    console.log(JSON.stringify(data))
     const response = await api.post('/opciones_admin123/votar', data)
     return response
 } catch (error) {
