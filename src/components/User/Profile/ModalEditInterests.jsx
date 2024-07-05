@@ -17,7 +17,7 @@ const ModalEditInterests = ({ setOpenModal, openModal, user, setUser }) => {
     try{
       const response = await updateUserInfo(data, user._id);
          setOpenModal(false);
-      alert('Actualizado con exito')
+      alert('Actualizado con exito.. pronto se actualizará el perfil')
     }catch (err) {
        console.error(' Guardar cambios ')
     }

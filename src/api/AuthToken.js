@@ -7,5 +7,8 @@ const setTokenString = (newValue) => {
   tokenString = newValue;
 };
 
+const getTokenSting = () => {
+ return tokenString
+}
 // Exportación de la variable y la función
-export { tokenString, setTokenString };
+export { tokenString, setTokenString, getTokenSting };

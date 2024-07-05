@@ -11,6 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { login } from '../../api/Login.controller'
 import ModalForgotPassword  from './ModalForgotPassword'
+import { getTokenSting } from "../../api/AuthToken";
 
 
 const { height } = Dimensions.get("window");
@@ -34,7 +35,8 @@ const Login = () => {
     try{
     const response = await login(email, password);
     if(response)
-    navigation.navigate('Index')
+      console.log('')
+     navigation.navigate('Index')
     } catch  {
      console.log('Error al ingresar sessión')
     }

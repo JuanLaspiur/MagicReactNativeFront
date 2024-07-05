@@ -62,7 +62,7 @@ const InterestsTable = ({user, setUser}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EAEAEA', // Color de fondo gris claro
+    backgroundColor: '#EAEAEA', 
     borderRadius: 10,
     padding: 10,
     margin: 10,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     margin:'auto',
-    color: 'gray', // Color gris para el texto del encabezado
+    color: 'gray', 
   },
   editIcon: {
     padding: 5,
@@ -98,17 +98,17 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'gray', // Color gris para el texto de categoría
+    color: 'gray', 
   },
   dataCell: {
     flex: 2,
-    alignItems: 'center', // Centrado verticalmente
-    justifyContent: 'center', // Centrado verticalmente
+    alignItems: 'center', 
+    justifyContent: 'center', 
     paddingLeft: 10,
   },
   dataText: {
     fontSize: 16,
-    color: 'gray', // Color gris para el texto de datos
+    color: 'gray', 
   },
 });
 

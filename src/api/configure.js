@@ -1,6 +1,6 @@
 import axios from 'axios';
 import env from '../../env.js';
-import { tokenString, setTokenString } from './AuthToken'; 
+import { tokenString, setTokenString, getTokenSting } from './AuthToken'; 
 
 
 
@@ -9,7 +9,7 @@ const api = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': tokenString ? `Bearer ${tokenString}` : env.auth_token,
+    'Authorization': getTokenSting() ? `Bearer ${getTokenSting()}` : getTokenSting(),
   },
 });
 
