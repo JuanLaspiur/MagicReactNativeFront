@@ -1,77 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import env from '../../../../env.js';
-import { formatDate } from '../../../helpers/UpdateQuedadaDay.js'
+import { formatDate } from '../../../helpers/UpdateQuedadaDay.js';
+import { asistirAQuedada } from '../../../api/Quedada.controller.js';
+import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore.js';
 
-
-
-const QuedadaPremiumCard = ({quedada}) => {
+const QuedadaPremiumCard = ({ quedada }) => {
   const navigation = useNavigation();
-  const [confirmado, setConfirmado] = useState(false); 
+  const [authUser, setAuthUser] = useState(null);
+  const [asistir, setAsistir] = useState(false);
+
+  const getAuthUser = async () => {
+    const data = await getValueFromSecureStore('user');
+    setAuthUser(JSON.parse(data));
+  };
+
+  const handleAsistirPress = async () => {
+    try {
+      await asistirAQuedada(quedada._id);
+      setAsistir(!asistir);
+      alert(asistir ? 'Has cancelado tu asistencia a la quedada' : 'Asistirás a la quedada');
+    } catch (error) {
+      console.error('Error al cambiar la asistencia:', error);
+    }
+  };
+
+  useEffect(() => {
+    const checkAsistencia = () => {
+      if (!quedada || !quedada.asistentes || !authUser) return;
+      const userIsAsistente = quedada.asistentes.some(asistente => asistente.user_id === authUser._id);
+      setAsistir(userIsAsistente);
+    };
+
+    if (!authUser) {
+      getAuthUser();
+    } else {
+      checkAsistencia();
+    }
+  }, [quedada, authUser]);
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail', {quedada}); // Quiero pasarle un parametro a la navavegacion se pude?
-  };
- const truncateDescription = (text, maxLength) => {
-    if (text.length > maxLength) {
-      return text.slice(0, maxLength - 3) + "...";
-    } else {
-      return text;
-    }
-  }; 
-  const handleConfirm = () => {
-    setConfirmado(true);
+    navigation.navigate('QuedadaDetail', { quedada });
   };
 
   const nombreQuedada = quedada.name;
-  const nombreYApellido = quedada.userInfo.name+' '+quedada.userInfo.last_name;
-  const descripcionQuedada = quedada.description 
+  const nombreYApellido = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
+  const descripcionQuedada = quedada.description;
   const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
-  const confirmados = quedada.asistentes.length; 
-  const maxParticipantes = quedada.limit; 
-  const zona = "Zona " + quedada.zone; 
+  const confirmados = quedada.asistentes.length;
+  const maxParticipantes = quedada.limit;
+  const zona = `Zona ${quedada.zone}`;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
-  const urlImagenQuedada=`${env.BACK_URL}/quedada_img/${quedada._id}`;
-  const iconColor = 'white'; 
-
+  const urlImagenQuedada = `${env.BACK_URL}/quedada_img/${quedada._id}`;
+  const iconColor = 'white';
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
-        <Image
-          source={{ uri: urlImagePerfil }}
-          style={styles.avatar}
-        />
+        <Image source={{ uri: urlImagePerfil }} style={styles.avatar} />
         <Text style={styles.name}>{nombreYApellido}</Text>
       </View>
-      <Image
-        source={{ uri: urlImagenQuedada }}
-        style={styles.image}
-      />
-      {/* nombreQuedada */}
+      <Image source={{ uri: urlImagenQuedada }} style={styles.image} />
       <Text style={styles.nombreQuedada}>{nombreQuedada}</Text>
-         <View style={styles.infoContainer}>
+      <View style={styles.infoContainer}>
         <Text style={styles.infoText}>{fecha}</Text>
         <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {confirmado ? (
-        <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
-          <Ionicons name="flash-outline" size={24} color="black" />
-        </View>
-      ) : (
-        <TouchableOpacity
-          style={[styles.iconContainer, { backgroundColor: iconColor }]}
-          onPress={handleConfirm}
-        >
-          <Ionicons name="flash-off-outline" size={24} color="black" />
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={[styles.iconContainer, { backgroundColor: iconColor }]}
+        onPress={handleAsistirPress}
+      >
+        <Ionicons name={asistir ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
+      </TouchableOpacity>
     </TouchableOpacity>
-  );1
+  );
 };
 
 const styles = StyleSheet.create({
@@ -86,7 +92,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     padding: 10,
     alignSelf: "center",
-    position: 'relative', // Para contener el icono con posición absoluta
+    position: 'relative', 
   },
   avatarContainer: {
     flexDirection: "row",

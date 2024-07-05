@@ -1,58 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import env from '../../../../env.js';
-import { formatDate } from '../../../helpers/UpdateQuedadaDay.js'
+import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore.js";
+import { asistirAQuedada } from "../../../api/Quedada.controller.js";
 
 const QuedadasSimpleCard = ({ quedada }) => {
-  // functions
   const navigation = useNavigation();
-  const [confirmado, setConfirmado] = useState(false); 
+  const [authUser, setAuthUser] = useState(null);
+  const [asistir, setAsistir] = useState(false);
+
+  useEffect(() => {
+    const getAuthUser = async () => {
+      const data = await getValueFromSecureStore('user');
+      setAuthUser(JSON.parse(data));
+    };
+    getAuthUser();
+  }, []);
+
+  useEffect(() => {
+    if (authUser) {
+      const isAsistir = quedada.asistentes.some(asistente => asistente.user_id === authUser._id);
+      setAsistir(isAsistir);
+    }
+  }, [authUser, quedada.asistentes]);
 
   const handlePress = () => {
-    navigation.navigate('QuedadaDetail', {quedada});
+    navigation.navigate('QuedadaDetail', { quedada });
   };
-  const handleConfirm = () => {
-    setConfirmado(true); 
+
+  const handleAsistirPress = async () => {
+    try {
+      const data = await asistirAQuedada(quedada._id);
+      if (asistir) {
+        alert('Cancelar quedada');
+      } else {
+        alert('Asistir a la quedada');
+      }
+      setAsistir(!asistir);
+      console.log('Asistir quedada: ', data);
+    } catch (error) {
+      console.error("Error updating asistir status:", error);
+    }
   };
-// atributes
+
   const nombreQuedada = quedada.name.charAt(0).toUpperCase() + quedada.name.slice(1).toLowerCase();
-  const asistentes = quedada.asistentes?.length; 
-  const zona = "Zona " + quedada.zone; 
+  const asistentes = quedada.asistentes?.length;
+  const zona = "Zona " + quedada.zone;
   const maxParticipantes = quedada.limit;
   const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
-  const iconColor = 'white'; 
- const fecha =  '' // quedada.dateTime && !quedada.react  ? formatDate(quedada.dateTime) : '';
+  const iconColor = 'white';
   const nombrePersona = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
-  
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
- <View style={styles.content}>
-        <Image
-          source={{ uri: urlImagePerfil }}
-          style={styles.avatar}
-        />
+      <View style={styles.content}>
+        <Image source={{ uri: urlImagePerfil }} style={styles.avatar} />
         <View style={styles.textContainer}>
           <Text style={styles.name}>{nombreQuedada}</Text>
           {quedada.userInfo.birthdate !== null && (
             <Text style={styles.edadText}>{nombrePersona}</Text>
           )}
         </View>
-      </View> 
+      </View>
       <View style={styles.infoContainer}>
-       <Text style={styles.infoText}>{ fecha}</Text>
-        <Text style={styles.infoText}>{`Confirmados: ${asistentes && asistentes}`}</Text>
+        <Text style={styles.infoText}>{`Confirmados: ${asistentes ?? 0}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-  
       <TouchableOpacity
         style={[styles.iconContainer, { backgroundColor: iconColor }]}
-        onPress={handleConfirm}
+        onPress={handleAsistirPress}
       >
-        <Ionicons name={confirmado ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
+        <Ionicons name={asistir ? "flash-outline" : "flash-off-outline"} size={24} color="black" />
       </TouchableOpacity>
     </TouchableOpacity>
   );
