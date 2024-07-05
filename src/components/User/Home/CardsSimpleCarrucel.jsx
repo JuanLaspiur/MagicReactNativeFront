@@ -8,20 +8,21 @@ const { width: screenWidth } = Dimensions.get('window');
 
 const CardsSimpleCarrucel = () => {
   const [quedadas, setQuedadas] = useState([]);
+  const [updateFlag, setUpdateFlag] = useState(false); 
+
 
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
         const response = await getAllQuedadas(); 
         setQuedadas(response); 
-        console.log( 'qwerty ' + JSON.stringify(quedadas[0]))
-      } catch (error) {
+       } catch (error) {
         console.error('Error fetching quedadas:', error);
       }
     };
 
     fetchQuedadas();
-  }, []);
+  }, [quedadas]);
 
   const chunkArray = (myArray, chunk_size) => {
     let index = 0;

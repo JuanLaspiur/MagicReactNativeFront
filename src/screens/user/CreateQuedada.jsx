@@ -125,9 +125,9 @@ function CreateQuedada() {
       try{
       const response = await createQuedadaBack(dataToSend);
       setShowSuccessMessage(true);
-
+      
       setTimeout(() => {
-        navigation.navigate("Index");
+          navigation.navigate("Index");
       }, 1000);
 
       } catch {

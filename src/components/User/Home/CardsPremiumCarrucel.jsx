@@ -20,7 +20,7 @@ const CardsPremiumCarrucel = () => {
     };
 
     fetchQuedadas();
-  }, []); 
+  }, [quedadas]); 
 
   return (
     <View style={styles.container}>

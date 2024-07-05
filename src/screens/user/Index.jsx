@@ -53,7 +53,7 @@ const Index = () => {
         />
         <Tab.Screen
           name="Exit"
-          component={MyPlansGestion} // Componente vacío porque no necesitas renderizar nada
+          component={MyPlansGestion} 
           options={{
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="exit-outline" size={size} color={color} />
@@ -61,7 +61,7 @@ const Index = () => {
             tabBarButton: ({ onPress }) => (
               <TouchableOpacity
                 style={styles.exitButton}
-                onPress={handleGoToMyPlans} // Agrega el onPress para navegar al componente MyPlansGestion
+                onPress={handleGoToMyPlans} 
               >
                 <Ionicons name="flash-outline" size={24} color="black" />
               </TouchableOpacity>
