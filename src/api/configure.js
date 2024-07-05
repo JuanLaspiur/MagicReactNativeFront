@@ -18,7 +18,7 @@ const apiFormData = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': undefined,
-    'Authorization': tokenString ? `Bearer ${tokenString}` : env.auth_token,
+    'Authorization': getTokenSting() ? `Bearer ${getTokenSting()}` : getTokenSting(),
   },
 });
 

@@ -157,9 +157,9 @@ function EditQuedada({ route }) {
       const response = await updateQuedada(dataToSend);
        setShowSuccessMessage(true);
 
-     //  setTimeout(() => {
-       //   navigation.navigate("Index");
-       // }, 1000);
+       setTimeout(() => {
+         navigation.navigate("Index");
+       }, 1000);
       } catch (error) {
         console.error("Error updating quedada:", error);
         alert("Error al actualizar la quedada");
@@ -170,7 +170,14 @@ function EditQuedada({ route }) {
   };
 
   const handleDelete = async () => {
-
+    try {
+    const response = await updateQuedada({ quedadaId :quedada._id, status: 3});
+    alert('Quedada eliminada')
+    setTimeout(() => {
+      navigation.navigate("Index");
+          }, 1000); } catch {
+      alert('Error al eliminar quedada.. itente más tarde')
+    }
   }
 
   return (

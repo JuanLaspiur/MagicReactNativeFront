@@ -117,7 +117,7 @@ const getAuthUser = async() => {
         }
       
           {/* if authUser._id != quedada.user_id*/}
-          {authUser && quedada && authUser._id === quedada.user_id && (quedada.status != 3) &&
+          {authUser && quedada && authUser._id === quedada.user_id && (quedada.status !== 3) &&
           <TouchableOpacity style={styles.asistenciaStatus} onPress={handleEditPress}>
             <View>
             <Ionicons name="create-outline" size={24} color="white" />
@@ -129,7 +129,7 @@ const getAuthUser = async() => {
         }
 
           {/* Finalizó lo quedada */}
-          { (quedada.status != 3) && 
+          { (quedada.status === 3) && 
          <Text style={styles.statusText}>
           Quedada finalizada
         </Text>
