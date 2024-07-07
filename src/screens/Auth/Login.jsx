@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -12,7 +12,10 @@ import { useNavigation } from '@react-navigation/native';
 import { login } from '../../api/Login.controller'
 import ModalForgotPassword  from './ModalForgotPassword'
 import { getTokenSting } from "../../api/AuthToken";
+// import * as WebBrowser from "expo-web-browser"
+// import * as Google from "expo-auth-session/providers/google"
 
+// WebBrowser.maybeComppleteAuthSession()
 
 const { height } = Dimensions.get("window");
 const Login = () => {
@@ -41,6 +44,59 @@ const Login = () => {
     }
   };
 
+// // // // // // // // // // // // // //
+// Inicio de sesión con google.
+// ClientId web: 677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com
+// ClientId iOS: 677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com 
+// ClientId Android: 677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com
+const [accessToken, setAccessToken] = useState(null)
+const [user, setUser] = useState(null)
+/* const [request, response, promptAsync ] = Google.useIdTokenAuthRequest({
+  clientId: "677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com",
+  iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
+  androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com"
+
+})
+
+
+*/
+  const initSessionWithGoogle =()=>{
+    // promptAsync()
+
+/*
+expo install expo-auth-sessions
+expo install expo-web-browser
+expo install expo-random
+
+// for building on Android
+expo install expo-updates
+
+https://www.youtube.com/watch?v=9WolTP6Wz9I
+*/
+
+    alert('Iniciando sesion con google')
+  }
+
+    /*   useEffect(()=>{
+if(response?.type === "success"){
+        setAccessToken(response.authentication.accessToken);
+    }
+        accessToken && fetchUserInfo()
+
+    
+  },[response, accessToken])*/
+
+ /* async function fetchUserInfo() {
+  let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+    headers:{
+    Authorization:`Bearer ${accessToken}`
+  }
+  }
+
+  const userInfo = response.json();
+  setUser(userInfo)
+ }
+*/
   return (
     <View style={styles.container}>
       <Image
@@ -61,7 +117,7 @@ const Login = () => {
       </View>
       <View style={styles.container_inicio_session}>
         <View style={styles.container_inicia_session_gooogle}>
-          <TouchableOpacity style={styles.google_boton}>
+          <TouchableOpacity style={styles.google_boton} onPress={initSessionWithGoogle}>
             <Image
               source={require("../../assets/Login/logo_google_negro.png")}
               resizeMode="contain"

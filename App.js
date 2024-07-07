@@ -37,7 +37,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  return (
+return (
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
