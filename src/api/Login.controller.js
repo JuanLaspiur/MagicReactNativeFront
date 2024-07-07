@@ -18,9 +18,14 @@ const login = async (email, password) => {
       }
     });
 
+    if(userResponse.data.deleted){
+      alert('Usuario eliminado')
+      return null
+    } else {
+
     await saveToSecureStore("user", JSON.stringify(userResponse.data));
 
-    return response.data.token;
+    return response.data.token; }
   } catch (error) {
     console.error('Error al iniciar sesión:', error);
     alert('Error al iniciar sesión. Revise su contraseña o su correo.');

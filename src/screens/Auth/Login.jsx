@@ -35,7 +35,6 @@ const Login = () => {
     try{
     const response = await login(email, password);
     if(response)
-      console.log('')
      navigation.navigate('Index')
     } catch  {
      console.log('Error al ingresar sessión')

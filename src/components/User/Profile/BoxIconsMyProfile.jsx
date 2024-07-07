@@ -24,17 +24,23 @@ const BoxIconsMyProfile = ({user}) => {
     alert('Aun no disponible.. Proximamente')
   }  
 
-  const handleDeleteMyUser = async()=>{
-    try{
-      console.log(user._id)
-      const response =  await deleteMyUser(user._id)
-      alert('Usuario dado de baja con éxito. ')
-      navigation.navigate('Login');
-    } catch {
-      console.error('Error al eliminar mi usuario')
+  const handleDeleteMyUser = async () => {
+    const confirmation = confirm('¿Estás seguro de que deseas eliminar tu usuario? Esta acción no se puede deshacer.');
+  
+    if (confirmation) {
+      try {
+        console.log(user._id);
+        const response = await deleteMyUser(user._id);
+        alert('Usuario dado de baja con éxito.');
+        navigation.navigate('Login');
+      } catch (error) {
+        console.error('Error al eliminar mi usuario', error);
+      }
+    } else {
+      alert('Eliminación cancelada.');
     }
-}
-
+  };
+  
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.box} onPress={handleEditProfile}>
