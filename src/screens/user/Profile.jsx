@@ -30,12 +30,13 @@ const Profile = () => {
         const userDataJSON = JSON.parse(userData);
        // const response = await getUserById (userDataJSON._id)
         setUser(userDataJSON);
+        console.log(JSON.stringify(user))
       } catch (error) {
         console.error('Error al obtener el usuario desde SecureStore:', error);
       }
     };
     fetchUser(); 
-  }, [user]);
+  }, []);
 
 
 
@@ -48,17 +49,22 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse}
         />
-        <MyStatus />
-        <IconPerfil user={user} />
-        <ResumePerfil user={user} />
-        <FollowersBox user={user} />
-        <BoxIconsMyProfile user={user}  />
+   <MyStatus />
+      <IconPerfil user={user} />
+       <ResumePerfil user={user} />
+            <FollowersBox user={user} />
+         <BoxIconsMyProfile user={user}  />  
+           <CardTextMyAnimal authUser={user} setAuthUser={setUser} /> 
+          <InterestsTable user={user} setUser={setUser} />
+           <MyQuedadas user={user} /> 
+               <ParticipationQuedadas user={user}/> 
+        
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}
           resizeMode="contain"
           style={styles.eclipse2}
         />
-        <CardTextMyAnimal authUser={user} setAuthUser={setUser} />
+      
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}
           resizeMode="contain"
@@ -79,10 +85,9 @@ const Profile = () => {
           resizeMode="contain"
           style={styles.eclipse6}
         />
-        <InterestsTable user={user} setUser={setUser} />
-        <MyQuedadas user={user} /> 
+
         {/* ParticipationQuedadas */}
-        <ParticipationQuedadas user={user}/> 
+  
       </ScrollView>
     </View>
   );

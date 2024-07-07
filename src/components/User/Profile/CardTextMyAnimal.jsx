@@ -15,6 +15,7 @@ import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore.js";
 import { getUserById } from "../../../api/User.controller.js";
 
 const CardTextMyAnimal = ({authUser, setAuthUser}) => {
+  console.log('¿Usuario ? '+JSON.stringify(authUser))
   const [modalVisible, setModalVisible] = useState(false);
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
@@ -109,7 +110,7 @@ const CardTextMyAnimal = ({authUser, setAuthUser}) => {
         setNumero(obtenerNumerosDespuesGuion(user.animal_img));
       }
     }
-  }, [animalsList, user, actualizarComponente, modalVisible]);
+  }, [animalsList, actualizarComponente, modalVisible]);
 
   const handleEditPress = () => {
     setModalVisible(true);

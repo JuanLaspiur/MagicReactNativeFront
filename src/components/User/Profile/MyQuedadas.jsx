@@ -7,14 +7,14 @@ import { getQuedadasByUserId } from "../../../api/Quedada.controller";
 const MyQuedadas = ({ user }) => {
   const [filter, setFilter] = useState("todos");
   const [quedadas, setQuedadas] = useState([]);
-  const [hasQuedadas, setHasQuedadas] = useState(true);
+  // const [hasQuedadas, setHasQuedadas] = useState(true);
 
 
     const fetchMyQuedadas = async () => {
       try {
         const data = await getQuedadasByUserId(user._id);
         setQuedadas(data);
-        setHasQuedadas(false);
+      //  setHasQuedadas(false);
       } catch (error) {
         console.error("Error al obtener quedadas:", error);
       }
