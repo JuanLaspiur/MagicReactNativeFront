@@ -9,15 +9,16 @@ import {
   TextInput,
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { login } from '../../api/Login.controller'
-import ModalForgotPassword  from './ModalForgotPassword'
+import { login } from '../../api/Login.controller';
+import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenSting } from "../../api/AuthToken";
-// import * as WebBrowser from "expo-web-browser"
-// import * as Google from "expo-auth-session/providers/google"
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 
-// WebBrowser.maybeComppleteAuthSession()
+WebBrowser.maybeCompleteAuthSession();
 
 const { height } = Dimensions.get("window");
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,71 +33,54 @@ const Login = () => {
     setIsModalVisible(false);
   };
 
-
-  const handleLogin = async() => {
-    //const credentials = { email, password };
-    try{
-    const response = await login(email, password);
-    if(response)
-     navigation.navigate('Index')
-    } catch  {
-     console.log('Error al ingresar sessión')
+  const handleLogin = async () => {
+    try {
+      const response = await login(email, password);
+      if (response) {
+        navigation.navigate('Index');
+      }
+    } catch (error) {
+      console.log('Error al ingresar sesión', error);
     }
   };
 
-// // // // // // // // // // // // // //
-// Inicio de sesión con google.
-// ClientId web: 677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com
-// ClientId iOS: 677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com 
-// ClientId Android: 677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com
-const [accessToken, setAccessToken] = useState(null)
-const [user, setUser] = useState(null)
-/* const [request, response, promptAsync ] = Google.useIdTokenAuthRequest({
-  clientId: "677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com",
-  iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
-  androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com"
+  // Inicio de sesión con Google
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: "677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com",
+    iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
+    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com"
+  });
 
-})
+  const initSessionWithGoogle = () => {
+    promptAsync();
+  };
 
-
-*/
-  const initSessionWithGoogle =()=>{
-    // promptAsync()
-
-/*
-expo install expo-auth-sessions
-expo install expo-web-browser
-expo install expo-random
-
-// for building on Android
-expo install expo-updates
-
-https://www.youtube.com/watch?v=9WolTP6Wz9I
-*/
-
-    alert('Iniciando sesion con google')
-  }
-
-    /*   useEffect(()=>{
-if(response?.type === "success"){
-        setAccessToken(response.authentication.accessToken);
+  useEffect(() => {
+    if (response?.type === "success") {
+      setAccessToken(response.authentication.accessToken);
     }
-        accessToken && fetchUserInfo()
+    if (accessToken) {
+      fetchUserInfo();
+    }
+  }, [response, accessToken]);
 
-    
-  },[response, accessToken])*/
-
- /* async function fetchUserInfo() {
-  let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-    headers:{
-    Authorization:`Bearer ${accessToken}`
+  async function fetchUserInfo() {
+    try {
+      const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
+      const userInfo = await userInfoResponse.json();
+      alert('User información de Google ' + JSON.stringify(userInfo))
+      setUser(userInfo);
+    } catch (error) {
+      console.error('Error fetching user info from Google:', error);
+    }
   }
-  }
 
-  const userInfo = response.json();
-  setUser(userInfo)
- }
-*/
   return (
     <View style={styles.container}>
       <Image
