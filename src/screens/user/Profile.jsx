@@ -57,7 +57,7 @@ const Profile = () => {
            <CardTextMyAnimal authUser={user} setAuthUser={setUser} /> 
           <InterestsTable user={user} setUser={setUser} />
            <MyQuedadas user={user} /> 
-               <ParticipationQuedadas user={user}/> 
+           <ParticipationQuedadas user={user}/> 
         
         <Image
           source={require("./../../assets/Login/Ellipse 1.png")}

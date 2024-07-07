@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Modal from 'react-native-modal';
 import { updateUserInfo } from '../../../api/User.controller';
 
 const ModalEditProfile = ({ isVisible, onClose, user }) => {
-  const [nombre, setNombre] = useState(user.name);
-  const [apellido, setApellido] = useState(user.last_name);
-  const [sexo, setSexo] = useState(user.gender);
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [sexo, setSexo] = useState('');
   // const [hobbies, setHobbies] = useState(['Deportes', 'Pintura', 'Jardinería']);
 
   const guardarCambios = async () => {
@@ -25,6 +25,12 @@ const ModalEditProfile = ({ isVisible, onClose, user }) => {
     }
     onClose();
   };
+
+  useEffect(()=>{
+    setNombre(user?.name)
+    setApellido(user?.last_name)
+    setSexo(user?.gender)
+  },[user])
 
   return (
     <Modal
