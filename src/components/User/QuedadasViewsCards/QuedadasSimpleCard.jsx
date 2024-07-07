@@ -45,7 +45,7 @@ const QuedadasSimpleCard = ({ quedada }) => {
     }
   };
 
-  const nombreQuedada = quedada.name.charAt(0).toUpperCase() + quedada.name.slice(1).toLowerCase();
+  const nombreQuedada = quedada.name?.charAt(0).toUpperCase() + quedada.name?.slice(1).toLowerCase();
   const asistentes = quedada.asistentes?.length;
   const zona = "Zona " + quedada.zone;
   const maxParticipantes = quedada.limit;

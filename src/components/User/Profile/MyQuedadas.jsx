@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Swiper from "react-native-swiper";
-import QuedadasSimpleCard from "../QuedadasViewsCards/QuedadasSimpleCard";
+import MyQuedadaPerfilCard from "../QuedadasViewsCards/MyQuedadaPerfilCard";
 import { getQuedadasByUserId } from "../../../api/Quedada.controller";
 
 const MyQuedadas = ({ user }) => {
@@ -81,7 +81,7 @@ const MyQuedadas = ({ user }) => {
           groupedQuedadas.map((group, index) => (
             <View key={index} style={styles.slide}>
               {group.map((quedada) => (
-                <QuedadasSimpleCard key={quedada._id} quedada={quedada} />
+               <MyQuedadaPerfilCard quedada={quedada}/>
               ))}
             </View>
           ))
