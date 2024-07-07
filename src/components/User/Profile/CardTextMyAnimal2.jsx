@@ -9,15 +9,23 @@ import {
   Alert,
 } from "react-native";
 import ModleSelectAnimals from "../Profile/ModleSelectAnimals";
-import { getUserById, getAnimales } from "../../../api/User.controller.js";
+import { getAnimales } from "../../../api/User.controller.js";
 import { obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js";
+import { getValueFromSecureStore } from "../../../helpers/ExpoSecureStore.js";
+import { getUserById } from "../../../api/User.controller.js";
 
-const CardTextMyAnimal = ({ authUser }) => {
+const CardTextMyAnimal = ({authUser, setAuthUser}) => {
+  console.log('¿Usuario ? '+JSON.stringify(authUser))
   const [modalVisible, setModalVisible] = useState(false);
-  const [animalUser, setAnimalUser] = useState({});
-  const [numero, setNumero] = useState(0);
   const [animalsList, setAnimalsList] = useState([]);
   const [animal, setAnimal] = useState(null);
+  const [numero, setNumero] = useState(0);
+  const [actualizarComponente, setActualizarComponente] = useState(false)
+  const [user, setUser] = useState(null);
+
+  const changeStatus = ()=> {
+    setActualizarComponente(!actualizarComponente)
+  }
 
   const animalImages = [
     require("../../../assets/Animals/ICONOS A COLOR-00.png"),
@@ -70,62 +78,71 @@ const CardTextMyAnimal = ({ authUser }) => {
     require("../../../assets/Animals/ICONOS A COLOR-47.png"),
   ];
 
-  const handleEditPress = () => {
-    setModalVisible(true);
-  };
-
   useEffect(() => {
     const getAllAnimals = async () => {
       try {
         const data = await getAnimales();
         setAnimalsList(data);
       } catch (error) {
-        console.log("Error al obtener la lista de animales: " + error);
+        console.log("Error al obtener la lista de animales " + error);
       }
     };
     getAllAnimals();
-  }, []);
+  }, [actualizarComponente]);
 
   useEffect(() => {
-    const getAnimalUser = async () => {
+    const updateAuthUser = async () => {
       try {
-        const response = await getUserById(authUser._id);
-        setAnimalUser(response.data);
+         const response = await getUserById(authUser._id);
+         setUser(response.data)
+        
       } catch (error) {
-        console.log("Error al obtener el usuario: " + error);
-      }
-    };
-    getAnimalUser();
-  }, [authUser]);
-
-  useEffect(() => {
-    if (animalsList.length > 0 && animalUser && animalUser.animal) {
-      let myAnimalInTheList = animalsList.find((item) => item._id === animalUser.animal);
-      setAnimal(myAnimalInTheList);
-      if (myAnimalInTheList) {
-        setNumero(obtenerNumerosDespuesGuion(myAnimalInTheList.img));
-      } else if (animalUser.animal_img) {
-        setNumero(obtenerNumerosDespuesGuion(animalUser.animal_img));
+        console.log('Error al obtener el usuario desde SecureStore:', error);
       }
     }
-  }, [animalsList, modalVisible, animalUser]);
+    updateAuthUser()
+
+  }, [animalsList, actualizarComponente, modalVisible, user]);
+
+  useEffect(()=>{
+    if (animalsList.length > 0 && user && user.animal) {
+      let myAnimalInTheList = animalsList.find((item) => item._id === user.animal);
+      setAnimal(myAnimalInTheList);
+      if (myAnimalInTheList) {
+        setNumero(obtenerNumerosDespuesGuion(myAnimalInTheList.img)); 
+      } else if (user.animal_img) {
+        setNumero(obtenerNumerosDespuesGuion(user.animal_img));
+      }
+    }
+  }, [animalsList, actualizarComponente, modalVisible, user])
+
+  const handleEditPress = () => {
+    setModalVisible(true);
+  };
 
   return (
     <>
       <View style={styles.card}>
         <View style={styles.textContainer}>
-          <Text style={styles.headerText}>¡Este es tu Animal Totem Seleccionado!</Text>
+          <Text style={styles.headerText}>
+            ¡Este es tu Animal Totem Seleccionado!
+          </Text>
         </View>
-        {animalImages[numero] ? (
-          <Image source={animalImages[numero]} style={styles.icon} />
-        ) : (
-          <Text style={styles.errorText}>Imagen no encontrada</Text>
-        )}
+        <Image
+          source={animalImages[numero]}
+          style={styles.icon}
+        />
         <TouchableOpacity onPress={handleEditPress} style={styles.editIcon}>
           <Ionicons name="create-outline" size={19} color="gray" />
         </TouchableOpacity>
       </View>
-      <ModleSelectAnimals setModalVisible={setModalVisible} user={authUser} modalVisible={modalVisible} />
+      <ModleSelectAnimals
+        setModalVisible={setModalVisible}
+        modalVisible={modalVisible}
+        user={user}
+        setActualizarComponente={setActualizarComponente}
+        changeStatus={changeStatus}
+      />
     </>
   );
 };
@@ -159,10 +176,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingBottom: 40,
     borderRadius: 20,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 16,
   },
 });
 
