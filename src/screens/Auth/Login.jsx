@@ -12,8 +12,11 @@ import { useNavigation } from '@react-navigation/native';
 import { login } from '../../api/Login.controller';
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenSting } from "../../api/AuthToken";
+
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from "firebase/auth/web-extension";
+import { auth } from '../../../firebaseConfig'
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -48,10 +51,8 @@ const Login = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: "677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com",
     iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
-    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
-    redirectUri: "https://auth.expo.io/@juanlaspiur/magic-cel"
+    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com"
   });
 
   const initSessionWithGoogle = () => {
@@ -60,6 +61,8 @@ const Login = () => {
 
   useEffect(() => {
     if (response?.type === "success") {
+      const { id_token } = response.params;
+      const credential = GoogleAuthProvider.credential(id_token)
       setAccessToken(response.authentication.accessToken);
     }
     if (accessToken) {

@@ -13,29 +13,44 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.juanlaspiur.magiccel",
       "config": {
+        "googleSignIn": {
+          "reservedClientId": "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com"
+        },
         "usesNonExemptEncryption": false
-      },
-      "bundleIndentifier":"com.heiche.magicnative"
+      }
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "package":"com.heiche.magicnative"
+        "backgroundColor": "#ffffff"
       },
-      "package": "com.juanlaspiur.magiccel"
+      "package": "com.juanlaspiur.magiccel",
+      "config": {
+        "googleSignIn": {
+          "apiKey": "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
+          "certificateHash": "09:4C:95:1A:38:B3:A4:07:13:94:92:81:B4:D0:00:AA:43:08:39:A9"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-secure-store"
-    ],
     "extra": {
       "eas": {
         "projectId": "c5debf7a-6f8c-4451-8176-441a0074df30"
       }
     }
-  }
+  },
+  "plugins": [
+    "expo-secure-store"
+  ],
+  "extra": {
+    "eas": {
+      "projectId": "c5debf7a-6f8c-4451-8176-441a0074df30"
+    }
+  },
+  "scheme": "magic-cel"
 }
