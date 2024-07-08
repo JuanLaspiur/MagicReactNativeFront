@@ -50,7 +50,8 @@ const Login = () => {
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: "677838847471-h36n85penqmk99n3312ibbej5ogf85jl.apps.googleusercontent.com",
     iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
-    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com"
+    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
+    redirectUri: "https://auth.expo.io/@juanlaspiur/magic-cel"
   });
 
   const initSessionWithGoogle = () => {
