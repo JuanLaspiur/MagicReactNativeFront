@@ -58,6 +58,10 @@ const getAuthUser = async() => {
     navigation.navigate("EditQuedada", {quedada});
   }
 
+  const handleInviteMorePeople = async()=>{
+    navigation.navigate("PremiumGatheringInvitations", {quedada});
+  }
+
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
@@ -116,7 +120,17 @@ const getAuthUser = async() => {
           </TouchableOpacity> 
         }
       
-          {/* if authUser._id != quedada.user_id*/}
+           {authUser && quedada && authUser._id === quedada.user_id && (quedada.status !== 3) &&
+          <TouchableOpacity style={styles.asistenciaStatus} onPress={handleInviteMorePeople}>
+            <View>
+            <Ionicons name="body-outline" size={24} color="white" />
+             </View>
+            <Text style={styles.statusText}>
+              Agregar invitados
+            </Text>
+          </TouchableOpacity> 
+        }
+
           {authUser && quedada && authUser._id === quedada.user_id && (quedada.status !== 3) &&
           <TouchableOpacity style={styles.asistenciaStatus} onPress={handleEditPress}>
             <View>
@@ -127,6 +141,7 @@ const getAuthUser = async() => {
             </Text>
           </TouchableOpacity> 
         }
+    
 
           {/* Finalizó lo quedada */}
           { (quedada.status === 3) && 
@@ -267,7 +282,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
+    marginVertical: 13,
     paddingHorizontal: 20,
   },
   circle: {

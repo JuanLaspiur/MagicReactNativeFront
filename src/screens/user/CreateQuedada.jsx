@@ -129,7 +129,7 @@ function CreateQuedada() {
         if (response.privacy === "Premium") {
           const quedada = response;
           navigation.navigate("PremiumGatheringInvitations", { quedada });
-        } else {
+        } else  {
           setShowSuccessMessage(true);
           setTimeout(() => {
             navigation.navigate("Index");
