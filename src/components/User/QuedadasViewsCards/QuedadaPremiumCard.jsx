@@ -49,7 +49,7 @@ const QuedadaPremiumCard = ({ quedada }) => {
   const nombreQuedada = quedada.name;
   const nombreYApellido = `${quedada.userInfo.name} ${quedada.userInfo.last_name ?? ''}`;
   const descripcionQuedada = quedada.description;
-  const fecha = quedada.dateTime ? formatDate(quedada.dateTime) : '';
+  const fecha = quedada.dateTime ? quedada.dateTime : '';
   const confirmados = quedada.asistentes.length;
   const maxParticipantes = quedada.limit;
   const zona = `Zona ${quedada.zone}`;

@@ -1,102 +1,309 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
+  Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
+  Image,
+  TouchableOpacity,
   ScrollView,
-  Text
+  Platform,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import AppHeader from "../../components/User/AppHeader";
-import { todosLosContactos } from "../../api/User.controller.js";
-import ItemFriendQuedada from "../../components/User/createquedada/ItemFriendQuedada.jsx";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import {
+  getQuedadaCategories,
+  createQuedadaBack,
+} from "../../api/Quedada.controller";
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import * as FileSystem from "expo-file-system";
+import { useNavigation } from "@react-navigation/native";
 
-function PremiumGatheringInvitations() {
-  const [allList, setAllList] = useState([]);
-  const [itemsToShow, setItemsToShow] = useState(10);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedUserIds, setSelectedUserIds] = useState([]);
+const defaultImage = "https://via.placeholder.com/200";
+
+function CreateQuedada() {
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [maxParticipants, setMaxParticipants] = useState("");
+  const [location, setLocation] = useState("");
+  const [privacy, setPrivacy] = useState("public");
+  const [zone, setZone] = useState("Norte");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [quedadaName, setQuedadaName] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+  const [user, setUser] = useState({});
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const response = await todosLosContactos();
-        setAllList(response);
-      } catch (error) {
-        console.error('Error al obtener todos los usuarios:', error);
-      }
-    };
-
-    fetchAllUsers();
+    fetchGetCategories();
+    getAuthUser();
   }, []);
 
-  const handleSearch = (text) => {
-    setSearchTerm(text);
+  const getAuthUser = async () => {
+    const data = await getValueFromSecureStore("user");
+    setUser(JSON.parse(data));
   };
 
-  const handleScroll = (event) => {
-    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-    const paddingToBottom = 20;
-    if (layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom) {
-      setItemsToShow(itemsToShow + 10);
+  const fetchGetCategories = async () => {
+    try {
+      const data = await getQuedadaCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
     }
   };
 
-  const toggleUserSelection = (userId) => {
-    setSelectedUserIds(prevState =>
-      prevState.includes(userId) 
-        ? prevState.filter(id => id !== userId)
-        : [...prevState, userId]
-    );
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
-  const filteredList = allList.filter((user) => {
-    const fullName = `${user.name} ${user.last_name}`.toLowerCase();
-    return fullName.includes(searchTerm.toLowerCase());
-  });
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowDatePicker(Platform.OS === "ios");
+    setDate(currentDate);
+  };
 
-  const handleSendInvitations = () => {
-    alert('Enviando notificaciones ')
-  }
+  const handleTimeChange = (event, selectedTime) => {
+    const currentTime = selectedTime || time;
+    setShowTimePicker(Platform.OS === "ios");
+    setTime(currentTime);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const imageData = await FileSystem.readAsStringAsync(image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const formattedDateTime = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        time.getHours(),
+        time.getMinutes()
+      ).toISOString();
+
+      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")} ${time
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${time.getMinutes().toString().padStart(2, "0")}`;
+
+      const dataToSend = {
+        name: quedadaName,
+        description: description,
+        date: formattedDate,
+        dateTime: formattedDateTime,
+        limit: parseInt(maxParticipants),
+        zone: zone,
+        location: location,
+        category: category,
+        privacy: privacy,
+        user_id: user._id,
+        image: imageData,
+        react: true,
+      };
+
+      try {
+        const response = await createQuedadaBack(dataToSend);
+        console.log("Quedada creada con exito: " + JSON.stringify(response));
+
+        if (response.privacy === "Premium") {
+          const quedada = response;
+          navigation.navigate("PremiumGatheringInvitations", { quedada });
+        } else {
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            navigation.navigate("Index");
+          }, 1000);
+        }
+      } catch {
+        alert("Error al crear la quedada");
+      }
+    } catch (error) {
+      console.error("Error al crear la quedada:", error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <AppHeader title="Amigos" />
-      <View style={styles.searchContainer}>
-        <FontAwesome
-          name="search"
-          size={24}
-          color="#CCCCCC"
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Buscar amigos..."
-          placeholderTextColor="#CCCCCC"
-          onChangeText={handleSearch}
-        />
-      </View>
-      <ScrollView
-        style={styles.scrollContainer}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
-        {filteredList.slice(0, itemsToShow).map((user) => (
-          <ItemFriendQuedada
-            key={user._id}
-            name={user.name}
-            lastName={user.last_name}
-            user={user}
-            isSelected={selectedUserIds.includes(user._id)}
-            onToggleSelect={toggleUserSelection}
+      <AppHeader title="Crear Quedada" />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Image source={{ uri: image || defaultImage }} style={styles.image} />
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={pickImage}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.buttonText}>Seleccionar Imagen</Text>
+        </TouchableOpacity>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Nombre Quedada:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingresá nombre de la Quedada"
+            value={quedadaName}
+            onChangeText={setQuedadaName}
           />
-        ))}
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Descripción:</Text>
+          <TextInput
+            style={[styles.input, { height: 100 }]}
+            placeholder="Ingresa la descripción"
+            value={description}
+            onChangeText={setDescription}
+            multiline
+            numberOfLines={4}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Fecha y Hora:</Text>
+          <TouchableOpacity
+            style={styles.dateButton}
+            onPress={() => {
+              setShowDatePicker(true);
+              setShowTimePicker(false);
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.dateButtonText}>
+              {`${date.toLocaleDateString()} ${time.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}`}
+            </Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={handleDateChange}
+            />
+          )}
+          {showTimePicker && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              display="default"
+              onChange={handleTimeChange}
+            />
+          )}
+          <TouchableOpacity
+            style={styles.dateButton}
+            onPress={() => {
+              setShowTimePicker(true);
+              setShowDatePicker(false);
+            }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.dateButtonText}>Seleccionar Hora</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Máximo de Participantes:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingresa el máximo de participantes"
+            value={maxParticipants}
+            onChangeText={setMaxParticipants}
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Zona:</Text>
+          <Picker
+            selectedValue={zone}
+            style={styles.input}
+            onValueChange={(itemValue) => setZone(itemValue)}
+          >
+            <Picker.Item label="Selecciona zona" value="" />
+            <Picker.Item label="Norte" value="Norte" />
+            <Picker.Item label="Sur" value="Sur" />
+            <Picker.Item label="Este" value="Este" />
+            <Picker.Item label="Oeste" value="Oeste" />
+          </Picker>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Ubicación:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingresa la ubicación"
+            value={location}
+            onChangeText={setLocation}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Categoría:</Text>
+          <Picker
+            selectedValue={category}
+            style={styles.input}
+            onValueChange={(itemValue) => setCategory(itemValue)}
+          >
+            <Picker.Item label="Selecciona categoría" value="" />
+            {categories.map((cat) => (
+              <Picker.Item key={cat._id} label={cat.name} value={cat._id} />
+            ))}
+          </Picker>
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Privacidad:</Text>
+          <Picker
+            selectedValue={privacy}
+            style={styles.input}
+            onValueChange={(itemValue) => setPrivacy(itemValue)}
+          >
+            <Picker.Item label="Selecciona privacidad" value="" />
+            <Picker.Item label="Público" value="Público" />
+            {user && user.quedadasPriv && (
+              <Picker.Item label="Privado" value="Privado" />
+            )}
+            {user && user.premium && (
+              <Picker.Item label="Premium" value="Premium" />
+            )}
+          </Picker>
+
+          {showSuccessMessage && (
+            <Text style={styles.successMessage}>Quedada creada con éxito</Text>
+          )}
+        </View>
+
+        <TouchableOpacity
+          style={[styles.submitButton, { backgroundColor: "#AED0F6" }]}
+          onPress={handleSubmit}
+          activeOpacity={0.7}
+        >
+          <Text style={styles.submitButtonText}>Crear Quedada</Text>
+        </TouchableOpacity>
       </ScrollView>
-      <View>
-      <TouchableOpacity onPress={handleSendInvitations} style={styles.button}>
-        <Text style={styles.buttonText}>Enviar Invitaciones</Text>
-      </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -104,49 +311,88 @@ function PremiumGatheringInvitations() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#CCCCCC",
-    backgroundColor: "#FFFFFF",
-  },
-  icon: {
-    marginRight: 10,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    paddingHorizontal: 10,
-    backgroundColor: "#F0F0F0",
-    borderRadius: 20,
-    fontSize: 16,
   },
   scrollContainer: {
-    flex: 1,
-    paddingHorizontal: 15,
-    paddingTop: 10,
+    padding: 20,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   button: {
-    backgroundColor: '#AED0F6',
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    padding:10,
-    borderRadius: 6,
-    marginHorizontal:10,
-    marginBottom:5
+    backgroundColor: "#D1D1D1",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    transitionProperty: "opacity",
+    transitionDuration: "0.3s",
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: "white",
     fontSize: 16,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
+  },
+  inputContainer: {
+    marginBottom: 15,
+  },
+  label: {
+    marginBottom: 5,
+    fontWeight: "bold",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 5,
+  },
+  successMessage: {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    padding: 10,
+    textAlign: "center",
+    marginTop: 10,
+  },
+  dateButton: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 5,
+  },
+  dateButtonText: {
+    color: "#333",
+  },
+  submitButton: {
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    transitionProperty: "opacity",
+    transitionDuration: "0.3s",
+  },
+  submitButtonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
 
-export default PremiumGatheringInvitations;
+export default CreateQuedada;

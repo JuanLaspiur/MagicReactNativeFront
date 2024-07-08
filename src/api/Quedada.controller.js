@@ -80,7 +80,7 @@ const getQuedadaCategories = async () =>{
     const response = await api.get('/categories')
     return response.data
   }catch (error){
-    console.error(`Error al obtener categorias :`, error);
+    console.error(`Axios Error al obtener categorias :`, error);
     throw error;
   }
 }
@@ -97,4 +97,13 @@ const asistirAQuedada = async (quedadaID) => {
   }
 }
 
-export { getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };
+const invitar = async(quedadaID, userID )=>{
+  try {
+    const response = await api.post('/invitar/'+quedadaID,  { invitado: { user_id: userID, asistencia: false, rating_id: null }, invitar: true})
+    return response
+  } catch (error) {
+    console.log('Error al invitar ')
+  }
+}
+
+export { invitar, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };
