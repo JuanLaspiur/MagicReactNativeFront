@@ -43,7 +43,7 @@ function ZoneFilter() {
 
   return (
     <>
-      <AppHeader title="Inicio" />
+      <AppHeader title="ZoneFilter" />
       <View style={styles.container}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.buttonContainer}>
           <TouchableOpacity

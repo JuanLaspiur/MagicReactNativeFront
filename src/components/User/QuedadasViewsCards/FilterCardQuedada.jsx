@@ -52,7 +52,7 @@ function FilterCardQuedada({quedada}) {
         <Text style={styles.infoText}>{`Asistentes: ${asistentes}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
       </View>
-      {/* Renderizado condicional del icono */}
+      {/* Renderizado condicional del icono 
       {confirmado ? (
         <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
           <Ionicons name="flash-outline" size={24} color="white" />
@@ -64,7 +64,7 @@ function FilterCardQuedada({quedada}) {
         >
           <Ionicons name="flash-off-outline" size={24} color="white" />
         </TouchableOpacity>
-      )}
+      )}*/}
     </TouchableOpacity>
   );
 }

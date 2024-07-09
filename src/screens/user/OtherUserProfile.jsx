@@ -16,7 +16,7 @@ const OtherUserProfile = ({route}) => {
   const { user } = route.params;
   return (
     <View style={styles.container}>
-      <AppHeader title="Perfil" />
+      <AppHeader title="OtherUserProfile" />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
       <YourStatus  user={user} />
         <Image

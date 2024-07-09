@@ -37,7 +37,7 @@ function StatusFilter() {
 
   return (
     <>
-      <AppHeader title="Inicio" />
+      <AppHeader title="StatusFilter" />
       <View style={styles.container}>
         <TouchableOpacity
           style={[

@@ -1,19 +1,19 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../AppHeader';
 import FilterCardQuedada from '../QuedadasViewsCards/FilterCardQuedada';
 import { Picker } from '@react-native-picker/picker';
-import { getAllQuedadas } from '../../../api/Quedada.controller'
+import { getAllQuedadas, getQuedadaCategories } from '../../../api/Quedada.controller';
 
 function TypeFilter() {
-  const [activeFilter, setActiveFilter] = useState(''); // Estado para almacenar el filtro activo
+  const [activeFilter, setActiveFilter] = useState('');
   const [quedadas, setQuedadas] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const handleFilter = (filterType) => {
-    // Función para manejar el filtro según el tipo seleccionado
-    console.log(`Filtrar por: ${filterType}`);
-    setActiveFilter(filterType); // Actualizar el estado con el filtro seleccionado
+    setActiveFilter(filterType);
   };
+
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
@@ -24,11 +24,29 @@ function TypeFilter() {
       }
     };
 
+    const fetchCategories = async () => {
+      try {
+        const data = await getQuedadaCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
     fetchQuedadas();
   }, []);
+
+  const filteredQuedadas = quedadas.filter(quedada => {
+    if (activeFilter === '') {
+      return true;
+    }
+    return quedada.category === activeFilter;
+  });
+
   return (
     <>
-      <AppHeader title="Inicio" />
+      <AppHeader title="TypeFilter" />
       <View style={styles.container}>
         <Picker
           selectedValue={activeFilter}
@@ -36,13 +54,13 @@ function TypeFilter() {
           onValueChange={(itemValue) => handleFilter(itemValue)}
         >
           <Picker.Item label="Seleccionar filtro" value="" />
-          <Picker.Item label="Planes Nocturnos" value="planesNocturnos" />
-          <Picker.Item label="Cañas" value="cañas" />
-          <Picker.Item label="Cultura" value="cultura" />
+          {categories.map(category => (
+            <Picker.Item key={category._id} label={category.name} value={category._id} />
+          ))}
         </Picker>
       </View>
       <ScrollView style={styles.scrollView}>
-        {quedadas.map(quedada => (
+        {filteredQuedadas.map(quedada => (
           <FilterCardQuedada quedada={quedada} key={quedada._id} />
         ))}
       </ScrollView>
@@ -54,10 +72,10 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     width: '80%',
-    borderRadius: 10, 
+    borderRadius: 10,
     borderWidth: 3,
     borderColor: '#AED0F6',
-    backgroundColor: '#FFFFFF', 
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 10,
   },
   container: {
