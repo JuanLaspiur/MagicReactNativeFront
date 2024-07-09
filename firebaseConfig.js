@@ -1,4 +1,4 @@
-import { firebase } from '@react-native-firebase/auth';
+// Imports de Firebase y configuración
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
@@ -11,12 +11,5 @@ const firebaseConfig = {
   appId: "1:677838847471:android:f536fbec77177f2a760a1a",
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-const app = initializeApp(firebaseConfig)
-export const auth = getAuth(app)
-
-
-/* AGREGA LA INFORMACION CORRESPONDIENTE */
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
