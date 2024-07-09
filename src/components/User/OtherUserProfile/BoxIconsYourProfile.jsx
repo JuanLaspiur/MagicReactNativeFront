@@ -47,6 +47,11 @@ const BoxIconsYourProfile = ({ user }) => {
 
   };
 
+  const handlePressSusAmistades = ()=>{
+    // YourFriends
+    navigation.navigate("YourFriends", { user });
+  }
+
   useEffect(() => {
     const getAuthUser = async () => {
       try {
@@ -107,7 +112,7 @@ const BoxIconsYourProfile = ({ user }) => {
       )}
 
       {/* Botón Sus Amistades */}
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity style={styles.box} onPress={handlePressSusAmistades}>
         <Ionicons name="people-outline" size={40} color="gray" />
         <Text style={styles.text}>Sus Amistades</Text>
       </TouchableOpacity>

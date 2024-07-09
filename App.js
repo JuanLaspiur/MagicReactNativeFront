@@ -29,7 +29,10 @@ import TypeFilter from "./src/components/User/plansFilter/TypeFilter.jsx";
 import ChatRoom from "./src/screens/user/ChatRoom.jsx";
 // .... other person profile
 import OtherUserProfile from "./src/screens/user/OtherUserProfile.jsx";
-import { saveToSecureStore } from "./src/helpers/ExpoSecureStore.js";
+import YourFriends from "./src/components/User/OtherUserProfile/YourFriends.jsx";
+
+
+import { saveToSecureStore } from "./src/helpers/ExpoSecureStore.js"; // Other user friends List
 // ... INDEX
 import env from "./env.js";
 import { getUserById } from "./src/api/User.controller.js";
@@ -134,6 +137,12 @@ return (
           <Stack.Screen
             name="OtherUserProfile"
             component={OtherUserProfile}
+            options={{ headerShown: false }}
+          />
+          {/* YourFriends */}
+          <Stack.Screen
+            name="YourFriends"
+            component={YourFriends}
             options={{ headerShown: false }}
           />
 

@@ -28,7 +28,7 @@ const ParticipationQuedadaCard = ({quedada}) => {
     navigation.navigate('QuedadaDetail',{quedada});
   };
 
-  const handleAsistirPress = async () => {
+  /*const handleAsistirPress = async () => {
     try {
       const data = await asistirAQuedada(quedada._id);
       if (asistir) {
@@ -41,13 +41,13 @@ const ParticipationQuedadaCard = ({quedada}) => {
     } catch (error) {
       console.error("Error updating asistir status:", error);
     }
-  };
-
-  const eventName = quedada.name;
-  const eventDescription = quedada.description;
-  const fecha = quedada.date;
-  const confirmados = 30;
-  const maxParticipantes = 50; 
+  }; */
+ 
+  const eventName = quedada?.name;
+  const eventDescription = quedada?.description;
+  const fecha = quedada?.date;
+  const asistentes = quedada.asistentes?.length;
+  const maxParticipantes = quedada?.limit; 
   const zona = "Zona Centro"; 
 
   const truncateDescription = (text, maxLength) => {
@@ -76,7 +76,7 @@ const ParticipationQuedadaCard = ({quedada}) => {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>{fecha}</Text>
-        <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
+        <Text style={styles.infoText}>{`Asistentes: ${asistentes}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>

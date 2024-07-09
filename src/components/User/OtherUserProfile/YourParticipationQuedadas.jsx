@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; 
-import { getQuedadasAsistidasByUserId } from '../../../api/Quedada.controller';
+import { getAllQuedadas } from '../../../api/Quedada.controller';
 
 const YourParticipationQuedadas = ({ user }) => {
   const [filter, setFilter] = useState('todos'); // Estado para el filtro seleccionado
@@ -13,7 +13,8 @@ const YourParticipationQuedadas = ({ user }) => {
   useEffect(() => {
     const fetchParticipationQuedadas = async () => {
       try {
-        const result = await getQuedadasAsistidasByUserId(user._id);
+        let result = await getAllQuedadas();
+        result = result.filter(quedada => quedada.asistentes.some(asistente => asistente.user_id === user._id));
         setQuedadas(result);
         setHasQuedadas(result.length > 0);
         setIsFetchQuedadasFlag(true);
