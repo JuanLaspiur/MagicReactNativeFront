@@ -28,9 +28,9 @@ function StatusFilter() {
 
   const filteredQuedadas = quedadas.filter(quedada => {
     if (activeFilter === 'activos') {
-      return quedada.status !== 3; // Activos: quedada.status !== 3
+      return quedada.status !== 3; 
     } else if (activeFilter === 'terminados') {
-      return quedada.status === 3; // Terminados: quedada.status === 3
+      return quedada.status === 3; 
     }
     return true; // Todos
   });

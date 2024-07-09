@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../AppHeader';
 import FilterCardQuedada from '../QuedadasViewsCards/FilterCardQuedada';
 import { Picker } from '@react-native-picker/picker';
+import { getAllQuedadas } from '../../../api/Quedada.controller'
 
 function TypeFilter() {
   const [activeFilter, setActiveFilter] = useState(''); // Estado para almacenar el filtro activo
+  const [quedadas, setQuedadas] = useState([]);
 
   const handleFilter = (filterType) => {
     // Función para manejar el filtro según el tipo seleccionado
     console.log(`Filtrar por: ${filterType}`);
     setActiveFilter(filterType); // Actualizar el estado con el filtro seleccionado
   };
+  useEffect(() => {
+    const fetchQuedadas = async () => {
+      try {
+        const response = await getAllQuedadas();
+        setQuedadas(response);
+      } catch (error) {
+        console.error('Error fetching quedadas:', error);
+      }
+    };
 
+    fetchQuedadas();
+  }, []);
   return (
     <>
       <AppHeader title="Inicio" />
@@ -29,23 +42,15 @@ function TypeFilter() {
         </Picker>
       </View>
       <ScrollView style={styles.scrollView}>
-        {/* Ejemplo de múltiples tarjetas FilterCardQuedada */}
-        <FilterCardQuedada />
-        <FilterCardQuedada />
-        <FilterCardQuedada />
-        {/* Puedes añadir más instancias de FilterCardQuedada según sea necesario */}
+        {quedadas.map(quedada => (
+          <FilterCardQuedada quedada={quedada} key={quedada._id} />
+        ))}
       </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-  },
   picker: {
     height: 50,
     width: '80%',
@@ -55,10 +60,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF', 
     paddingHorizontal: 10,
   },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  button: {
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  activeButton: {
+    backgroundColor: '#007AFF',
+  },
+  inactiveButton: {
+    backgroundColor: '#DDDDDD',
+  },
+  buttonText: {
+    color: 'white',
+  },
   scrollView: {
     flex: 1,
-    marginTop: 20,
-    paddingHorizontal: 20,
   },
 });
 

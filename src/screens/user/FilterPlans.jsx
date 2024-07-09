@@ -62,12 +62,12 @@ function FilterPlans() {
           >
             <Text style={styles.buttonText}>Filtro por Zona</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+         {/* <TouchableOpacity
             style={styles.button}
             onPress={() => handleFilter('amistad')}
           >
             <Text style={styles.buttonText}>Filtro por Amistad</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => handleFilter('tipo')}
