@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import AppHeader from '../AppHeader';
 import FilterCardQuedada from '../QuedadasViewsCards/FilterCardQuedada';
+import { getAllQuedadas } from '../../../api/Quedada.controller'
 
 function StatusFilter() {
-  const [activeFilter, setActiveFilter] = useState(''); // Estado para almacenar el filtro activo
+  const [activeFilter, setActiveFilter] = useState('todos');
+  const [quedadas, setQuedadas] = useState([]);
 
   const handleFilter = (filterType) => {
-    // Función para manejar el filtro según el tipo seleccionado
     console.log(`Filtrar por: ${filterType}`);
-    setActiveFilter(filterType); // Actualizar el estado con el filtro seleccionado
+    setActiveFilter(filterType);
   };
+
+  useEffect(() => {
+    const fetchQuedadas = async () => {
+      try {
+        const response = await getAllQuedadas();
+        setQuedadas(response);
+      } catch (error) {
+        console.error('Error fetching quedadas:', error);
+      }
+    };
+
+    fetchQuedadas();
+  }, []);
+
+  const filteredQuedadas = quedadas.filter(quedada => {
+    if (activeFilter === 'activos') {
+      return quedada.status !== 3; // Activos: quedada.status !== 3
+    } else if (activeFilter === 'terminados') {
+      return quedada.status === 3; // Terminados: quedada.status === 3
+    }
+    return true; // Todos
+  });
 
   return (
     <>
@@ -45,11 +68,9 @@ function StatusFilter() {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.scrollView}>
-        {/* Ejemplo de múltiples tarjetas FilterCardQuedada */}
-        <FilterCardQuedada />
-        <FilterCardQuedada />
-        <FilterCardQuedada />
-        {/* Puedes añadir más instancias de FilterCardQuedada según sea necesario */}
+        {filteredQuedadas.map(quedada => (
+          <FilterCardQuedada quedada={quedada} key={quedada._id} />
+        ))}
       </ScrollView>
     </>
   );
@@ -59,33 +80,25 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
+    marginVertical: 20,
   },
   button: {
+    marginHorizontal: 10,
     paddingVertical: 10,
-    paddingHorizontal: 15,
-    margin: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#AED0F6',
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
   activeButton: {
-    backgroundColor: '#AED0F6',
+    backgroundColor: '#007AFF',
   },
   inactiveButton: {
-    backgroundColor: '#E0E0E0', // Color más apagado para botones no seleccionados
+    backgroundColor: '#DDDDDD',
   },
   buttonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    textAlign: 'center',
     color: 'white',
   },
   scrollView: {
     flex: 1,
-    marginTop: 20,
-    paddingHorizontal: 20,
   },
 });
 

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
-
-function FilterCardQuedada() {
+import env from '../../../../env';
+function FilterCardQuedada({quedada}) {
   const navigation = useNavigation();
   const [confirmado, setConfirmado] = useState(false); // Estado local para confirmación
 
@@ -11,13 +11,12 @@ function FilterCardQuedada() {
     navigation.navigate('QuedadaDetail', {quedada});
   };
 
-  const nombreEvento = "Nombre del Evento";
-  const descripcionEvento =
-    "Descripción del evento. ¡Únete para más diversión y actividades exclusivas!";
-  const fecha = "20/07/2024"; // Fecha harcodeada
-  const confirmados = 30; // Cantidad de confirmados harcodeada
-  const maxParticipantes = 50; // Máximo número de participantes harcodeado
-
+  const nombreEvento = quedada?.name;
+  const descripcionEvento = quedada?.description;
+  const fecha = quedada?.date; // Fecha harcodeada
+  const asistentes = quedada.asistentes?.length;
+  const maxParticipantes = quedada?.limit; // Máximo número de participantes harcodeado
+  const urlImagePerfil = `${env.BACK_URL}/perfil_img/${quedada.user_id}`;
   // Función para truncar la descripción si supera los 100 caracteres
   const truncateDescription = (text, maxLength) => {
     if (text.length > maxLength) {
@@ -32,15 +31,15 @@ function FilterCardQuedada() {
 
   // Función para manejar la confirmación del usuario
   const handleConfirm = () => {
-    setConfirmado(true); // Cambia el estado a confirmado
-    // Aquí podrías agregar cualquier lógica adicional que necesites al confirmar
+    setConfirmado(true);
+   
   };
 
   return (
     <TouchableOpacity style={styles.card} onPress={handlePress}>
       <View style={styles.avatarContainer}>
         <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/41.jpg' }}
+          source={{ uri: urlImagePerfil }} 
           style={styles.avatar}
         />
         <View style={styles.textContainer}>
@@ -50,7 +49,7 @@ function FilterCardQuedada() {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>{fecha}</Text>
-        <Text style={styles.infoText}>{`Confirmados: ${confirmados}`}</Text>
+        <Text style={styles.infoText}>{`Asistentes: ${asistentes}`}</Text>
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
       </View>
       {/* Renderizado condicional del icono */}

@@ -52,8 +52,9 @@ const Login = () => {
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId:"677838847471-tt4cfl4eu9ltja9i8upmmuot9q6vn4eu.apps.googleusercontent.com",
     iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
-    androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
-     redirectUri: 'https://auth.expo.io/@juanlaspiur/magic-cel'
+  //  androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
+  androidClientId: "677838847471-vdqs2ps3ocaj8ribdcrr3j6681g3s5e4.apps.googleusercontent.com",
+    // redirectUri: 'https://auth.expo.io/@juanlaspiur/magic-cel'
   });
 
   const initSessionWithGoogle = () => {
