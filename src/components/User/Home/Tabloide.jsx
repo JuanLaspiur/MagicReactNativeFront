@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
-
+import { getAllTabloides } from '../../../api/Tabloide.controller';
+import env from '../../../../env';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const images = [
-  'https://media.diariouno.com.ar/p/e92d88225a9534a98479c9cae2f9a43a/adjuntos/298/imagenes/000/516/0000516123/zzzznacg2noticias-argentinas-baires-julio-20-un-grupo-jovenes-brinda-esta-tarde-un-bar-porteno-celebrar-el-dia-del-amigofoto-na-damian-dopaciozzzz.jpg'
-];
-
 const CardsPremiumCarrucel = () => {
+  const [tabloidesList, setTabloidesList] = useState([]);
+
+  useEffect(() => {
+    const fetchGetAllTabloides = async () => {
+      try {
+        const response = await getAllTabloides();
+        // Filter tabloides where tabloide.up === true
+        const filteredTabloides = response.filter(tabloide => tabloide.up === true);
+        setTabloidesList(filteredTabloides);
+      } catch (error) {
+        console.error('Error fetching tabloides: ', error);
+      }
+    };
+    fetchGetAllTabloides();
+  }, []);
+
+  const prototipeUri = env.BACK_URL + '/tabloide_img/';
+
   return (
     <View style={styles.container}>
-        <Swiper style={styles.wrapper} loop={true} autoplay={true} autoplayTimeout={8}>
-        {images.map((imageUrl, index) => (
+      <Swiper style={styles.wrapper} loop autoplay autoplayTimeout={8}>
+        {tabloidesList.map((tabloide, index) => (
           <View key={index} style={styles.slide}>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
+            <Image source={{ uri: prototipeUri + tabloide.img }} style={styles.image} />
           </View>
         ))}
       </Swiper>

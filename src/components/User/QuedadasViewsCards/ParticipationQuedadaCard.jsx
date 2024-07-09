@@ -80,7 +80,7 @@ const ParticipationQuedadaCard = ({quedada}) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {/* Renderizado condicional del icono */}
+      {/* Renderizado condicional del icono 
       {authUser && quedada && (quedada.user_id !== authUser._id) && (quedada.status != 3) &&(
         asistir ? (
           <View style={[styles.iconContainer, { backgroundColor: iconColor }]}>
@@ -94,7 +94,7 @@ const ParticipationQuedadaCard = ({quedada}) => {
             <Ionicons name="flash-off-outline" size={24} color="white" />
           </TouchableOpacity>
         )
-      )}
+      )}*/}
     </TouchableOpacity>
   );
 };

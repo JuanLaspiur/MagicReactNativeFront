@@ -16,7 +16,7 @@
       "bundleIdentifier": "com.juanlaspiur.magiccel",
       "config": {
         "googleSignIn": {
-          "reservedClientId": "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com"
+          "reservedClientId": "677838847471-vdqs2ps3ocaj8ribdcrr3j6681g3s5e4.apps.googleusercontent.com"
         },
         "usesNonExemptEncryption": false
       }
