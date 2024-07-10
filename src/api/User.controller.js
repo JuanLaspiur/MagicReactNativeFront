@@ -11,6 +11,15 @@ const registerUser =  async(requestBody) => {
   }
 }
 
+const loginWithGoogle = async(userGoogleToken) => {
+  try {
+    const response = await api.post('/loginByGoogle2', { googleToken: userGoogleToken})
+    return response
+  } catch (error) {
+    console.log('Error en el metodo axios loginWithGoogle ' +error)
+  }
+}
+
 const getUserById = async (userID) => {
   try {
     const response = await api.get(`/user_by_id/${userID}`);
@@ -139,4 +148,4 @@ const handlePasswordRecover = async(email)=> {
 
 
 
-export {registerUser,handlePasswordRecover,getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {registerUser, loginWithGoogle, handlePasswordRecover,getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}

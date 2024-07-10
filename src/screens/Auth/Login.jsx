@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
-  Image,
-  StyleSheet,
   View,
   Text,
-  Dimensions,
   TouchableOpacity,
-  TextInput,
+  StyleSheet,
+  Dimensions,
+  Image, 
+  TextInput
 } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { login } from '../../api/Login.controller';
-import ModalForgotPassword from './ModalForgotPassword';
-import { getTokenString } from "../../api/AuthToken";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { GoogleAuthProvider } from "firebase/auth";
-import { auth } from '../../../firebaseConfig';
+import { login } from '../../api/Login.controller'; 
+import ModalForgotPassword from './ModalForgotPassword';
+import { getTokenString } from "../../api/AuthToken";
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -37,9 +36,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await login(email, password);
+      const response = await login(email, password); // Llama a tu función de inicio de sesión
       if (response) {
-        navigation.navigate('Index');
+        navigation.navigate('Index'); // Navega a la pantalla principal después del inicio de sesión exitoso
       }
     } catch (error) {
       console.log('Error al ingresar sesión', error);
@@ -47,31 +46,25 @@ const Login = () => {
   };
 
   // Inicio de sesión con Google
-  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: "677838847471-lmb9o36hbolkkmtrnnbkj7c3k6ja2315.apps.googleusercontent.com",
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    clientId: "147535335015-d06scq2un6akiqlcjko1e9bkj8b7lq1l.apps.googleusercontent.com",
+    androidClientId: "147535335015-lrot3o45l9t6d7fb3ka4oh6i3nqql9n6.apps.googleusercontent.com",
+    iosClientId: "147535335015-34b1j1jmj026ske50bne3hrggshig3bq.apps.googleusercontent.com",
   });
+  
 
   const initSessionWithGoogle = () => {
-    promptAsync();
+    promptAsync(); // Llama a la función para iniciar sesión con Google
   };
 
   useEffect(() => {
     if (response?.type === "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token)
-      auth.signInWithCredential(credential)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log('Usuario autenticado:', user);
-          // Navegar a la siguiente pantalla después del inicio de sesión exitoso
-          navigation.navigate('Index');
-        })
-        .catch((error) => {
-          console.error('Error al autenticar con Firebase:', error);
-        });
+      const { authentication } = response;
+      alert('Respuesta de autenticación de Google:', JSON.stringify(authentication));
+      navigation.navigate('Index');
     }
   }, [response]);
+
 
   return (
     <View style={styles.container}>
