@@ -7,21 +7,30 @@ import { getQuedadasByUserId } from "../../../api/Quedada.controller";
 const MyQuedadas = ({ user }) => {
   const [filter, setFilter] = useState("todos");
   const [quedadas, setQuedadas] = useState([]);
-  // const [hasQuedadas, setHasQuedadas] = useState(true);
+  const [filteredQuedadas, setFilteredQuedadas] = useState([]);
 
+  const fetchMyQuedadas = async () => {
+    try {
+      const data = await getQuedadasByUserId(user._id);
+      setQuedadas(data);
+    } catch (error) {
+      console.error("Error al obtener quedadas:", error);
+    }
+  };
 
-    const fetchMyQuedadas = async () => {
-      try {
-        const data = await getQuedadasByUserId(user._id);
-        setQuedadas(data);
-      //  setHasQuedadas(false);
-      } catch (error) {
-        console.error("Error al obtener quedadas:", error);
-      }
-    };
+  useEffect(() => {
+    fetchMyQuedadas();
+  }, []);
 
-    if (quedadas.length === 0) fetchMyQuedadas();
-
+  useEffect(() => {
+    let filteredData = quedadas;
+    if (filter === "terminados") {
+      filteredData = quedadas.filter((quedada) => quedada.status === 3);
+    } else if (filter === "activos") {
+      filteredData = quedadas.filter((quedada) => quedada.status != 3);
+    }
+    setFilteredQuedadas(filteredData);
+  }, [filter, quedadas]);
 
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
@@ -29,7 +38,7 @@ const MyQuedadas = ({ user }) => {
     );
   };
 
-  const groupedQuedadas = chunkArray(quedadas, 3);
+  const groupedQuedadas = chunkArray(filteredQuedadas, 3);
 
   return (
     <View style={styles.container}>
@@ -58,7 +67,7 @@ const MyQuedadas = ({ user }) => {
         </TouchableOpacity>
       </View>
       <Swiper
-        style={[styles.wrapper, { height: quedadas.length > 0 ? 405 : 50.5 }]} 
+        style={[styles.wrapper, { height: filteredQuedadas.length > 0 ? 405 : 50.5 }]} 
         loop={false}
         autoplay={true}
         autoplayTimeout={3}
@@ -81,7 +90,7 @@ const MyQuedadas = ({ user }) => {
           groupedQuedadas.map((group, index) => (
             <View key={index} style={styles.slide}>
               {group.map((quedada) => (
-               <MyQuedadaPerfilCard quedada={quedada}/>
+                <MyQuedadaPerfilCard key={quedada._id} quedada={quedada} />
               ))}
             </View>
           ))
@@ -95,14 +104,12 @@ const MyQuedadas = ({ user }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 20,
   },
-  wrapper: {
-  },
+  wrapper: {},
   h1: {
     fontSize: 20,
     color: "gray",

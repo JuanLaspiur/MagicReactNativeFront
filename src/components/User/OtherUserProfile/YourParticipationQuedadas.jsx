@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; 
+import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard';
 import { getAllQuedadas } from '../../../api/Quedada.controller';
 
 const YourParticipationQuedadas = ({ user }) => {
@@ -22,7 +22,7 @@ const YourParticipationQuedadas = ({ user }) => {
         console.error('Error al obtener quedadas asistidas:', error);
       }
     };
-    
+
     if (!isFetchQuedadasFlag) {
       fetchParticipationQuedadas();
     }
@@ -34,7 +34,18 @@ const YourParticipationQuedadas = ({ user }) => {
     );
   };
 
-  const groupedQuedadas = chunkArray(quedadas,3);
+  const groupedQuedadas = chunkArray(filterQuedadas(quedadas), 3);
+
+  const filterQuedadas = (quedadas) => {
+    switch (filter) {
+      case 'terminados':
+        return quedadas.filter(quedada => quedada.status === 3);
+      case 'activos':
+        return quedadas.filter(quedada => quedada.status != 3);
+      default:
+        return quedadas;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -59,11 +70,11 @@ const YourParticipationQuedadas = ({ user }) => {
           <Text style={styles.buttonText}>Todos</Text>
         </TouchableOpacity>
       </View>
-      
+
       <Swiper
         style={[styles.wrapper, { height: hasQuedadas ? 405 : 152.5 }]} // Ajuste dinámico de altura
         loop={false}
-        autoplay={true} 
+        autoplay={true}
         autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}

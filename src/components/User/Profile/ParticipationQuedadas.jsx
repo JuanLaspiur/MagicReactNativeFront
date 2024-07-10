@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard'; 
+import ParticipationQuedadaCard from '../QuedadasViewsCards/ParticipationQuedadaCard';
 import { getAllQuedadas } from '../../../api/Quedada.controller';
 
 const ParticipationQuedadas = ({ user }) => {
-  const [filter, setFilter] = useState('todos'); 
+  const [filter, setFilter] = useState('todos');
   const [quedadas, setQuedadas] = useState([]);
-  const [hasQuedadas, setHasQuedadas] = useState(true);
-  const [isFetchQuedadasFlag, setIsFetchQuedadasFlag ] = useState(false)
+  const [isFetchQuedadasFlag, setIsFetchQuedadasFlag] = useState(false);
 
   useEffect(() => {
     const fetchMyParticipationQuedadas = async () => {
       try {
-        let result = await getAllQuedadas(); 
+        let result = await getAllQuedadas();
         result = result.filter(quedada => quedada.asistentes.some(asistente => asistente.user_id === user._id));
         setQuedadas(result);
-        console.log('Quedadas asistidas: '+ JSON.stringify(result))
-        setHasQuedadas(result.length > 0); 
-        setIsFetchQuedadasFlag(true)
+        setIsFetchQuedadasFlag(true);
       } catch (error) {
         console.error('Error al obtener quedadas asistidas:', error);
       }
     };
-   if(!isFetchQuedadasFlag)
-    fetchMyParticipationQuedadas();
-  
+
+    if (!isFetchQuedadasFlag) {
+      fetchMyParticipationQuedadas();
+    }
   }, [isFetchQuedadasFlag, user]);
+
+  useEffect(() => {
+    let filteredData = quedadas;
+    if (filter === 'terminados') {
+      filteredData = quedadas.filter(quedada => quedada.status === 3);
+    } else if (filter === 'activos') {
+      filteredData = quedadas.filter(quedada => quedada.status != 3);
+    }
+    setQuedadas(filteredData);
+  }, [filter]);
 
   const chunkArray = (arr, size) => {
     return Array.from({ length: Math.ceil(arr.length / size) }, (_, index) =>
@@ -62,7 +70,7 @@ const ParticipationQuedadas = ({ user }) => {
       <Swiper
         style={[styles.wrapper, { height: quedadas.length > 0 ? 405 : 52.5 }]} // Ajuste dinámico de altura
         loop={false}
-        autoplay={true} 
+        autoplay={true}
         autoplayTimeout={3}
         showsPagination={true}
         paginationStyle={{ bottom: 10 }}

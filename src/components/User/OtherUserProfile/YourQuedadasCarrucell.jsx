@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
-import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Importa el componente adecuadamente
-import { getQuedadasByUserId } from '../../../api/Quedada.controller'; // Importa la función para obtener quedadas
+import QuedadasSimpleCard from '../QuedadasViewsCards/QuedadasSimpleCard'; // Asegúrate de importar el componente adecuadamente
+import { getQuedadasByUserId } from '../../../api/Quedada.controller'; // Asegúrate de importar la función para obtener quedadas
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -30,7 +30,18 @@ const YourQuedadasCarrucell = ({ user }) => {
     );
   };
 
-  const groupedQuedadas = chunkArray(quedadas, 3);
+  const groupedQuedadas = chunkArray(filterQuedadas(quedadas), 3);
+
+  const filterQuedadas = (quedadas) => {
+    switch (filter) {
+      case 'terminados':
+        return quedadas.filter(quedada => quedada.status === 3);
+      case 'activos':
+        return quedadas.filter(quedada => quedada.status != 3);
+      default:
+        return quedadas;
+    }
+  };
 
   return (
     <View style={styles.container}>
