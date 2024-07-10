@@ -14,7 +14,8 @@ const CardsSimpleCarrucel = () => {
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
-        const response = await getAllQuedadas(); 
+        let response = await getAllQuedadas(); 
+        response = response.filter(quedada => quedada.privacy !== "Premium");
         setQuedadas(response); 
        } catch (error) {
         console.error('Error fetching quedadas:', error);

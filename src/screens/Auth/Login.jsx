@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -47,14 +47,8 @@ const Login = () => {
   };
 
   // Inicio de sesión con Google
-  const [accessToken, setAccessToken] = useState(null);
-  const [user, setUser] = useState(null);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId:"677838847471-tt4cfl4eu9ltja9i8upmmuot9q6vn4eu.apps.googleusercontent.com",
-    iosClientId: "677838847471-i144dqoucq4ekneb75c7uhgp6r5nfegm.apps.googleusercontent.com",
-  //  androidClientId: "677838847471-lcr5nakq1nahdvtu8t7bdv7ejh92pq6q.apps.googleusercontent.com",
-  androidClientId: "677838847471-vdqs2ps3ocaj8ribdcrr3j6681g3s5e4.apps.googleusercontent.com",
-    // redirectUri: 'https://auth.expo.io/@juanlaspiur/magic-cel'
+    androidClientId: "677838847471-lnbusbngqnkafrkqtbo6smmr8ej0vdlf.apps.googleusercontent.com", /// es android client id
   });
 
   const initSessionWithGoogle = () => {
@@ -65,27 +59,19 @@ const Login = () => {
     if (response?.type === "success") {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token)
-      setAccessToken(response.authentication.accessToken);
+      auth.signInWithCredential(credential)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log('Usuario autenticado:', user);
+          // Navegar a la siguiente pantalla después del inicio de sesión exitoso
+          navigation.navigate('Index');
+        })
+        .catch((error) => {
+          console.error('Error al autenticar con Firebase:', error);
+        });
     }
-    if (accessToken) {
-      fetchUserInfo();
-    }
-  }, [response, accessToken]);
-
-  async function fetchUserInfo() {
-    try {
-      const userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
-      const userInfo = await userInfoResponse.json();
-      alert('User información de Google ' + JSON.stringify(userInfo))
-      setUser(userInfo);
-    } catch (error) {
-      console.error('Error fetching user info from Google:', error);
-    }
-  }
+  }, [response]);
 
   return (
     <View style={styles.container}>
@@ -177,7 +163,6 @@ const Login = () => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
