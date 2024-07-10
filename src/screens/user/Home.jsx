@@ -27,7 +27,7 @@ const Home = () => {
           resizeMode="contain"
           style={styles.eclipse4}
         />
-             <Tabloide/>     
+             <Tabloide num={'1'} />     
              <CardsPremiumCarrucel/>
              <Image
           source={require('./../../assets/Login/Ellipse 1.png')}
@@ -42,7 +42,7 @@ const Home = () => {
           style={styles.eclipse3}
         />
              <CardsSimpleCarrucel/> 
-             <Tabloide/>
+             <Tabloide num={'2'} />
       
         </ScrollView>
     </View>

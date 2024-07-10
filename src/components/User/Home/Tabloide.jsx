@@ -6,15 +6,16 @@ import env from '../../../../env';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-const CardsPremiumCarrucel = () => {
+const CardsPremiumCarrucel = ({num}) => {
   const [tabloidesList, setTabloidesList] = useState([]);
 
   useEffect(() => {
     const fetchGetAllTabloides = async () => {
       try {
         const response = await getAllTabloides();
-        // Filter tabloides where tabloide.up === true
-        const filteredTabloides = response.filter(tabloide => tabloide.up === true);
+        // Filter tabloides where tabloide.up === true nro_posicion
+        let filteredTabloides = response.filter(tabloide => tabloide.up === true);
+        filteredTabloides.filter(tabloide => tabloide.nro_posicion == num )
         setTabloidesList(filteredTabloides);
       } catch (error) {
         console.error('Error fetching tabloides: ', error);
