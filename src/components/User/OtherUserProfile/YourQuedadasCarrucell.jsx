@@ -11,6 +11,18 @@ const YourQuedadasCarrucell = ({ user }) => {
   const [quedadas, setQuedadas] = useState([]);
   const [hasQuedadas, setHasQuedadas] = useState(true);
 
+  // Función para filtrar quedadas según el estado seleccionado
+  const filterQuedadas = (quedadas) => {
+    switch (filter) {
+      case 'terminados':
+        return quedadas.filter(quedada => quedada.status === 3);
+      case 'activos':
+        return quedadas.filter(quedada => quedada.status != 3);
+      default:
+        return quedadas;
+    }
+  };
+
   useEffect(() => {
     const fetchQuedadas = async () => {
       try {
@@ -31,17 +43,6 @@ const YourQuedadasCarrucell = ({ user }) => {
   };
 
   const groupedQuedadas = chunkArray(filterQuedadas(quedadas), 3);
-
-  const filterQuedadas = (quedadas) => {
-    switch (filter) {
-      case 'terminados':
-        return quedadas.filter(quedada => quedada.status === 3);
-      case 'activos':
-        return quedadas.filter(quedada => quedada.status != 3);
-      default:
-        return quedadas;
-    }
-  };
 
   return (
     <View style={styles.container}>

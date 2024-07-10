@@ -10,6 +10,18 @@ const YourParticipationQuedadas = ({ user }) => {
   const [hasQuedadas, setHasQuedadas] = useState(true);
   const [isFetchQuedadasFlag, setIsFetchQuedadasFlag] = useState(false);
 
+  // Función para filtrar quedadas según el estado seleccionado
+  const filterQuedadas = (quedadas) => {
+    switch (filter) {
+      case 'terminados':
+        return quedadas.filter(quedada => quedada.status === 3);
+      case 'activos':
+        return quedadas.filter(quedada => quedada.status !== 3);
+      default:
+        return quedadas;
+    }
+  };
+
   useEffect(() => {
     const fetchParticipationQuedadas = async () => {
       try {
@@ -35,17 +47,6 @@ const YourParticipationQuedadas = ({ user }) => {
   };
 
   const groupedQuedadas = chunkArray(filterQuedadas(quedadas), 3);
-
-  const filterQuedadas = (quedadas) => {
-    switch (filter) {
-      case 'terminados':
-        return quedadas.filter(quedada => quedada.status === 3);
-      case 'activos':
-        return quedadas.filter(quedada => quedada.status != 3);
-      default:
-        return quedadas;
-    }
-  };
 
   return (
     <View style={styles.container}>
