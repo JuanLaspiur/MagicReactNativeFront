@@ -13,74 +13,27 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.juanlaspiur.magiccel",
-      "config": {
-        "googleSignIn": {
-          "reservedClientId": "677838847471-vdqs2ps3ocaj8ribdcrr3j6681g3s5e4.apps.googleusercontent.com"
-        },
-        "usesNonExemptEncryption": false
-      }
+      "bundleIdentifier": "com.juanlaspiur.magiccel"  
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.juanlaspiur.magiccel",
-      "permissions": [
-        "NOTIFICATIONS",
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_BACKGROUND_LOCATION",
-        "CAMERA",
-        "READ_CONTACTS",
-        "WRITE_CONTACTS",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "RECORD_AUDIO",
-        "READ_PHONE_STATE",
-        "USE_FINGERPRINT",
-        "USE_BIOMETRIC",
-        "WAKE_LOCK",
-        "VIBRATE",
-        "INTERNET",
-        "ACCESS_NETWORK_STATE",
-        "ACCESS_WIFI_STATE",
-        "RECEIVE_BOOT_COMPLETED",
-        "BILLING",
-        "FOREGROUND_SERVICE",
-        "POST_NOTIFICATIONS"
-      ],
-      "notification": {
-        "icon": "./assets/notification-icon.png",
-        "color": "#fff"
-      },
-      "googleSignIn": {
-        "apiKey": "AIzaSyDDp-sqvMm0AnPTG9n5oeRlYjedd5A2sv8",
-        "certificateHash": "EA:B6:8E:EF:A6:2D:B1:8B:E3:69:32:57:B4:61:BA:8C:18:FF:62:2D",
-        "clientId": "TU_CLIENT_ID_DE_GOOGLE_AQUI"
-      }
-    },
-     "notification": {
-      "icon": "./assets/notification-icon.png",
-      "color": "#fff"
+      "package": "com.juanlaspiur.magiccel"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "expo-secure-store"
+    ],
     "extra": {
       "eas": {
         "projectId": "c5debf7a-6f8c-4451-8176-441a0074df30"
-      }
-    }
-  },
-  "plugins": [
-    "expo-secure-store"
-  ],
-  "extra": {
-    "eas": {
-      "projectId": "c5debf7a-6f8c-4451-8176-441a0074df30"
-    }
-  },
-  "scheme": "magic-cel"
+      }    
+    },
+     "scheme": "magic-cel"
+  }
 }
+

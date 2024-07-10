@@ -14,7 +14,7 @@ const CardsPremiumCarrucel = ({num}) => {
       try {
         const response = await getAllTabloides();
         // Filter tabloides where tabloide.up === true nro_posicion
-        let filteredTabloides = response.filter(tabloide => tabloide.up === true);
+        let filteredTabloides = response.filter(tabloide => tabloide.up);
         filteredTabloides.filter(tabloide => tabloide.nro_posicion == num )
         setTabloidesList(filteredTabloides);
       } catch (error) {

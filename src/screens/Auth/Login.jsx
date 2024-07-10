@@ -48,7 +48,7 @@ const Login = () => {
 
   // Inicio de sesión con Google
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    androidClientId: "677838847471-lnbusbngqnkafrkqtbo6smmr8ej0vdlf.apps.googleusercontent.com", /// es android client id
+    clientId: "677838847471-lmb9o36hbolkkmtrnnbkj7c3k6ja2315.apps.googleusercontent.com",
   });
 
   const initSessionWithGoogle = () => {
