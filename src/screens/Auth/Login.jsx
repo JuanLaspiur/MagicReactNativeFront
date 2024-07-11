@@ -35,6 +35,10 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
+    if(email.length === 0 || password.length === 0){
+      alert('No hay ni email ni contraseña ' +JSON.stringify(email)+' '+JSON.stringify(password))
+      return
+    }
     try {
       const response = await login(email, password); 
       if (response) {
@@ -59,10 +63,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    alert('Response de Google:', response);
-  if (response?.type === "success" && response?.authentication?.accessToken) {
+    if (response?.type === "success" && response?.authentication?.accessToken) {
     const accessToken = response.authentication.accessToken;
-    alert('Token de acceso: ' + accessToken); 
     getUserInfo(accessToken); 
   } else {
     alert('Respuesta de autenticación no válida.');
@@ -72,7 +74,11 @@ const Login = () => {
   const getUserInfo = async (token) => {
     try {
       const response = await loginWithGoogle(token)
-      alert('Usuario:  '+JSON.stringify(response))
+      if(response.verified_email) {
+        setEmail(response.email)
+        setPassword(response.id)  
+     }
+     await handleLogin()
     } catch (error) {
       console.error('Error al obtener usuario con Google ')
     }

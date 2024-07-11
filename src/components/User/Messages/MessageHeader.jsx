@@ -6,7 +6,7 @@ import env from '../../../../env';
 import { getAnimales } from '../../../api/User.controller.js'
 import {obtenerNumerosDespuesGuion } from "../../../helpers/animalGetOnlyNumber.js"
 
-function MessageHeader({user}) {
+function MessageHeader({user, setterSurveyIDAndAsk}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisibleSurvey, setModalVisibleSurvey] = useState(false);
   const navigation = useNavigation(); 
@@ -142,7 +142,7 @@ function MessageHeader({user}) {
         </TouchableWithoutFeedback>
       </Modal>
 
-      <ModalSendSurvey visible={modalVisibleSurvey} setModalVisibleSurvey={setModalVisibleSurvey} />
+      <ModalSendSurvey visible={modalVisibleSurvey} setModalVisibleSurvey={setModalVisibleSurvey} setterSurveyIDAndAsk={setterSurveyIDAndAsk} />
     </View>
   );
 }

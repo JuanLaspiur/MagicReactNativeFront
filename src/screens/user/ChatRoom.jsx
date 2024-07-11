@@ -26,8 +26,9 @@ const ChatRoom = ({ route }) => {
   const [authUser, setAuthUser] = useState([]);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [flag, setFlag] = useState(false)
-
+  const [flag, setFlag] = useState(false);
+  const [ surverID, setSurverID ] = useState('')
+  const [ surverAsk, setSurverAsk] = useState('')
   useEffect(() => {
     (async () => {
       const { status } =
@@ -49,7 +50,14 @@ const ChatRoom = ({ route }) => {
       setMessages(chat.messages);
       faundMessagesByChatId(chat._id);
     }
-  }, [flag]);
+  }, [flag, surverID]);
+
+  useEffect(()=>{
+    if(surverID.length > 0){
+      sendSurveyMessage()
+    }
+
+  }, [surverID])
 
   const faundMessagesByChatId = async (id) => {
     try {
@@ -125,10 +133,23 @@ const ChatRoom = ({ route }) => {
     return `${hours}:${minutes}`;
   };
 
+  const setterSurveyIDAndAsk = (id, ask)=>{
+    setSurverID(id)
+    setSurverAsk(ask)
+  }
+
+
+  const sendSurveyMessage = async() =>{
+    alert('Encuesta enviada desde ChatRoom ' +surverID)
+    // obtener opciones por surverID
+
+    setSurverID('')
+  }
+
   return (
     <View style={styles.container}>
       <AppHeader title="Chat" />
-      <MessageHeader user={user} />
+      <MessageHeader user={user} setterSurveyIDAndAsk={setterSurveyIDAndAsk} />
       <ScrollView contentContainerStyle={styles.messagesContainer}>
         {messages &&
           messages.length > 0 &&

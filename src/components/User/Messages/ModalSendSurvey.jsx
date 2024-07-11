@@ -11,8 +11,9 @@ import {
   Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { sendSurvey } from "../../../api/Chat.controller";
 
-function ModalSendSurvey({ visible, setModalVisibleSurvey }) {
+function ModalSendSurvey({ visible, setModalVisibleSurvey, setterSurveyIDAndAsk }) {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([]);
 
@@ -36,17 +37,25 @@ function ModalSendSurvey({ visible, setModalVisibleSurvey }) {
     setOptions(newOptions);
   };
 
-  const handleSendSurvey = () => {
-    let surveyContent = `Pregunta: ${question}\n\nOpciones:\n`;
-    options.forEach((option, index) => {
-      surveyContent += `${index + 1}. ${option}\n`;
-    });
-    Alert.alert("Encuesta enviada", surveyContent);
-    setModalVisibleSurvey(false); // Cerrar el modal después de enviar la encuesta
+  const handleSendSurvey = async() => {
+    if(question.trim() === '' ||  options.length === 0) {
+      return
+    }
+    const encuesta = {
+      pregunta: question,
+      opciones: options
+    }
+   const survey =  await sendSurvey(encuesta)
+   setterSurveyIDAndAsk(survey._id, survey.pregunta)
+    setQuestion('')
+    setOptions([])
+
+
+    setModalVisibleSurvey(false);
   };
 
   const onClose = () => {
-    setModalVisibleSurvey(false); // Cerrar el modal al presionar cancelar o fuera de él
+    setModalVisibleSurvey(false); 
   };
 
   return (

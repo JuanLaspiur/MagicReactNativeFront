@@ -58,9 +58,17 @@ const udateChatBychatID = async(chatID)=>{
     }
 }
 
+const sendSurvey = async (encuesta) => {
+try {
+    const response = await api.post('/encuestas/', encuesta)
+    return response.data
+} catch (error) {
+    console.log('Error al enviar la encuesta ')
+}
+}
 
 
-export { getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID,sendImageMessage }
+export { sendSurvey, getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID,sendImageMessage }
 
 /*
     Route.get("all_chats", "ChatController.index");
