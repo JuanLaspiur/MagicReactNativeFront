@@ -4,51 +4,45 @@ import { FontAwesome } from "@expo/vector-icons";
 import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
 import * as ImagePicker from 'expo-image-picker'; 
-import { sendMessageBychatID } from "../../api/Chat.controller";
+import { sendMessageBychatID, sendImageMessage, getChatBychatID } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
-import { getChatBychatID } from "../../api/Chat.controller";
 
-
-const ChatRoom = ({route}) => {
-  const { user, chat, mensajes } = route.params; // otro usuario
-  const [authUser, setAuthUser ] = useState([])
+const ChatRoom = ({ route }) => {
+  const { user, chat, mensajes } = route.params;
+  const [authUser, setAuthUser] = useState([]);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
   useEffect(() => {
-  
     (async () => { 
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         alert('Se necesita permiso para acceder a la galería de imágenes.');
       }
     })();
+
     const getAuthUser = async() => {
-      console.log('user ' + user)
-      const data = await getValueFromSecureStore('user')
-      setAuthUser(JSON.parse(data))
+      const data = await getValueFromSecureStore('user');
+      setAuthUser(JSON.parse(data));
+    };
+    getAuthUser();
+
+    if (chat.message) {
+      setMessages(chat.messages); 
+    } else {
+      setMessages(chat.messages);
+      faundMessagesByChatId(chat._id);
     }
-    getAuthUser()
-
-    if(chat.message) {
-    setMessages(chat.messages) 
-  }else {
-    setMessages(chat.messages)
-    console.log('Chat '+ JSON.stringify(chat))
-    faundMessagesByChatId(chat._id)
-  }
-
-    
   }, []);
 
   const faundMessagesByChatId = async(id) => {
-    try{
-    const response = await getChatBychatID(id)
-    setMessages(response.data.messages)
-  }catch{
-    console.log('Error al obtener el chat')
-  }
-  }
+    try {
+      const response = await getChatBychatID(id);
+      setMessages(response.data.messages);
+    } catch (err) {
+      console.log('Error al obtener el chat', err);
+    }
+  };
 
   const handleSend = async() => {
     if (inputText.trim() === "") return;
@@ -60,16 +54,17 @@ const ChatRoom = ({route}) => {
     };
     setMessages([...messages, newMessage]);
 
-   const sendMessaje = {
-    message: inputText,
-    user_id: authUser._id,
-    chat_id: chat._id, 
-   }
-   try{
-    const data = await sendMessageBychatID(sendMessaje,  chat._id);
-   } catch (err) {
-    console.log(err)
-   }
+    const sendMessaje = {
+      message: inputText,
+      user_id: authUser._id,
+      chat_id: chat._id, 
+    };
+    
+    try {
+      await sendMessageBychatID(sendMessaje, chat._id);
+    } catch (err) {
+      console.log(err);
+    }
     setInputText("");
   };
 
@@ -81,15 +76,23 @@ const ChatRoom = ({route}) => {
       quality: 1,
     });
 
-    console.log(result);
+    if (!result.canceled) {
+      const file = result.assets[0];
+      const formData = new FormData();
+      formData.append('file', {
+        uri: file.uri,
+        type: file.type,
+        name: file.uri.split('/').pop(),
+      });
 
-    if (!result.cancelled) {
-      // Aquí podrías enviar la imagen seleccionada como mensaje si lo deseas
-      // Por ahora, solo mostramos un alert con la URI de la imagen seleccionada
-      alert(`Imagen seleccionada: ${result.uri}`);
+      try {
+        await sendImageMessage(chat._id, formData);
+        alert('Imagen enviada correctamente');
+      } catch (err) {
+        console.error('Error al enviar la imagen:', err);
+      }
     }
   };
-
 
   const getCurrentTime = () => {
     const now = new Date();

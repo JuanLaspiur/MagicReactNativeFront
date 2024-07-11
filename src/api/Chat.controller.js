@@ -50,7 +50,7 @@ const sendImageMessage = async (chatID, file) => {
  
 const udateChatBychatID = async(chatID)=>{
     try {
-        const response = await api.put('/send_message/'+chatID); 
+        const response = await api.put('/chat/'+chatID); 
         return response 
     } catch (error) {
         console.error(error)
