@@ -14,8 +14,7 @@ import * as Google from "expo-auth-session/providers/google";
 import { login } from '../../api/Login.controller'; 
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
-
-
+import { loginWithGoogle } from "../../api/User.controller";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -72,14 +71,8 @@ const Login = () => {
 
   const getUserInfo = async (token) => {
     try {
-      const response = await fetch(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const user = await response.json();
-      alert('Usuario:  '+JSON.stringify(user))
+      const response = await loginWithGoogle(token)
+      alert('Usuario:  '+JSON.stringify(response))
     } catch (error) {
       console.error('Error al obtener usuario con Google ')
     }
