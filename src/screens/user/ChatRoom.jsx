@@ -26,6 +26,7 @@ const ChatRoom = ({ route }) => {
   const [authUser, setAuthUser] = useState([]);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -48,7 +49,7 @@ const ChatRoom = ({ route }) => {
       setMessages(chat.messages);
       faundMessagesByChatId(chat._id);
     }
-  }, []);
+  }, [flag]);
 
   const faundMessagesByChatId = async (id) => {
     try {
@@ -94,11 +95,11 @@ const ChatRoom = ({ route }) => {
     if (!result.canceled) {
       const file = result.assets[0].uri;
       const base64Image = await imageToBase64(result.assets[0].uri);
-      console.log("Imagen en base64:", base64Image);
       //
       try {
-        console.log("Chat id ChatRoom.jsx " + chat._id);
-        await sendImageMessage(chat._id, base64Image);
+         await sendImageMessage(chat._id, base64Image);
+         setFlag(!flag)
+         
       } catch (err) {
         console.error("Error al enviar la imagen:", err);
       }
@@ -137,7 +138,7 @@ const ChatRoom = ({ route }) => {
                 key={index}
                 style={[
                   styles.messageBubble,
-                  message.isMine || message.user_id === user._id
+                  message.isMine || message.user_id === authUser._id
                     ? styles.myMessageContainer
                     : styles.otherMessageContainer,
                 ]}
@@ -149,7 +150,7 @@ const ChatRoom = ({ route }) => {
                 </View>
                 <View style={styles.messageInfo}>
                   <Text style={styles.messageOwner}>
-                    {message.isMine || message.user_id === user._id
+                    {message.isMine || message.user_id === authUser._id
                       ? "Tú"
                       : `${message.full_name}`}
                   </Text>
@@ -161,7 +162,7 @@ const ChatRoom = ({ route }) => {
                 key={index}
                 style={[
                   styles.messageBubble,
-                  message.isMine || message.user_id === user._id
+                    message.user_id === authUser._id
                     ? styles.myMessageContainer
                     : styles.otherMessageContainer,
                 ]}
