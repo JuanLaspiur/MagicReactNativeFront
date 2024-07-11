@@ -67,8 +67,31 @@ try {
 }
 }
 
+const getSurveyOptionsBySurveyID = async(encuestaID) => {
+    try {
+        const response = await api.get(`/opciones-usuario/id/${encuestaID}`)
+        return response.data
+    } catch (error) {
+        console.log('Error al obener las opciones de la encuesta '+ error)
+    }
+}
 
-export { sendSurvey, getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID,sendImageMessage }
+const sendMySurveyVote = async(opcionID, usuarioID)=>{
+    try {
+        const response = await api.post(`/opciones-usuario/votar`, {
+            opcionId: opcionID,
+            usuarioId: usuarioID
+        })
+        console.log(response)
+        return response
+    } catch (error) {
+        console.log('Error al enviar la votación del usuario en la encuesta del chat ')
+    }
+}
+
+
+
+export { sendMySurveyVote, getSurveyOptionsBySurveyID,sendSurvey, getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID,sendImageMessage }
 
 /*
     Route.get("all_chats", "ChatController.index");

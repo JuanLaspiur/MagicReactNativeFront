@@ -17,6 +17,8 @@ import {
   sendMessageBychatID,
   sendImageMessage,
   getChatBychatID,
+  getSurveyOptionsBySurveyID,
+  sendMySurveyVote
 } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import env from "../../../env";
@@ -29,6 +31,7 @@ const ChatRoom = ({ route }) => {
   const [flag, setFlag] = useState(false);
   const [ surverID, setSurverID ] = useState('')
   const [ surverAsk, setSurverAsk] = useState('')
+  const [ surveyOptions, setSurveyOptions] = useState('')
   useEffect(() => {
     (async () => {
       const { status } =
@@ -141,9 +144,13 @@ const ChatRoom = ({ route }) => {
 
   const sendSurveyMessage = async() =>{
     alert('Encuesta enviada desde ChatRoom ' +surverID)
-    // obtener opciones por surverID
-
+    const options = await getSurveyOptionsBySurveyID(surverID)
+    setSurveyOptions(options)
     setSurverID('')
+  }
+
+  const handleSendMySurveyVote = async(option)=> {
+    const response = await sendMySurveyVote(option._id, authUser._id)
   }
 
   return (
