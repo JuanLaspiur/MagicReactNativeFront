@@ -1,5 +1,6 @@
 import api from './configure'; 
 import apiFormData from './configure'
+import env from  '../../env'
 
 const getAllMyChats = async(userID)=>{
     try {
@@ -37,11 +38,11 @@ const sendMessageBychatID = async(data,chatID)=>{
     }
 }
 
-const sendImageMessage = async (chatID, file) => {
+const sendImageMessage = async (chatID, base64Image) => {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const response = await apiFormData.post(`/send_message/${chatID}`, formData);
+      const response = await api.post(`/createWithBase64/${chatID}`,{
+        base64Image: base64Image
+      });
       console.log('Respuesta del servidor:', response.data);
     } catch (error) {
       console.error('Error al enviar imagen mensaje:', error);

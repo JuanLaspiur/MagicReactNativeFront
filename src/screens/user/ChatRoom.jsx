@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons"; 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Image,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import AppHeader from "../../components/User/AppHeader";
 import MessageHeader from "../../components/User/Messages/MessageHeader";
-import * as ImagePicker from 'expo-image-picker'; 
-import { sendMessageBychatID, sendImageMessage, getChatBychatID } from "../../api/Chat.controller";
-import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import {
+  sendMessageBychatID,
+  sendImageMessage,
+  getChatBychatID,
+} from "../../api/Chat.controller";
+import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
+import env from "../../../env";
 
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
@@ -14,52 +28,53 @@ const ChatRoom = ({ route }) => {
   const [inputText, setInputText] = useState("");
 
   useEffect(() => {
-    (async () => { 
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Se necesita permiso para acceder a la galería de imágenes.');
+    (async () => {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Se necesita permiso para acceder a la galería de imágenes.");
       }
     })();
 
-    const getAuthUser = async() => {
-      const data = await getValueFromSecureStore('user');
+    const getAuthUser = async () => {
+      const data = await getValueFromSecureStore("user");
       setAuthUser(JSON.parse(data));
     };
     getAuthUser();
 
     if (chat.message) {
-      setMessages(chat.messages); 
+      setMessages(chat.messages);
     } else {
       setMessages(chat.messages);
       faundMessagesByChatId(chat._id);
     }
   }, []);
 
-  const faundMessagesByChatId = async(id) => {
+  const faundMessagesByChatId = async (id) => {
     try {
       const response = await getChatBychatID(id);
       setMessages(response.data.messages);
     } catch (err) {
-      console.log('Error al obtener el chat', err);
+      console.log("Error al obtener el chat", err);
     }
   };
 
-  const handleSend = async() => {
+  const handleSend = async () => {
     if (inputText.trim() === "") return;
-    const currentTime = getCurrentTime(); 
+    const currentTime = getCurrentTime();
     const newMessage = {
       text: inputText,
       time: currentTime,
-      isMine: true, 
+      isMine: true,
     };
     setMessages([...messages, newMessage]);
 
     const sendMessaje = {
       message: inputText,
       user_id: authUser._id,
-      chat_id: chat._id, 
+      chat_id: chat._id,
     };
-    
+
     try {
       await sendMessageBychatID(sendMessaje, chat._id);
     } catch (err) {
@@ -77,20 +92,28 @@ const ChatRoom = ({ route }) => {
     });
 
     if (!result.canceled) {
-      const file = result.assets[0];
-      const formData = new FormData();
-      formData.append('file', {
-        uri: file.uri,
-        type: file.type,
-        name: file.uri.split('/').pop(),
-      });
-
+      const file = result.assets[0].uri;
+      const base64Image = await imageToBase64(result.assets[0].uri);
+      console.log("Imagen en base64:", base64Image);
+      //
       try {
-        await sendImageMessage(chat._id, formData);
-        alert('Imagen enviada correctamente');
+        console.log("Chat id ChatRoom.jsx " + chat._id);
+        await sendImageMessage(chat._id, base64Image);
       } catch (err) {
-        console.error('Error al enviar la imagen:', err);
+        console.error("Error al enviar la imagen:", err);
       }
+    }
+  };
+
+  const imageToBase64 = async (imageUri) => {
+    try {
+      // Lee el archivo de imagen como una cadena base64
+      const base64 = await FileSystem.readAsStringAsync(imageUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return `data:image/jpeg;base64,${base64}`;
+    } catch (error) {
+      throw new Error("Error al convertir la imagen a base64");
     }
   };
 
@@ -106,26 +129,56 @@ const ChatRoom = ({ route }) => {
       <AppHeader title="Chat" />
       <MessageHeader user={user} />
       <ScrollView contentContainerStyle={styles.messagesContainer}>
-        {messages && messages.length > 0 && messages.map((message, index) => (
-          <View
-            key={index}
-            style={[
-              styles.messageBubble,
-              (message.isMine || message.user_id === user._id) ? styles.myMessageContainer : styles.otherMessageContainer
-            ]}
-          >
-            <View style={styles.messageContent}>
-              <Text style={styles.messageText(message.isMine)}>{message.text}</Text>
-            </View>
-            <View style={styles.messageInfo}>
-              <Text style={styles.messageOwner}>{(message.isMine || message.user_id === user._id) ? 'Tú' : `${message.full_name}`}</Text>
-              <Text style={styles.messageTime}>{message.stamp}</Text>
-            </View>
-          </View>
-        ))}
+        {messages &&
+          messages.length > 0 &&
+          messages.map((message, index) =>
+            !message.img ? (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  message.isMine || message.user_id === user._id
+                    ? styles.myMessageContainer
+                    : styles.otherMessageContainer,
+                ]}
+              >
+                <View style={styles.messageContent}>
+                  <Text style={styles.messageText(message.isMine)}>
+                    {message.text}
+                  </Text>
+                </View>
+                <View style={styles.messageInfo}>
+                  <Text style={styles.messageOwner}>
+                    {message.isMine || message.user_id === user._id
+                      ? "Tú"
+                      : `${message.full_name}`}
+                  </Text>
+                  <Text style={styles.messageTime}>{message.stamp}</Text>
+                </View>
+              </View>
+            ) : (
+              <View
+                key={index}
+                style={[
+                  styles.messageBubble,
+                  message.isMine || message.user_id === user._id
+                    ? styles.myMessageContainer
+                    : styles.otherMessageContainer,
+                ]}
+              >
+                <Image
+                  source={{ uri: `${env.BACK_URL}/chat_img/${message.image}` }}
+                  style={{width:180, height:180}}
+                />
+              </View>
+            )
+          )}
       </ScrollView>
       <View style={styles.inputContainer}>
-        <TouchableOpacity onPress={handleImagePicker} style={styles.iconContainer}>
+        <TouchableOpacity
+          onPress={handleImagePicker}
+          style={styles.iconContainer}
+        >
           <FontAwesome name="image" size={24} color="gray" />
         </TouchableOpacity>
         <TextInput
@@ -148,7 +201,7 @@ export default ChatRoom;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   messagesContainer: {
     flexGrow: 1,
@@ -157,65 +210,65 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   messageBubble: {
-    flexDirection: 'column', // Cambiado a column para apilar los elementos
-    maxWidth: '80%',
+    flexDirection: "column", // Cambiado a column para apilar los elementos
+    maxWidth: "80%",
     marginBottom: 10,
     padding: 10,
     borderRadius: 10,
   },
   myMessageContainer: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#AED0F6',
+    alignSelf: "flex-end",
+    backgroundColor: "#AED0F6",
   },
   otherMessageContainer: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#D3D3D3',
+    alignSelf: "flex-start",
+    backgroundColor: "#D3D3D3",
   },
   messageContent: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   messageInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingTop: 3,
     gap: 2,
   },
   messageOwner: {
     fontSize: 10,
-    color: 'gray',
+    color: "gray",
   },
   messageText: (isMine) => ({
     fontSize: 16,
-    color: isMine ? '#FFFFFF' : '#000000',
+    color: isMine ? "#FFFFFF" : "#000000",
   }),
   messageTime: {
     fontSize: 10,
-    color: 'gray',
-    alignSelf: 'flex-end',
+    color: "gray",
+    alignSelf: "flex-end",
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    backgroundColor: '#FFFFFF',
+    borderTopColor: "#CCCCCC",
+    backgroundColor: "#FFFFFF",
   },
   input: {
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: "#F0F0F0",
     borderRadius: 20,
     marginRight: 10,
   },
   sendButton: {
     padding: 10,
     borderRadius: 20,
-    backgroundColor: '#AED0F6',
+    backgroundColor: "#AED0F6",
   },
   iconContainer: {
     padding: 10,

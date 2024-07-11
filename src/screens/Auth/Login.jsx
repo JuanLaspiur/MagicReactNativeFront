@@ -37,9 +37,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await login(email, password); // Llama a tu función de inicio de sesión
+      const response = await login(email, password); 
       if (response) {
-        navigation.navigate('Index'); // Navega a la pantalla principal después del inicio de sesión exitoso
+        navigation.navigate('Index'); 
       }
     } catch (error) {
       console.log('Error al ingresar sesión', error);
@@ -51,20 +51,42 @@ const Login = () => {
     clientId: "147535335015-d06scq2un6akiqlcjko1e9bkj8b7lq1l.apps.googleusercontent.com",
     androidClientId: "147535335015-lrot3o45l9t6d7fb3ka4oh6i3nqql9n6.apps.googleusercontent.com",
     iosClientId: "147535335015-34b1j1jmj026ske50bne3hrggshig3bq.apps.googleusercontent.com",
+    scopes: ["profile", "email", "openid"],
   });
   
 
   const initSessionWithGoogle = () => {
-    promptAsync(); // Llama a la función para iniciar sesión con Google
+    promptAsync();
   };
 
   useEffect(() => {
-    if (response?.type === "success") {
-      const { authentication } = response;
-      alert('Respuesta de autenticación de Google: ', JSON.stringify(authentication));
-      navigation.navigate('Index');
-    }
+    alert('Response de Google:', response);
+  if (response?.type === "success" && response?.authentication?.accessToken) {
+    const accessToken = response.authentication.accessToken;
+    alert('Token de acceso: ' + accessToken); 
+    getUserInfo(accessToken); 
+  } else {
+    alert('Respuesta de autenticación no válida.');
+  }
   }, [response]);
+
+  const getUserInfo = async (token) => {
+    if (!token) return;
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      const user = await response.json();
+      await AsyncStorage.setItem("@user", JSON.stringify(user));
+      alert('Usuario:  '+JSON.stringify(user))
+    } catch (error) {
+      // Add your own error handler here
+    }
+  };
 
 
   return (
