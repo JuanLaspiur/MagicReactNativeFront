@@ -22,7 +22,7 @@ import {
 } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import env from "../../../env";
-import { CheckBox } from 'react-native-elements';
+import ModalImageTouchable from "../../components/User/Messages/ModalImageTouchable";
 
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
@@ -30,17 +30,19 @@ const ChatRoom = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [flag, setFlag] = useState(false);
-  const [ surverID, setSurverID ] = useState('')
-  const [ surverAsk, setSurverAsk] = useState('')
-  const [ surveyOptions, setSurveyOptions] = useState('')
+  const [surverID, setSurverID] = useState('');
+  const [surverAsk, setSurverAsk] = useState('');
+  const [surveyOptions, setSurveyOptions] = useState('');
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // encuesta
   const [isSelected, setIsSelected] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
         alert("Se necesita permiso para acceder a la galería de imágenes.");
       }
@@ -64,7 +66,6 @@ const ChatRoom = ({ route }) => {
     if(surverID.length > 0){
       sendSurveyMessage()
     }
-
   }, [surverID])
 
   const faundMessagesByChatId = async (id) => {
@@ -111,11 +112,9 @@ const ChatRoom = ({ route }) => {
     if (!result.canceled) {
       const file = result.assets[0].uri;
       const base64Image = await imageToBase64(result.assets[0].uri);
-      //
       try {
          await sendImageMessage(chat._id, base64Image);
-         setFlag(!flag)
-         
+         setFlag(!flag);
       } catch (err) {
         console.error("Error al enviar la imagen:", err);
       }
@@ -124,7 +123,6 @@ const ChatRoom = ({ route }) => {
 
   const imageToBase64 = async (imageUri) => {
     try {
-      // Lee el archivo de imagen como una cadena base64
       const base64 = await FileSystem.readAsStringAsync(imageUri, {
         encoding: FileSystem.EncodingType.Base64,
       });
@@ -141,32 +139,30 @@ const ChatRoom = ({ route }) => {
     return `${hours}:${minutes}`;
   };
 
-  const setterSurveyIDAndAsk = (id, ask)=>{
-    setSurverID(id)
-    setSurverAsk(ask)
-  }
+  const setterSurveyIDAndAsk = (id, ask) => {
+    setSurverID(id);
+    setSurverAsk(ask);
+  };
 
+  const sendSurveyMessage = async () => {
+    const options = await getSurveyOptionsBySurveyID(surverID);
+    setSurveyOptions(options);
+    setSurverID('');
+  };
 
-  const sendSurveyMessage = async() =>{
-    const options = await getSurveyOptionsBySurveyID(surverID)
-    console.log(JSON.stringify(options))
-    /*
-     console.log(JSON.stringify(options)): 
-    [{"_id":"669037cd60bf8c0b5f1d34db","texto":"Jskkanan","encuesta_id":"669037cd60bf8c0b5f1d34da","created_at":"2024-07-11T19:51:41.406Z",
-    "updated_at":"2024-07-11T19:51:41.406Z"},{"_id":"669037cd60bf8c0b5f1d34dc","texto":"Jakakmanan","encuesta_id":"669037cd60bf8c0b5f1d34da"
-    ,"created_at":"2024-07-11T19:51:41.663Z","updated_at":"2024-07-11T19:51:41.663Z"}]
-    */
-   //quiero que aqui, despuesd e obtener las opciones Envies un mensaje JSX
-   // con las opciones que puedan ser clickedas cuando se muestren los mensajes
-   // Y que y que se vea la pregunta surverAsk (nombre del useState)
+  const handleSendMySurveyVote = async (option) => {
+    const response = await sendMySurveyVote(option._id, authUser._id);
+  };
 
-    setSurveyOptions(options)
-    setSurverID('')
-  }
+  const handleSeeImageDetail = (imageUri) => {
+    setSelectedImage(imageUri);
+    setModalVisible(true);
+  };
 
-  const handleSendMySurveyVote = async(option)=> {
-    const response = await sendMySurveyVote(option._id, authUser._id)
-  }
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedImage(null);
+  };
 
   return (
     <View style={styles.container}>
@@ -186,7 +182,7 @@ const ChatRoom = ({ route }) => {
                     : styles.otherMessageContainer,
                 ]}
               >
-                <View >
+                <View>
                   <Text style={styles.messageText(message.isMine)}>
                     {message.text}
                   </Text>
@@ -205,20 +201,26 @@ const ChatRoom = ({ route }) => {
                 key={index}
                 style={[
                   styles.messageBubble,
-                    message.user_id === authUser._id
+                  message.user_id === authUser._id
                     ? styles.myMessageContainer
                     : styles.otherMessageContainer,
                 ]}
               >
-                <Image
-                  source={{ uri: `${env.BACK_URL}/chat_img/${message.image}` }}
-                  style={{width:180, height:180}}
-                />
+                <TouchableOpacity onPress={() => handleSeeImageDetail(`${env.BACK_URL}/chat_img/${message.image}`)}>
+                  <Image
+                    source={{ uri: `${env.BACK_URL}/chat_img/${message.image}` }}
+                    style={{ width: 180, height: 180 }}
+                  />
+                </TouchableOpacity>
               </View>
             )
           )}
-
-                 </ScrollView>
+        <ModalImageTouchable
+          visible={modalVisible}
+          uri={selectedImage}
+          onClose={closeModal}
+        />
+      </ScrollView>
 
       <View style={styles.inputContainer}>
         <TouchableOpacity

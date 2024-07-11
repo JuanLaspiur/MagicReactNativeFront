@@ -15,7 +15,6 @@ import { login } from '../../api/Login.controller';
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 import { loginWithGoogle } from "../../api/User.controller";
-import CheckBox from '@react-native-community/checkbox';
 
 WebBrowser.maybeCompleteAuthSession();
 
