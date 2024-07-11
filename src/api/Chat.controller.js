@@ -1,4 +1,5 @@
 import api from './configure'; 
+import apiFormData from './configure'
 
 const getAllMyChats = async(userID)=>{
     try {
@@ -36,6 +37,17 @@ const sendMessageBychatID = async(data,chatID)=>{
     }
 }
 
+const sendImageMessage = async (chatID, file) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await apiFormData.post(`/send_message/${chatID}`, formData);
+      console.log('Respuesta del servidor:', response.data);
+    } catch (error) {
+      console.error('Error al enviar imagen mensaje:', error);
+    }
+  };
+ 
 const udateChatBychatID = async(chatID)=>{
     try {
         const response = await api.put('/send_message/'+chatID); 
@@ -47,7 +59,7 @@ const udateChatBychatID = async(chatID)=>{
 
 
 
-export { getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID }
+export { getAllMyChats, getChatBychatID, ChatPrivadoByuserID, sendMessageBychatID, udateChatBychatID,sendImageMessage }
 
 /*
     Route.get("all_chats", "ChatController.index");

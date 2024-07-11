@@ -16,6 +16,7 @@ import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 const { height } = Dimensions.get("window");
@@ -60,7 +61,7 @@ const Login = () => {
   useEffect(() => {
     if (response?.type === "success") {
       const { authentication } = response;
-      alert('Respuesta de autenticación de Google:', JSON.stringify(authentication));
+      alert('Respuesta de autenticación de Google: ', JSON.stringify(authentication));
       navigation.navigate('Index');
     }
   }, [response]);
