@@ -22,6 +22,7 @@ import {
 } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import env from "../../../env";
+import { CheckBox } from 'react-native-elements';
 
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
@@ -32,6 +33,10 @@ const ChatRoom = ({ route }) => {
   const [ surverID, setSurverID ] = useState('')
   const [ surverAsk, setSurverAsk] = useState('')
   const [ surveyOptions, setSurveyOptions] = useState('')
+
+  // encuesta
+  const [isSelected, setIsSelected] = useState(false);
+
   useEffect(() => {
     (async () => {
       const { status } =
@@ -143,8 +148,18 @@ const ChatRoom = ({ route }) => {
 
 
   const sendSurveyMessage = async() =>{
-    alert('Encuesta enviada desde ChatRoom ' +surverID)
     const options = await getSurveyOptionsBySurveyID(surverID)
+    console.log(JSON.stringify(options))
+    /*
+     console.log(JSON.stringify(options)): 
+    [{"_id":"669037cd60bf8c0b5f1d34db","texto":"Jskkanan","encuesta_id":"669037cd60bf8c0b5f1d34da","created_at":"2024-07-11T19:51:41.406Z",
+    "updated_at":"2024-07-11T19:51:41.406Z"},{"_id":"669037cd60bf8c0b5f1d34dc","texto":"Jakakmanan","encuesta_id":"669037cd60bf8c0b5f1d34da"
+    ,"created_at":"2024-07-11T19:51:41.663Z","updated_at":"2024-07-11T19:51:41.663Z"}]
+    */
+   //quiero que aqui, despuesd e obtener las opciones Envies un mensaje JSX
+   // con las opciones que puedan ser clickedas cuando se muestren los mensajes
+   // Y que y que se vea la pregunta surverAsk (nombre del useState)
+
     setSurveyOptions(options)
     setSurverID('')
   }
@@ -171,7 +186,7 @@ const ChatRoom = ({ route }) => {
                     : styles.otherMessageContainer,
                 ]}
               >
-                <View style={styles.messageContent}>
+                <View >
                   <Text style={styles.messageText(message.isMine)}>
                     {message.text}
                   </Text>
@@ -202,7 +217,9 @@ const ChatRoom = ({ route }) => {
               </View>
             )
           )}
-      </ScrollView>
+
+                 </ScrollView>
+
       <View style={styles.inputContainer}>
         <TouchableOpacity
           onPress={handleImagePicker}
@@ -301,5 +318,5 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     padding: 10,
-  },
+  }
 });

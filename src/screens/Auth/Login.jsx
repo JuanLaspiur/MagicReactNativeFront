@@ -15,6 +15,7 @@ import { login } from '../../api/Login.controller';
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 import { loginWithGoogle } from "../../api/User.controller";
+import CheckBox from '@react-native-community/checkbox';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -76,7 +77,7 @@ const Login = () => {
       const response = await loginWithGoogle(token)
       if(response.verified_email) {
         setEmail(response.email)
-        setPassword(response.id)  
+        setPassword('65f9836d7bce022d620d26de') // harcode  
      }
      await handleLogin()
     } catch (error) {
