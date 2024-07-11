@@ -71,7 +71,6 @@ const Login = () => {
   }, [response]);
 
   const getUserInfo = async (token) => {
-    if (!token) return;
     try {
       const response = await fetch(
         "https://www.googleapis.com/userinfo/v2/me",
@@ -79,12 +78,10 @@ const Login = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       const user = await response.json();
-      await AsyncStorage.setItem("@user", JSON.stringify(user));
       alert('Usuario:  '+JSON.stringify(user))
     } catch (error) {
-      // Add your own error handler here
+      console.error('Error al obtener usuario con Google ')
     }
   };
 
