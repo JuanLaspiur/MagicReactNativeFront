@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -25,34 +25,31 @@ import env from "../../../env";
 import ModalImageTouchable from "../../components/User/Messages/ModalImageTouchable";
 import { io } from "socket.io-client";
 
-
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
   const [authUser, setAuthUser] = useState([]);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [flag, setFlag] = useState(false);
-  const [surverID, setSurverID] = useState('');
-  const [surverAsk, setSurverAsk] = useState('');
+  const [surveyID, setSurveyID] = useState('');
+  const [surveyAsk, setSurveyAsk] = useState('');
   const [surveyOptions, setSurveyOptions] = useState('');
-
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  // encuesta
   const [isSelected, setIsSelected] = useState(false);
+  const socket = useRef(null); // Usar useRef para el socket
 
   useEffect(() => {
-    const newSocket = io(env.BACK_URL);
-   // setSocket(newSocket);
-    newSocket.on("connection", () => {
+    socket.current = io(env.BACK_URL);
+    socket.current.on("connection", () => {
       console.log("Conectado al servidor");
     });
 
     return () => {
-      newSocket.disconnect();
+      socket.current.disconnect();
     };
-  }, []);
+  }, [flag]);
+
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -67,21 +64,21 @@ const ChatRoom = ({ route }) => {
     };
     getAuthUser();
 
-    if (chat.message) {
+    if (chat.messages) {
       setMessages(chat.messages);
     } else {
       setMessages(chat.messages);
-      faundMessagesByChatId(chat._id);
+      findMessagesByChatId(chat._id);
     }
-  }, [flag, surverID]);
+  }, [flag, surveyID]);
 
   useEffect(()=>{
-    if(surverID.length > 0){
-      sendSurveyMessage()
+    if(surveyID.length > 0){
+      sendSurveyMessage();
     }
-  }, [surverID])
+  }, [surveyID, flag]);
 
-  const faundMessagesByChatId = async (id) => {
+  const findMessagesByChatId = async (id) => {
     try {
       const response = await getChatBychatID(id);
       setMessages(response.data.messages);
@@ -108,6 +105,9 @@ const ChatRoom = ({ route }) => {
 
     try {
       await sendMessageBychatID(sendMessaje, chat._id);
+      if (socket.current) {
+        socket.current.emit("newMessage", sendMessaje);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -153,14 +153,14 @@ const ChatRoom = ({ route }) => {
   };
 
   const setterSurveyIDAndAsk = (id, ask) => {
-    setSurverID(id);
-    setSurverAsk(ask);
+    setSurveyID(id);
+    setSurveyAsk(ask);
   };
 
   const sendSurveyMessage = async () => {
-    const options = await getSurveyOptionsBySurveyID(surverID);
+    const options = await getSurveyOptionsBySurveyID(surveyID);
     setSurveyOptions(options);
-    setSurverID('');
+    setSurveyID('');
   };
 
   const handleSendMySurveyVote = async (option) => {
@@ -257,6 +257,7 @@ const ChatRoom = ({ route }) => {
   );
 };
 
+
 export default ChatRoom;
 
 const styles = StyleSheet.create({
@@ -271,7 +272,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   messageBubble: {
-    flexDirection: "column", // Cambiado a column para apilar los elementos
+    flexDirection: "column",
     maxWidth: "80%",
     marginBottom: 10,
     padding: 10,

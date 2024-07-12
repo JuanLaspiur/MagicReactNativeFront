@@ -74,10 +74,10 @@ const Login = () => {
   const getUserInfo = async (token) => {
     try {
       const response = await loginWithGoogle(token)
-      if(response.verified_email) {
+   /*   if(response.verified_email) {
         setEmail(response.email)
-        setPassword('65f9836d7bce022d620d26de') // harcode  
-     }
+        setPassword('65f9836d7bce022d620d26de')  
+     } */
      await handleLogin()
     } catch (error) {
       console.error('Error al obtener usuario con Google ')

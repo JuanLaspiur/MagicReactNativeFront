@@ -14,6 +14,7 @@ const registerUser =  async(requestBody) => {
 const loginWithGoogle = async(userGoogleToken) => {
   try {
     const response = await api.post('/loginByGoogle2WithReactNative', { googleToken: userGoogleToken})
+    alert('Response desde el axios  '+JSON.stringify(response))
     return response
   } catch (error) {
     console.log('Error en el metodo axios loginWithGoogle ' +error)
