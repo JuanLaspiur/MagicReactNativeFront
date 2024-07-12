@@ -15,6 +15,7 @@ import { login } from '../../api/Login.controller';
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 import { loginWithGoogle } from "../../api/User.controller";
+import { io } from "socket.io-client";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -48,8 +49,6 @@ const Login = () => {
       console.log('Error al ingresar sesión', error);
     }
   };
-
-  // Inicio de sesión con Google
   const [request, response, promptAsync] = Google.useAuthRequest({
     clientId: "147535335015-d06scq2un6akiqlcjko1e9bkj8b7lq1l.apps.googleusercontent.com",
     androidClientId: "147535335015-lrot3o45l9t6d7fb3ka4oh6i3nqql9n6.apps.googleusercontent.com",
@@ -63,21 +62,51 @@ const Login = () => {
   };
 
   useEffect(() => {
+    alert('Response USEEFFECT ? '+JSON.stringify(response))
     if (response?.type === "success" && response?.authentication?.accessToken) {
-    const accessToken = response.authentication.accessToken;
+    const accessToken = response.authentication.accessToken;  
+    alert('Good ? '+JSON.stringify(accessToken))
     getUserInfo(accessToken); 
   } else {
     alert('Respuesta de autenticación no válida.');
   }
   }, [response]);
 
+  useEffect(() => {
+    fetchGetChat();
+    const newSocket = io(
+      "https://ferreteria-seguridad-back-2.onrender.com:443"
+    );
+    setSocket(newSocket);
+
+    newSocket.on("connection", () => {
+      console.log("Conectado al servidor");      
+    });
+
+    newSocket.on("connectped", () => {
+      console.log("Unido a la sala de chat");      
+    });
+
+    newSocket.on("message received", (data) => {
+      setMessages(data);
+
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [reload]);
+
+
+
   const getUserInfo = async (token) => {
     try {
       const response = await loginWithGoogle(token)
-      if(response.verified_email) {
+      alert('Response del servidor getUserInfo '+JSON.stringify(response))
+    /*  if(response.verified_email) {
         setEmail(response.email)
         setPassword('65f9836d7bce022d620d26de') // harcode  
-     }
+     } */
      await handleLogin()
     } catch (error) {
       console.error('Error al obtener usuario con Google ')
