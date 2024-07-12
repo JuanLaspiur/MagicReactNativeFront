@@ -23,6 +23,8 @@ import {
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import env from "../../../env";
 import ModalImageTouchable from "../../components/User/Messages/ModalImageTouchable";
+import { io } from "socket.io-client";
+
 
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
@@ -40,6 +42,17 @@ const ChatRoom = ({ route }) => {
   // encuesta
   const [isSelected, setIsSelected] = useState(false);
 
+  useEffect(() => {
+    const newSocket = io(env.BACK_URL);
+   // setSocket(newSocket);
+    newSocket.on("connection", () => {
+      console.log("Conectado al servidor");
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
   useEffect(() => {
     (async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
