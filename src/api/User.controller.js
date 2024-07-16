@@ -1,5 +1,5 @@
 import api from './configure';
-
+import { apiNoAuth } from  './configure'
 
 
 const registerUser =  async(requestBody) => {
@@ -13,9 +13,10 @@ const registerUser =  async(requestBody) => {
 
 const loginWithGoogle = async(userGoogleToken) => {
   try {
-    const response = await api.post('/loginByGoogle2WithReactNative', { googleToken: userGoogleToken})
-    alert('Response desde el axios  '+JSON.stringify(response))
-    return response
+    let response = await api.post('/loginByGoogle2WithReactNative', { googleToken: userGoogleToken})
+    response = JSON.stringify(response)
+    alert('Response desde el axios ' +response)
+    return response.data
   } catch (error) {
     console.log('Error en el metodo axios loginWithGoogle ' +error)
   }

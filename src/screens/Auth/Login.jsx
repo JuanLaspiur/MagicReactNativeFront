@@ -11,7 +11,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { login } from '../../api/Login.controller'; 
+import { login, singInWidthGoogle } from '../../api/Login.controller'; 
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 import { loginWithGoogle } from "../../api/User.controller";
@@ -36,11 +36,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     if(email.length === 0 || password.length === 0){
-      alert('No hay ni email ni contraseña ' +JSON.stringify(email)+' '+JSON.stringify(password))
       return
     }
     try {
-      const response = await login(email, password); 
+      const response = await login(email, password);
+   //   alert('[Login común ] ' + JSON.stringify(response)) 
       if (response) {
         navigation.navigate('Index'); 
       }
@@ -73,13 +73,24 @@ const Login = () => {
 
   const getUserInfo = async (token) => {
     try {
-      const response = await loginWithGoogle(token)
-   /*   if(response.verified_email) {
+      let response = await loginWithGoogle(token)
+      response = response
+      const userFinded = response.userFinded; // Accediendo a user
+      const tokenAuth = response.data.SESSION_INFO.token; // Accediendo al token
+      alert('response:::: '+response+'Usuario obtenido: '+ userFinded, ' tokenAuth: '+ tokenAuth)
+
+    /*  if(response.verified_email) {
         setEmail(response.email)
         setPassword('65f9836d7bce022d620d26de')  
      } */
-     await handleLogin()
+    // alert('[respuestaDeLaInformación]  '+JSON.stringify(response))
+    // const response = await singInWidthGoogle(userFinded, tokenAuth)
+    // if(response){
+    //  navigation.navigate('Index');
+    //} 
+    //
     } catch (error) {
+      //alert('Error al obtener el usuario  ' + error)
       console.error('Error al obtener usuario con Google ')
     }
   };

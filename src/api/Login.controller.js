@@ -37,7 +37,20 @@ const login = async (email, password) => {
   }
 };
 
-export { login };
+
+const singInWidthGoogle = async(user, authToken) => {
+  try {
+    setTokenString(authToken);
+    await saveToSecureStore("user", JSON.stringify(user));
+    if(user && authToken) {
+      return true
+    }
+    return false
+  } catch (error) {
+    console.log('Error singInWidthGoogle ', error)
+  }
+}
+export { login, singInWidthGoogle };
 
 
 

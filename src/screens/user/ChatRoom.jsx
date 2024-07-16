@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -23,7 +23,6 @@ import {
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 import env from "../../../env";
 import ModalImageTouchable from "../../components/User/Messages/ModalImageTouchable";
-import { io } from "socket.io-client";
 
 const ChatRoom = ({ route }) => {
   const { user, chat, mensajes } = route.params;
@@ -31,24 +30,15 @@ const ChatRoom = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [flag, setFlag] = useState(false);
-  const [surveyID, setSurveyID] = useState('');
-  const [surveyAsk, setSurveyAsk] = useState('');
+  const [surverID, setSurverID] = useState('');
+  const [surverAsk, setSurverAsk] = useState('');
   const [surveyOptions, setSurveyOptions] = useState('');
+
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // encuesta
   const [isSelected, setIsSelected] = useState(false);
-  const socket = useRef(null); // Usar useRef para el socket
-
-  useEffect(() => {
-    socket.current = io(env.BACK_URL);
-    socket.current.on("connection", () => {
-      console.log("Conectado al servidor");
-    });
-
-    return () => {
-      socket.current.disconnect();
-    };
-  }, [flag]);
 
   useEffect(() => {
     (async () => {
@@ -64,21 +54,21 @@ const ChatRoom = ({ route }) => {
     };
     getAuthUser();
 
-    if (chat.messages) {
+    if (chat.message) {
       setMessages(chat.messages);
     } else {
       setMessages(chat.messages);
-      findMessagesByChatId(chat._id);
+      faundMessagesByChatId(chat._id);
     }
-  }, [flag, surveyID]);
+  }, [flag, surverID]);
 
   useEffect(()=>{
-    if(surveyID.length > 0){
-      sendSurveyMessage();
+    if(surverID.length > 0){
+      sendSurveyMessage()
     }
-  }, [surveyID, flag]);
+  }, [surverID])
 
-  const findMessagesByChatId = async (id) => {
+  const faundMessagesByChatId = async (id) => {
     try {
       const response = await getChatBychatID(id);
       setMessages(response.data.messages);
@@ -105,9 +95,6 @@ const ChatRoom = ({ route }) => {
 
     try {
       await sendMessageBychatID(sendMessaje, chat._id);
-      if (socket.current) {
-        socket.current.emit("newMessage", sendMessaje);
-      }
     } catch (err) {
       console.log(err);
     }
@@ -153,14 +140,14 @@ const ChatRoom = ({ route }) => {
   };
 
   const setterSurveyIDAndAsk = (id, ask) => {
-    setSurveyID(id);
-    setSurveyAsk(ask);
+    setSurverID(id);
+    setSurverAsk(ask);
   };
 
   const sendSurveyMessage = async () => {
-    const options = await getSurveyOptionsBySurveyID(surveyID);
+    const options = await getSurveyOptionsBySurveyID(surverID);
     setSurveyOptions(options);
-    setSurveyID('');
+    setSurverID('');
   };
 
   const handleSendMySurveyVote = async (option) => {
@@ -257,7 +244,6 @@ const ChatRoom = ({ route }) => {
   );
 };
 
-
 export default ChatRoom;
 
 const styles = StyleSheet.create({
@@ -272,7 +258,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   messageBubble: {
-    flexDirection: "column",
+    flexDirection: "column", // Cambiado a column para apilar los elementos
     maxWidth: "80%",
     marginBottom: 10,
     padding: 10,

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import env from '../../env.js';
-import { tokenString, setTokenString, getTokenSting } from './AuthToken'; 
-
-
+import { getTokenSting } from './AuthToken'; 
 
 const api = axios.create({
   baseURL: env.BACK_URL,
@@ -22,5 +20,13 @@ const apiFormData = axios.create({
   },
 });
 
-export { api, apiFormData };
+const apiNoAuth = axios.create({
+  baseURL: env.BACK_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export { api, apiFormData, apiNoAuth };
 export default api;
