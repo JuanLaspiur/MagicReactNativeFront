@@ -97,6 +97,23 @@ const asistirAQuedada = async (quedadaID) => {
   }
 }
 
+const confirmarAQuedada = async (userID, quedadaID, bool) => {
+  try {
+    // Configura el cuerpo de la solicitud con los datos necesarios
+    const response = await api.put('/actualizarAsistencia', {
+      userId: userID,
+      quedadaId: quedadaID,
+      asistencia: bool
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error(`Error al asistir a la quedada:`, error);
+    throw error;
+  }
+};
+
+
 const invitar = async(quedadaID, userID )=>{
   try {
     const response = await api.post('/invitar/'+quedadaID,  { invitado: { user_id: userID, asistencia: false, rating_id: null }, invitar: true})
@@ -106,4 +123,28 @@ const invitar = async(quedadaID, userID )=>{
   }
 }
 
-export { invitar, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };
+/*
+    Route.get("getQuedadasAsistenciaPorConfirmar","QuedadaController.getQuedadasAsistenciaPorConfirmar")
+    Route.get("getQuedadasAsistenciaConfirmadas","QuedadaController.getQuedadasAsistenciaConfirmadas")
+
+*/
+const quedadasPorConfirmarAsistencia = async () =>{
+  try{
+    const response = await api.get('/getQuedadasAsistenciaPorConfirmar')
+    return response.data
+  }catch(error){
+    console.log('Error '+error)
+  }
+}
+
+
+const quedadasAsistenciaAsistenciaConfirmada = async () =>{
+  try{
+    const response = await api.get('/getQuedadasAsistenciaConfirmadas')
+    return response.data
+  }catch(error){
+    console.log('Error '+error)
+  }
+}
+
+export { invitar,confirmarAQuedada, quedadasPorConfirmarAsistencia,quedadasAsistenciaAsistenciaConfirmada, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };

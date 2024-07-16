@@ -3,17 +3,14 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
 import { useNavigation } from '@react-navigation/native';
 
-const ConfirmOKQuedadaCard = () => {
-    const navigation = useNavigation();
-  const handleCardPress = () => {
-    navigation.navigate('QuedadaDetail');
-  };
+const ConfirmOKQuedadaCard = ({quedada, reload, authUser}) => {
+
 
   return (
-    <TouchableOpacity style={styles.card} onPress={handleCardPress}>
+    <TouchableOpacity style={styles.card}>
       <View style={styles.rowContainer}> 
         <Ionicons name="dice-outline" size={24} color="white" />
-        <Text style={styles.cardText}>Quedada confirmada</Text>
+        <Text style={styles.cardText}>{quedada.name}</Text>
       </View>
     </TouchableOpacity>
   );

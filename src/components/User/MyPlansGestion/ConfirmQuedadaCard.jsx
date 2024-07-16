@@ -2,26 +2,26 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Ajusta la importación según tu configuración
 import { useNavigation } from '@react-navigation/native';
+import { confirmarAQuedada } from '../../../api/Quedada.controller';
 
-const ConfirmQuedadaCard = () => {
+const ConfirmQuedadaCard = ({quedada, reload, authUser}) => {
     const navigation = useNavigation();
-  const handleCardPress = () => {
-    navigation.navigate('QuedadaDetail');
-  };
-    const handleIconCancelPress = () => {
-        alert('Cancel')
-      };  
-  const handleIconOKPress = () => {
-    alert('Confirmando')
+
+
+  const handleIconOKPress = async() => {
+    const response = await confirmarAQuedada(authUser._id, quedada._id, true)
+    alert(JSON.stringify(response))
+    reload()
+  // authUser={authUser}
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={handleCardPress}>
+    <TouchableOpacity style={styles.card} >
       <View style={styles.rowContainer}>
-        <Text style={styles.text}>Nombre Quedada</Text>
-        <TouchableOpacity onPress={handleIconCancelPress}>
+        <Text style={styles.text}>{quedada.name}</Text>
+       {/* <TouchableOpacity onPress={handleIconCancelPress}>
         <Ionicons name="flash-off-outline" size={24} color="black" /> 
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={handleIconOKPress}>
           <Ionicons name="dice-outline" size={28} color="#AED0F6" />
         </TouchableOpacity>
