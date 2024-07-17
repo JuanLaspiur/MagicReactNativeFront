@@ -48,9 +48,12 @@ const singInWidthGoogle = async(user, authToken) => {
       }
     });
 
+
     await saveToSecureStore("user", JSON.stringify(userResponse));
-    if(user && authToken) {
+    if(userResponse && authToken) {
       return true
+    } else {
+      alert('Este es el usuario obtenido '+JSON.stringify(userResponse))
     }
     return false
   } catch (error) {

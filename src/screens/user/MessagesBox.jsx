@@ -72,8 +72,6 @@ const MessagesBox = () => {
           message.activo && message.evento_id && <ItemQuedadaMessageBox key={index} message={message} />
         ))}
       </View>
-
-
     </ScrollView>
   );
 };
