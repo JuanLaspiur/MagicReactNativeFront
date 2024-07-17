@@ -74,15 +74,18 @@ const Login = () => {
   const getUserInfo = async (token) => {
     try {
       let response = await loginWithGoogle(token)
-      response = response
-      const userFinded = response.userFinded; // Accediendo a user
-      const tokenAuth = response.data.SESSION_INFO.token; // Accediendo al token
-      alert('response:::: '+response+'Usuario obtenido: '+ userFinded, ' tokenAuth: '+ tokenAuth)
+      
+      const userFinded = response.user; // Accediendo a user
+      const tokenAuth = response.token; // Accediendo al token
+      alert('token front  '+ JSON.stringify(tokenAuth))
+      alert('Usuario obtenido front: '+ userFinded + ' tokenAuth: '+ tokenAuth) 
+      
 
-    /*  if(response.verified_email) {
-        setEmail(response.email)
-        setPassword('65f9836d7bce022d620d26de')  
-     } */
+
+        setEmail(userFinded.email)
+        setPassword(userFinded._id)  
+        await handleLogin()
+
     // alert('[respuestaDeLaInformación]  '+JSON.stringify(response))
     // const response = await singInWidthGoogle(userFinded, tokenAuth)
     // if(response){

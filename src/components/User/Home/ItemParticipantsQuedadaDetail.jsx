@@ -4,7 +4,7 @@ import { getUserById } from '../../../api/User.controller';
 import env from '../../../../env'
 const ItemParticipantsQuedadaDetail = ({ asistente }) => {
   const [usuario, setUsuario] = useState(null);
-  const [asistenciaConfirmada, setAsistenciaConfirmada] = useState(false);
+  const [asistenciaConfirmada, setAsistenciaConfirmada] = useState(asistente.asistencia);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   statusConfirmed: {
-    color: "green",
-    fontSize: 16,
+    color: "#4FDE1C",
+    fontSize: 14,
     fontWeight: "bold",
+    opacity:0.9
   },
   statusUnconfirmed: {
     color: "red",
