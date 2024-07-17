@@ -34,6 +34,15 @@ const getUserById = async (userID) => {
 }
 };
 
+const getUserByIdSinData = async (userID) => {
+  try {
+    const response = await api.get(`/user_by_id/${userID}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener el usuario por id:', error);
+}
+};
+
 const getSeguidores_seguidos = async (userID, num) =>{
   try {
     const response = await api.get(`/seguidores_seguidos/${num}/${userID}`);
@@ -153,4 +162,4 @@ const handlePasswordRecover = async(email)=> {
 
 
 
-export {registerUser, loginWithGoogle, handlePasswordRecover,getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
+export {registerUser, getUserByIdSinData, loginWithGoogle, handlePasswordRecover,getUserById,getCities,updateUserInfo,getCommunities ,deleteMyUser,getAnimales,getSeguidores_seguidos, seguidoresQueMeSiguen, seguidoresYseguidos, todosLosContactos, seguirUsuario, getUserInfo}
