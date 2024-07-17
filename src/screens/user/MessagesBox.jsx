@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import AppHeader from "../../components/User/AppHeader";
-import ItemMessage from "../../components/User/Messages/ItemMenssageBox";
+import ItemMessageBox from "../../components/User/Messages/ItemMessageBox";
 import { getAllMyChats } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 
 const MessagesBox = () => {
   const [user, setUser] = useState(null); 
   const [messages, setMessages] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("Usuarios");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -42,9 +43,29 @@ const MessagesBox = () => {
   return (
     <ScrollView style={styles.container}>
       <AppHeader title="Mensajes" />
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            selectedTab === "Usuarios" && styles.selectedTabButton,
+          ]}
+          onPress={() => setSelectedTab("Usuarios")}
+        >
+          <Text style={styles.tabButtonText}>Usuarios</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tabButton,
+            selectedTab === "Quedadas" && styles.selectedTabButton,
+          ]}
+          onPress={() => setSelectedTab("Quedadas")}
+        >
+          <Text style={styles.tabButtonText}>Quedadas</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.messageListContainer}>
-        {messages.map((message, index) => (
-          message.activo && message.otro_id && <ItemMessage key={index} message={message} />
+        {selectedTab === "Usuarios" && messages.map((message, index) => (
+          message.activo && message.otro_id && <ItemMessageBox key={index} message={message} />
         ))}
       </View>
     </ScrollView>
@@ -55,6 +76,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F7F7F7",
+  },
+  tabContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingVertical: 10,
+  },
+  tabButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#D9E3F0",
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  selectedTabButton: {
+    backgroundColor: "#AED0F6",
+  },
+  tabButtonText: {
+    color: 'gray'
   },
   messageListContainer: {
     paddingHorizontal: 10,

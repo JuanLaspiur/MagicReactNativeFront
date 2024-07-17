@@ -77,21 +77,13 @@ const Login = () => {
       
       const userFinded = response.user; // Accediendo a user
       const tokenAuth = response.token; // Accediendo al token
-      alert('token front  '+ JSON.stringify(tokenAuth))
-      alert('Usuario obtenido front: '+ userFinded + ' tokenAuth: '+ tokenAuth) 
-      
-
-
-        setEmail(userFinded.email)
-        setPassword(userFinded._id)  
-        await handleLogin()
-
-    // alert('[respuestaDeLaInformación]  '+JSON.stringify(response))
-    // const response = await singInWidthGoogle(userFinded, tokenAuth)
-    // if(response){
-    //  navigation.navigate('Index');
-    //} 
-    //
+     const singInResponse = await singInWidthGoogle(userFinded, tokenAuth)
+     if(singInResponse){
+    navigation.navigate('Index');
+    } else{
+      alert('Error al loguiarse con google')
+    }
+    
     } catch (error) {
       //alert('Error al obtener el usuario  ' + error)
       console.error('Error al obtener usuario con Google ')

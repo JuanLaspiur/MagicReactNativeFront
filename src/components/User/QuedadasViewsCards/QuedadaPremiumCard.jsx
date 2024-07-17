@@ -19,7 +19,8 @@ const QuedadaPremiumCard = ({ quedada }) => {
 
   const handleAsistirPress = async () => {
     try {
-      await asistirAQuedada(quedada._id);
+     const response =  await asistirAQuedada(quedada._id);
+     console.log('Respuesta ' + JSON.stringify(response))
       setAsistir(!asistir);
       alert(asistir ? 'Has cancelado tu asistencia a la quedada' : 'Asistirás a la quedada');
     } catch (error) {

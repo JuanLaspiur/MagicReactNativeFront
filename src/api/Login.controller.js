@@ -41,7 +41,14 @@ const login = async (email, password) => {
 const singInWidthGoogle = async(user, authToken) => {
   try {
     setTokenString(authToken);
-    await saveToSecureStore("user", JSON.stringify(user));
+
+    const userResponse = await axios.get(`${env.BACK_URL}/user_by_id/${user._id}`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`
+      }
+    });
+
+    await saveToSecureStore("user", JSON.stringify(userResponse));
     if(user && authToken) {
       return true
     }
