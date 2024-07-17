@@ -123,6 +123,15 @@ const invitar = async(quedadaID, userID )=>{
   }
 }
 
+const solicitarParticipacionPremium = async(quedadaID) =>{
+  try {
+    const response = await api.post('/solicitarPremium/'+quedadaID)
+    return response.data
+  } catch (error) {
+    console.log('Error al solicitar participación en evento premium '+error)
+  }
+}
+
 /*
     Route.get("getQuedadasAsistenciaPorConfirmar","QuedadaController.getQuedadasAsistenciaPorConfirmar")
     Route.get("getQuedadasAsistenciaConfirmadas","QuedadaController.getQuedadasAsistenciaConfirmadas")
@@ -147,4 +156,4 @@ const quedadasAsistenciaAsistenciaConfirmada = async () =>{
   }
 }
 
-export { invitar,confirmarAQuedada, quedadasPorConfirmarAsistencia,quedadasAsistenciaAsistenciaConfirmada, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };
+export { invitar,confirmarAQuedada, solicitarParticipacionPremium, quedadasPorConfirmarAsistencia,quedadasAsistenciaAsistenciaConfirmada, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };

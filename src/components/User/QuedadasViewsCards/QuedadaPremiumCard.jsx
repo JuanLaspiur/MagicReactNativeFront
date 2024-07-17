@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; 
 import env from '../../../../env.js';
 import { formatDate } from '../../../helpers/UpdateQuedadaDay.js';
-import { asistirAQuedada } from '../../../api/Quedada.controller.js';
+import { solicitarParticipacionPremium } from '../../../api/Quedada.controller.js';
 import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore.js';
 
 const QuedadaPremiumCard = ({ quedada }) => {
@@ -19,10 +19,25 @@ const QuedadaPremiumCard = ({ quedada }) => {
 
   const handleAsistirPress = async () => {
     try {
-     const response =  await asistirAQuedada(quedada._id);
-     console.log('Respuesta ' + JSON.stringify(response))
+      const response = await solicitarParticipacionPremium(quedada._id);
+      const sendValue = response.send;
+
+      switch (sendValue) {
+        case 1:
+          Alert.alert('Solicitud Enviada', 'Magic te enviará una notificación en caso de ser aceptado en la quedada premium.');
+          break;
+        case 2:
+          Alert.alert('Ya has solicitado participar en esta quedada. ', 'Es una quedada premium debes esperar la respuesta del creador. Mágic te avisará en caso de ser aceptado');
+          break;
+        case 3:
+          Alert.alert('Quedada no encontrada.');
+          break;
+        default:
+          Alert.alert('Error', 'Ha ocurrido un error al solicitar participación.');
+          break;
+      }
+
       setAsistir(!asistir);
-      alert(asistir ? 'Has cancelado tu asistencia a la quedada' : 'Asistirás a la quedada');
     } catch (error) {
       console.error('Error al cambiar la asistencia:', error);
     }
@@ -40,7 +55,6 @@ const QuedadaPremiumCard = ({ quedada }) => {
     } else {
       checkAsistencia();
     }
-
   }, [quedada, authUser]);
 
   const handlePress = () => {
@@ -72,7 +86,7 @@ const QuedadaPremiumCard = ({ quedada }) => {
         <Text style={styles.infoText}>{`Max: ${maxParticipantes}`}</Text>
         <Text style={styles.infoText}>{zona}</Text>
       </View>
-      {authUser && quedada && (quedada.user_id !== authUser._id )&& (quedada.status != 3)&&(
+      {authUser && quedada && (quedada.user_id !== authUser._id) && (quedada.status !== 3) && (
         <TouchableOpacity
           style={[styles.iconContainer, { backgroundColor: iconColor }]}
           onPress={handleAsistirPress}
