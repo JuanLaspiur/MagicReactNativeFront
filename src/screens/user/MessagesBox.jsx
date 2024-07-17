@@ -31,7 +31,7 @@ const MessagesBox = () => {
       try {
         if (user) {
           const response = await getAllMyChats(user._id);
-          setMessages(response); 
+          setMessages(response.reverse()); 
         }
       } catch (error) {
         console.log(error);
