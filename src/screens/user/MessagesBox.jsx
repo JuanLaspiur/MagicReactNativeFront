@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import AppHeader from "../../components/User/AppHeader";
 import ItemMessageBox from "../../components/User/Messages/ItemMessageBox";
+import ItemQuedadaMessageBox from "../../components/User/Messages/ItemQuedadaMessageBox";
 import { getAllMyChats } from "../../api/Chat.controller";
 import { getValueFromSecureStore } from "../../helpers/ExpoSecureStore";
 
@@ -67,7 +68,12 @@ const MessagesBox = () => {
         {selectedTab === "Usuarios" && messages.map((message, index) => (
           message.activo && message.otro_id && <ItemMessageBox key={index} message={message} />
         ))}
+        {selectedTab === "Quedadas" && messages.map((message, index) => (
+          message.activo && message.evento_id && <ItemQuedadaMessageBox key={index} message={message} />
+        ))}
       </View>
+
+
     </ScrollView>
   );
 };
