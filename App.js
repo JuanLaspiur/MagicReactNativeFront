@@ -27,6 +27,7 @@ import MyFriendsFilter from "./src/components/User/plansFilter/MyFriendsFilter.j
 import TypeFilter from "./src/components/User/plansFilter/TypeFilter.jsx";
 // .... messagges
 import ChatRoom from "./src/screens/user/ChatRoom.jsx";
+import ChatRoomQuedada from "./src/screens/user/ChatRoomQuedada.jsx";
 // .... other person profile
 import OtherUserProfile from "./src/screens/user/OtherUserProfile.jsx";
 import YourFriends from "./src/components/User/OtherUserProfile/YourFriends.jsx";
@@ -132,6 +133,11 @@ return (
           <Stack.Screen
             name="ChatRoom"
             component={ChatRoom}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="ChatRoomQuedada"
+            component={ChatRoomQuedada}
             options={{ headerShown: false }}
           />
           <Stack.Screen

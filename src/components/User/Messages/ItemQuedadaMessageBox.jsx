@@ -43,7 +43,7 @@ const ItemQuedadaMessageBox = ({ message }) => {
   }, [message.evento_id, message._id]);
 
   const handlePress = () => {
-    navigation.navigate('ChatRoom', { chat });
+    navigation.navigate('ChatRoomQuedada', { quedada ,chat });
   };
 
   return (
