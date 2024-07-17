@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import AppHeader from '../../components/User/AppHeader';
 import ParticipantsCarrucel from '../../components/User/Home/ParticipantsCarrucel';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import env from '../../../env';
 const { width: screenWidth } = Dimensions.get('window');
 import { formatDate } from '../../helpers/UpdateQuedadaDay'
 import { getValueFromSecureStore } from '../../helpers/ExpoSecureStore'
-import { asistirAQuedada } from '../../api/Quedada.controller'
+import { asistirAQuedada, solicitarParticipacionPremium } from '../../api/Quedada.controller'
 import { useNavigation } from '@react-navigation/native';
  
 
@@ -44,6 +44,8 @@ const getAuthUser = async() => {
  },[])
 
   const handleAsistirPress = async() => {
+
+    if(quedada.privacy != "Premium") {
     if (asistir) {
       alert('Cancelar quedada')
       const data =  await asistirAQuedada(quedada._id);
@@ -52,6 +54,29 @@ const getAuthUser = async() => {
       const data =  await asistirAQuedada(quedada._id);
     }
     setAsistir(!asistir);
+  }else {
+    try {
+      const response = await solicitarParticipacionPremium(quedada._id);
+      const sendValue = response.send;
+
+      switch (sendValue) {
+        case 1:
+          Alert.alert('Solicitud Enviada', 'Magic te enviará una notificación en caso de ser aceptado en la quedada premium.');
+          break;
+        case 2:
+          Alert.alert('Ya has solicitado participar en esta quedada. ', 'Es una quedada premium debes esperar la respuesta del creador. Mágic te avisará en caso de ser aceptado');
+          break;
+        case 3:
+          Alert.alert('Quedada no encontrada.');
+          break;
+        default:
+          Alert.alert('Error', 'Ha ocurrido un error al solicitar participación.');
+          break;
+      }
+    } catch (error) {
+      console.error('Error al cambiar la asistencia:', error);
+    }
+  }
   };
 
   const handleEditPress = async()=> {
