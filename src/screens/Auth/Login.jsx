@@ -81,7 +81,7 @@ const Login = () => {
      if(singInResponse){
     navigation.navigate('Index');
     } else{
-      alert('Error al loguiarse con google')
+     console.log('Error al loquearse')
     }
     
     } catch (error) {

@@ -50,12 +50,13 @@ const singInWidthGoogle = async(user, authToken) => {
 
 
     await saveToSecureStore("user", JSON.stringify(userResponse));
-    if(userResponse && authToken) {
+    if(userResponse && authToken.length > 0) {
       return true
     } else {
-      alert('Este es el usuario obtenido '+JSON.stringify(userResponse))
+      alert('Este es el usuario obtenido '+JSON.stringify(userResponse) + 'id del usuario '+user._id)
+      return false
     }
-    return false
+
   } catch (error) {
     console.log('Error singInWidthGoogle ', error)
   }
