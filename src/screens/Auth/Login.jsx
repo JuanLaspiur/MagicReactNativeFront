@@ -15,7 +15,7 @@ import { login, singInWidthGoogle } from '../../api/Login.controller';
 import ModalForgotPassword from './ModalForgotPassword';
 import { getTokenString } from "../../api/AuthToken";
 import { loginWithGoogle } from "../../api/User.controller";
-
+import ExpoPushToken  from './ExpoPushToken'
 WebBrowser.maybeCompleteAuthSession();
 
 const { height } = Dimensions.get("window");
@@ -93,6 +93,7 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+      <ExpoPushToken/>
       <Image
         source={require("../../assets/Login/Ellipse 1.png")}
         style={styles.eclipse1}
