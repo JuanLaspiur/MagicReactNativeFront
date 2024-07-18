@@ -51,8 +51,12 @@ const AppHeader = ({ title }) => {
         style={styles.logoHeader}
       />
       {/*   <Text style={styles.headerTitle}>{title}</Text> */}
+      <TouchableOpacity style={[styles.iconContainer, {marginHorizontal:-50}]} onPress={()=>{alert('hola')}} >
+      <Ionicons name="notifications" size={24} color="gray" />
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.iconContainer} onPress={handlePressBack}>
-        <Ionicons name="log-out-outline" size={24} color="gray" />
+          <Ionicons name="log-out-outline" size={24} color="gray" />
       </TouchableOpacity>
     </View>
   );
