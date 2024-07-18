@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Para los iconos
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import NotificationsModal from "./Modals/NotificationsModal";
 
 const AppHeader = ({ title }) => {
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+
   const handlePress = () => {
     switch (title) {
       case "QuedadaDetail":
@@ -17,9 +20,15 @@ const AppHeader = ({ title }) => {
         navigation.navigate("Index");
     }
   };
+
   const handlePressBack = () => {
     navigation.navigate("Login");
-  }
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   return (
     <View style={styles.headerContainer}>
       <Image
@@ -37,27 +46,26 @@ const AppHeader = ({ title }) => {
         resizeMode="contain"
         style={styles.eclipse3}
       />
-    <TouchableOpacity style={title === 'Inicio' || title === 'Amigos' || title === 'MyPlansGestion' || title === 'Perfil' || title === 'Mensajes'? styles.hiddenContainer : styles.iconContainer }>
-      <Ionicons
-        name="arrow-back"
-        size={24}
-        color="gray"
-        onPress={handlePress}
-      />
-    </TouchableOpacity>
+      <TouchableOpacity style={title === 'Inicio' || title === 'Amigos' || title === 'MyPlansGestion' || title === 'Perfil' || title === 'Mensajes' ? styles.hiddenContainer : styles.iconContainer }>
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          color="gray"
+          onPress={handlePress}
+        />
+      </TouchableOpacity>
       <Image
         source={require("./../../assets/Login/smallIcon.png")}
         resizeMode="contain"
         style={styles.logoHeader}
       />
-      {/*   <Text style={styles.headerTitle}>{title}</Text> */}
-      <TouchableOpacity style={[styles.iconContainer, {marginHorizontal:-50}]} onPress={()=>{alert('hola')}} >
-      <Ionicons name="notifications" size={24} color="gray" />
+      <TouchableOpacity style={[styles.iconContainer, { marginHorizontal: -50 }]} onPress={toggleModal}>
+        <Ionicons name="notifications" size={23} color={false ? "#B5E61D" : "gray"} />
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.iconContainer} onPress={handlePressBack}>
-          <Ionicons name="log-out-outline" size={24} color="gray" />
+        <Ionicons name="log-out-outline" size={24} color="gray" />
       </TouchableOpacity>
+      <NotificationsModal visible={modalVisible} onClose={toggleModal} />
     </View>
   );
 };
@@ -65,13 +73,13 @@ const AppHeader = ({ title }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
-    height: 70,
+    height: 75,
     backgroundColor: "#fff",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    paddingTop: 25,
+    paddingTop: 28,
   },
   logoHeader: {
     height: "80%",
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
   hiddenContainer: {
     opacity: 0,
     padding: 10
-},
+  },
 });
 
 export default AppHeader;
