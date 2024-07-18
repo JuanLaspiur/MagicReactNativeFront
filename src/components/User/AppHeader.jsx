@@ -7,6 +7,7 @@ import NotificationsModal from "./Modals/NotificationsModal";
 const AppHeader = ({ title }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const [ soonReload , setSoonReload ] = useState(false)
 
   const handlePress = () => {
     switch (title) {
@@ -26,7 +27,9 @@ const AppHeader = ({ title }) => {
   };
 
   const toggleModal = () => {
+    setSoonReload(!soonReload)
     setModalVisible(!modalVisible);
+
   };
 
   return (
@@ -65,7 +68,7 @@ const AppHeader = ({ title }) => {
       <TouchableOpacity style={styles.iconContainer} onPress={handlePressBack}>
         <Ionicons name="log-out-outline" size={24} color="gray" />
       </TouchableOpacity>
-      <NotificationsModal visible={modalVisible} onClose={toggleModal} />
+      <NotificationsModal soonReload={soonReload} visible={modalVisible} onClose={toggleModal} />
     </View>
   );
 };
