@@ -156,4 +156,19 @@ const quedadasAsistenciaAsistenciaConfirmada = async () =>{
   }
 }
 
-export { invitar,confirmarAQuedada, solicitarParticipacionPremium, quedadasPorConfirmarAsistencia,quedadasAsistenciaAsistenciaConfirmada, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };
+const gestionSolicitudQuedadaPremium = async (userID,quedadaID, bool)=>{
+  try {
+    const response = await api.put(`/gestionarSolicitudParticipacion/${quedadaID}`,
+      {
+        user_id: userID,
+        status: bool
+      }
+
+    )
+    return response
+  } catch (error) {
+    console.log('Error '+error)
+  }
+}
+
+export { invitar,confirmarAQuedada,gestionSolicitudQuedadaPremium, solicitarParticipacionPremium, quedadasPorConfirmarAsistencia,quedadasAsistenciaAsistenciaConfirmada, getQuedadaCategories,getAllQuedadas,getAllQuedadasPremium, getQuedadaById, createQuedadaBack, updateQuedada, getQuedadasByUserId, getQuedadasAsistidasByUserId, asistirAQuedada };

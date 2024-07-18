@@ -28,7 +28,7 @@ const QuedadaDetail = ({ route }) => {
   const [authUser, setAuthUser] = useState([]);
   const [asistir, setAsistir] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
+  const [modalVisible, setModalVisible] = useState(false);
   const [modalRequests, setModalRequests] = useState([]);
   
   const urlImagenQuedada = quedada.react
@@ -282,6 +282,7 @@ const QuedadaDetail = ({ route }) => {
         visible={modalVisible}
         requests={quedada.solicitudesDeParticipacion}
         onClose={() => setModalVisible(false)}
+        quedada={quedada}
       />
     </ScrollView>
   );

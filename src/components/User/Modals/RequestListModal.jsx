@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Alert } from 'react-native';
-import { getUserByIdSinData } from '../../../api/User.controller'; // Ajusta esta importación si es necesario
+import { getUserByIdSinData } from '../../../api/User.controller'; 
 import env from '../../../../env';
-import { Ionicons } from '@expo/vector-icons'; // Asegúrate de tener esta dependencia instalada
+import { Ionicons } from '@expo/vector-icons';
+import { gestionSolicitudQuedadaPremium } from '../../../api/Quedada.controller';
 
-const RequestListModal = ({ visible, onClose, requests }) => {
+const RequestListModal = ({ visible, onClose, requests, quedada }) => {
   const [users, setUsers] = useState([]);
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     if (visible) {
@@ -24,22 +26,27 @@ const RequestListModal = ({ visible, onClose, requests }) => {
 
       fetchUsers();
     }
-  }, [visible, requests]);
+  }, [visible, requests, flag]);
 
-  const handleAccept = (userId) => {
-    Alert.alert(
-      'Request Accepted',
-      `User ID: ${userId}`,
-      [{ text: 'OK' }]
-    );
-  };
+  const handleResponse = async(userID, boolResponse) => {
+ gestionSolicitudQuedadaPremium(userID, quedada._id, boolResponse)
+ .then(() => {
+  Alert.alert(
+    boolResponse ? 'Solicitud Aceptada' : 'Solicitud Rechazada', boolResponse ?
+    `Usuario invitado correctamente`:'Solicitud rechazada correctamente ',
+    [{ text: 'OK' }]
+  );
+  setFlag(!flag)
+})
+.catch(error => {
+  console.error('Error procesando la solicitud:', error);
+  Alert.alert(
+    'Error',
+    `Hubo un error procesando la solicitud para el ID de Usuario: ${userID}`,
+    [{ text: 'OK' }]
+  );
+});
 
-  const handleReject = (userId) => {
-    Alert.alert(
-      'Request Rejected',
-      `User ID: ${userId}`,
-      [{ text: 'OK' }]
-    );
   };
 
   const renderItem = ({ item }) => (
@@ -48,10 +55,10 @@ const RequestListModal = ({ visible, onClose, requests }) => {
       <View style={styles.userInfo}>
         <Text style={styles.userName}>{item.name} {item.last_name}</Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={() => handleAccept(item._id)} style={styles.actionButton}>
+          <TouchableOpacity onPress={() => handleResponse(item._id, true)} style={styles.actionButton}>
             <Ionicons name="checkmark-outline" size={24} color="green" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleReject(item._id)} style={styles.actionButton}>
+          <TouchableOpacity onPress={() => handleResponse(item._id, false)} style={styles.actionButton}>
             <Ionicons name="ban-outline" size={24} color="red" />
           </TouchableOpacity>
         </View>
