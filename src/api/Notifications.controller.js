@@ -1,3 +1,4 @@
+import { err } from 'react-native-svg';
 import api from './configure';
 
 const getNotificationsWebApi =  async() =>{
@@ -18,4 +19,13 @@ const updateAllNotificationsWebApiSeen =async()=>{
     }
 }
 
-export { getNotificationsWebApi, updateAllNotificationsWebApiSeen };
+const hasUnreadNotifications = async()=>{
+    try{
+        const response = await api.get('/hasUnreadNotifications')
+        return response.data.hasUnread
+    } catch (error) {
+        console.log('Error al obtener estado de la notificacion ' + error)
+    }
+}
+
+export { getNotificationsWebApi, updateAllNotificationsWebApiSeen, hasUnreadNotifications };

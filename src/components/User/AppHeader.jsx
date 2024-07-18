@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import NotificationsModal from "./Modals/NotificationsModal";
+import { hasUnreadNotifications } from "../../api/Notifications.controller";
 
 const AppHeader = ({ title }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [ soonReload , setSoonReload ] = useState(false)
+  const [ isNotification, setIsNotification ] = useState(false);
 
   const handlePress = () => {
     switch (title) {
@@ -31,6 +33,14 @@ const AppHeader = ({ title }) => {
     setModalVisible(!modalVisible);
 
   };
+
+  useEffect(()=>{
+    const fetchHasUnreadNotifications = async()=>{
+      const response = await hasUnreadNotifications()
+      setIsNotification(response)
+    }
+    fetchHasUnreadNotifications()
+  },[modalVisible])
 
   return (
     <View style={styles.headerContainer}>
@@ -63,7 +73,7 @@ const AppHeader = ({ title }) => {
         style={styles.logoHeader}
       />
       <TouchableOpacity style={[styles.iconContainer, { marginHorizontal: -50 }]} onPress={toggleModal}>
-        <Ionicons name="notifications" size={23} color={false ? "#B5E61D" : "gray"} />
+        <Ionicons name="notifications" size={23} color={isNotification ? "#B5E61D" : "gray"} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.iconContainer} onPress={handlePressBack}>
         <Ionicons name="log-out-outline" size={24} color="gray" />

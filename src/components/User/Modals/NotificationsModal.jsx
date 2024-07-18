@@ -3,11 +3,10 @@ import { Modal, View, Text, StyleSheet, TouchableOpacity, FlatList } from "react
 import { getValueFromSecureStore } from '../../../helpers/ExpoSecureStore';
 import { getNotificationsWebApi, updateAllNotificationsWebApiSeen } from "../../../api/Notifications.controller";
 
-const NotificationsModal = ({ visible, onClose, soonReload }) => {
+const NotificationsModal = ({ visible, onClose }) => {
     const [authUser, setAuthUser] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [flag, setFlag] = useState(false)
-
 
 
     useEffect(() => {
@@ -24,7 +23,7 @@ const NotificationsModal = ({ visible, onClose, soonReload }) => {
 
         getAuthUser();
         getAllWebNotification();
-    }, [flag, soonReload]);
+    }, [flag]);
 
     const renderNotification = ({ item }) => (
         <View style={[
