@@ -41,4 +41,4 @@ const getLasterAdminSurveyOptions = async (surveyID) =>{
   }
 }  
 
-export {getLasterAdminSurvey, getLasterAdminSurveyOptions,sendMySurveyRespose };
+export { getLasterAdminSurvey, getLasterAdminSurveyOptions,sendMySurveyRespose };

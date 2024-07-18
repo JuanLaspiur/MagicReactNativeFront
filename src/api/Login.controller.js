@@ -1,8 +1,11 @@
 import api from './configure';
-import { saveToSecureStore } from '../helpers/ExpoSecureStore';
+import { saveToSecureStore, getValueFromSecureStore } from '../helpers/ExpoSecureStore';
 import { setTokenString } from './AuthToken';
 import axios from 'axios';
-import env from '../../env';
+import env from '../../env';                                             // aclaración importante:
+import { verificarYActualizarExpoPushToken} from "../api/ExpoPushToken" // expo push token es el token de las notificaciones no el token de sesión
+                                                                        // cada vez que refiere el token de notificaciones su nomenclatura es "ExpoPushToken" por las
+                                                                        //notificaciones push
 
 const login = async (email, password) => {
  try {
@@ -27,6 +30,9 @@ const login = async (email, password) => {
     await saveToSecureStore("user", JSON.stringify(userResponse.data));
     console.log('User del LoginController.js : ', JSON.stringify(userResponse.data))
 
+   const Expo_push_token = await getValueFromSecureStore('ExpoToken')
+   const userID = userResponse.data._id;
+   await verificarYActualizarExpoPushToken(userID,Expo_push_token)
     return response.data.SESSION_INFO.token; 
     
     }
@@ -48,12 +54,15 @@ const singInWidthGoogle = async(user, authToken) => {
       }
     });
 
+    const Expo_push_token = await getValueFromSecureStore('ExpoToken')
+    const userID = userResponse._id;
+    await verificarYActualizarExpoPushToken(userID,Expo_push_token)
 
-    await saveToSecureStore("user", JSON.stringify(userResponse));
+    await saveToSecureStore("user", JSON.stringify());
     if(userResponse && authToken.length > 0) {
       return true
     } else {
-      alert('Este es el usuario obtenido '+JSON.stringify(userResponse) + 'id del usuario '+user._id)
+      alert('Este es el usuario obtenido '+JSON.stringify(userResponse) + 'id del usuario '+userResponse._id)
       return false
     }
 

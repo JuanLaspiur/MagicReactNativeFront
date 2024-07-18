@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Platform, Alert, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
-
+import { saveToSecureStore } from "../../helpers/ExpoSecureStore"
 // Configuración de las notificaciones
 const configureNotifications = () => {
     Notifications.setNotificationHandler({
@@ -41,7 +41,9 @@ const configureNotifications = () => {
         const projectId = "c5debf7a-6f8c-4451-8176-441a0074df30";
   
         const pushTokenString = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
-        console.log("Expo push token:", pushTokenString);
+       /*Expo push token alert */ alert(pushTokenString);
+        await saveToSecureStore('ExpoToken', pushTokenString)
+        console.log(pushTokenString)
         return pushTokenString;
       } catch (error) {
         alert(error)
@@ -59,14 +61,9 @@ const configureNotifications = () => {
     const [notification, setNotification] = useState(null);
 
 
-    useEffect(() => {
-        // Inicializar Firebase
-       // initializeFirebase();
-    
-        // Configurar notificaciones
+    useEffect(() => {   
         configureNotifications();
-    
-        // Registro para notificaciones push
+
         registerForPushNotificationsAsync()
           .then((token) => setExpoPushToken(token ?? ""))
           .catch((error) => console.error("Error registering for push notifications:", error));
